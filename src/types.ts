@@ -3,4 +3,9 @@ type player = {
     y: number;
     width: number;
     height: number;
+    velocityY: number;
 };
+
+type ball = {
+    
+}
