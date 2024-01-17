@@ -1,0 +1,11 @@
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#board {
+    background: #000;
+    border-top: 5px solid #15b7cd;
+    border-bottom: 5px solid #15b7cd;
+}
