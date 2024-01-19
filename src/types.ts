@@ -6,6 +6,6 @@ type player = {
     velocityY: number;
 };
 
-type ball = {
-    
-}
+type ball = player & {
+    velocityX: number; // shhifting by 2px
+};
