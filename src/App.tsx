@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
-import SweetAlert2, { withSwal } from "react-sweetalert2";
 import swal from "sweetalert";
+import { driver } from "driver.js";
+import "driver.js/dist/driver.css";
 
 const App = () => {
     let boardWidth: number = 900;
@@ -38,16 +39,16 @@ const App = () => {
         velocityX: 1, // shhifting by 1px
         velocityY: 2, // shhifting by 2px
     };
-    const score = useRef({
-        1: 0,
-        2: 0,
-    });
 
     const [firstPlayerName, setFirstNamePlayer] = useState("firstPlayerName..");
     const [secondPlayerName, setSecondNamePlayer] =
         useState("secondPlayerName..");
     const [isBlurry, setBlurry] = useState(true);
     const [isPlaying, setIsPlaying] = useState(true);
+    const score = useRef({
+        1: 0,
+        2: 0,
+    });
 
     const detectCollision = (a: any, b: any) => {
         return (
@@ -149,11 +150,6 @@ const App = () => {
                     velocityY: 2,
                 };
             };
-            // console.log(stuckScores);
-            // if(stuckScores === true) {
-            //     resetGame(1);
-            // }
-
             // game over
             if (ball.x < 0) {
                 score.current[2] += 1;
@@ -180,13 +176,15 @@ const App = () => {
             if (
                 score.current[1] >= 6 &&
                 isPlaying === true &&
-                document.querySelector(".btn") === null
+                document.querySelector(".btn") === null &&
+                document.querySelector(".driver-popover-title") === null
             ) {
                 win(firstPlayerName);
             } else if (
                 score.current[2] >= 6 &&
                 isPlaying === true &&
-                document.querySelector(".btn") === null
+                document.querySelector(".btn") === null &&
+                document.querySelector(".driver-popover-title") === null
             ) {
                 win(secondPlayerName);
             }
@@ -206,10 +204,9 @@ const App = () => {
             player2.velocityY = 3;
         }
 
-        console.log(isBlurry, isPlaying);
         // to pause
-        if (e.key === "p" || e.key === "p") {
-            if (isPlaying === true && !isBlurry) {
+        if (e.key === "p" || e.key === "Escape" ) {
+            if (isPlaying === true && document.querySelector(".btn") === null) {
                 // set blurry background
                 if (!isBlurry) {
                     setBlurry(true);
@@ -225,7 +222,7 @@ const App = () => {
     };
 
     const enterPlayerNames = async (): Promise<any> => {
-        setIsPlaying(false);
+        // setIsPlaying(false);
 
         const name = await swal({
             title: "Player1, what is ur nickname?",
@@ -256,16 +253,50 @@ const App = () => {
         if (name1 !== null && name1.trim() !== "") {
             setSecondNamePlayer(name1);
         }
-        await swal({
-            text: `Once click "ok" your game will start :))`,
-            button: {
-                text: "Ok!",
-                closeModal: true,
-            },
-            className: "btn",
-            closeOnEsc: true,
-        });
-        document.querySelector(".btn")?.remove();
+
+        setBlurry(false);
+        // setIsPlaying(false);
+        // demo
+        // const driverObj = driver({
+        //     showProgress: true,
+        //     steps: [
+        //         {
+        //             element: "#board",
+        //             popover: {
+        //                 title: "Title",
+        //                 description:
+        //                     "The board is the central region of the board is the primary gameplay area where the ball and paddles interact.",
+        //             },
+        //         },
+        //         {
+        //             element: ".names",
+        //             popover: {
+        //                 title: "Player names",
+        //                 description: "Player names",
+        //             },
+        //         },
+        //         {
+        //             element: ".options-container",
+        //             popover: {
+        //                 title: "Settings",
+        //                 description: "Modify games settings",
+        //             },
+        //         },
+        //     ],
+        // });
+        // driverObj.drive();
+
+        // await swal({
+        //     text: `Once click "ok" your game will start :))`,
+        //     button: {
+        //         text: "Ok!",
+        //         closeModal: true,
+        //     },
+        //     className: "btn",
+        //     closeOnEsc: true,
+        // });
+        // document.querySelector(".btn")?.remove();
+
         // reset the players' scores
         resetScores();
         // set blurry backerground
@@ -275,9 +306,6 @@ const App = () => {
     };
 
     useEffect(() => {
-        // entering names
-        enterPlayerNames();
-
         board = document.getElementById("board") as HTMLCanvasElement;
         board.height = boardHeight;
         board.width = boardWidth;
@@ -286,6 +314,8 @@ const App = () => {
         context.fillStyle = "skyBlue";
         // drawing a rectangle
         context.fillRect(player1.x, player1.y, player1.width, player1.height); // fillRect(x,y,width,height)
+        // entering names
+        enterPlayerNames();
         // loop of game
         requestAnimationFrame(animate);
         window.addEventListener("keyup", movePlayer);
