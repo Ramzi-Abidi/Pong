@@ -73,9 +73,11 @@ const App = () => {
                 menu: "Return to menu",
                 play: "Play-again",
             },
+            className: "btn",
         }).then((value) => {
             console.log(value);
             if (value === "menu") {
+                resetScores();
                 // later we will change this to creat a menu
                 enterPlayerNames();
             } else if (value === "play") {
@@ -204,16 +206,17 @@ const App = () => {
             player2.velocityY = 3;
         }
 
+        console.log(isBlurry, isPlaying);
         // to pause
-        // if (e.key === "Escape") {
-        //     if (isPlaying === true) {
-        //         // set blurry background
-        //         if (!isBlurry) {
-        //             setBlurry(true);
-        //         }
-        //         swal("menu").then(() => {});
-        //     }
-        // }
+        if (e.key === "p" || e.key === "p") {
+            if (isPlaying === true && !isBlurry) {
+                // set blurry background
+                if (!isBlurry) {
+                    setBlurry(true);
+                }
+                alert("Paused! Press 'Enter' To Resume");
+            }
+        }
     };
 
     const resetScores = (): void => {
