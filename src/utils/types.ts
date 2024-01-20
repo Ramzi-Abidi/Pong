@@ -1,4 +1,4 @@
-type player = {
+export type player = {
     x: number;
     y: number;
     width: number;
@@ -6,6 +6,11 @@ type player = {
     velocityY: number;
 };
 
-type ball = player & {
+export type ball = player & {
     velocityX: number; // shhifting by 2px
+};
+
+export type score = {
+    1: number;
+    2: number;
 };

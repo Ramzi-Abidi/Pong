@@ -51,7 +51,7 @@ section {
 .label {
     text-transform: uppercase;
     font-size: 2rem;
-    color: rgb(19, 148, 99);
+    color: #15b7cd;
     font-weight: bold;
 }
 
@@ -71,7 +71,7 @@ section {
 }
 
 .swal-modal {
-    border: 3px solid rgb(15, 196, 127);
+    border: 3px solid #15b7cd;
 }
 
 .header {
@@ -84,15 +84,15 @@ section {
     left: 1.5rem;
 }
 
-.options {
+.playing-state {
     padding: 10px 20px;
-    background-color: aquamarine;
-    color: #333;
-    border-radius: 4px;
+    /* background-color: #15b7cd; */
+    color: #fff;
     outline: none;
     text-transform: capitalize;
     cursor: pointer;
 }
-.options:hover {
+
+/* .playing-state:hover {
     background-color: rgb(24, 233, 163);
-}
+} */
