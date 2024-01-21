@@ -181,10 +181,10 @@ const Home = () => {
             if (isPlaying1) {
                 if (ball.x < 0) {
                     score.current[2] += 1;
-                    resetGame(1.9);
+                    resetGame(1.8);
                 } else if (ball.x + ballWidth > boardWidth) {
                     score.current[1] += 1;
-                    resetGame(-1.9);
+                    resetGame(-1.8);
                 }
             }
 
@@ -307,7 +307,7 @@ const Home = () => {
             ${firstPlayerName1}, use 'z' and 's' keys.
 
             ${secondPlayerName1}, use 'top' and 'bottom' arrow keys.
-            
+
             Let the game begin by pressing [ESC] or [Enter]!
             `,
             button: {
