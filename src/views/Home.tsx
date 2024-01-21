@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import swal from "sweetalert";
 import { ball, player, score } from "../utils/types";
+import pongImage from "../assets/pong-header.png";
+import sound from "/Paddle Ball Hit Sound Effect HD.mp3";
 
 const Home = () => {
     let boardWidth: number = 600;
@@ -17,6 +19,7 @@ const Home = () => {
         width: playerWidth,
         height: playerHeight,
         velocityY: playerVelocityY, // change in the position over time
+        stopPlayer: false,
     };
 
     let player2: player = {
@@ -25,6 +28,7 @@ const Home = () => {
         width: playerWidth,
         height: playerHeight,
         velocityY: playerVelocityY, // change in teh position over time
+        stopPlayer: false,
     };
     const ballWidth = 10;
     const ballHeight = 10;
@@ -39,10 +43,11 @@ const Home = () => {
         y: boardHeight / 2,
         width: ballWidth,
         height: ballHeight,
-        velocityX: 1, // shhifting by 1px
-        velocityY: 2, // shhifting by 2px
+        velocityX: 2, // shhifting by 1px
+        velocityY: 1.5, // shhifting by 2px
     };
-
+    const [audio] = useState(new Audio(sound));
+    audio.volume = 0.18;
     const [firstPlayerName, setFirstNamePlayer] = useState<string>("Player 1");
     const [secondPlayerName, setSecondNamePlayer] = useState("Player 2");
     const [isBlurry, setBlurry] = useState<boolean>(true);
@@ -108,21 +113,25 @@ const Home = () => {
             // clearing the canvas
             context.clearRect(0, 0, boardWidth, boardHeight);
 
-            // player 1
+            // moving the player 1 up and down
             context.fillStyle = "skyBlue";
             if (!outOfBound(player1.y + player1.velocityY)) {
-                player1.y += player1.velocityY;
+                if (player1.stopPlayer === false) {
+                    player1.y += player1.velocityY;
+                }
             }
             context.fillRect(
                 player1.x,
                 player1.y,
                 player1.width,
                 player1.height,
-            ); // fillRect(x,y,width,height)
+            );
 
-            // player 2
+            // moving the player 2 up and down
             if (!outOfBound(player2.y + player2.velocityY)) {
-                player2.y += player2.velocityY;
+                if (player2.stopPlayer === false) {
+                    player2.y += player2.velocityY;
+                }
             }
             context.fillRect(
                 player2.x,
@@ -132,8 +141,8 @@ const Home = () => {
             ); // fillRect(x,y,width,height)
             // changing the color of the ball
             context.fillStyle = "#fff";
-            if(ball.velocityX !== -1 && ball.velocityX !== 1)
-            console.log(ball.velocityX);
+            if (ball.velocityX !== -1 && ball.velocityX !== 1)
+                console.log(ball.velocityX);
             // changing the pos of the ball
             ball.x += ball.velocityX;
             ball.y += ball.velocityY;
@@ -145,11 +154,13 @@ const Home = () => {
             }
             // detecting collision with player1 or with player2
             if (detectCollision(ball, player1)) {
+                audio.play();
                 // left side of ball touches right side of player1
                 if (ball.x <= player1.x + player1.width) {
                     ball.velocityX *= -1;
                 }
             } else if (detectCollision(ball, player2)) {
+                audio.play();
                 // right side of ball touches left side player2
                 if (ball.x + ballWidth >= player2.x) {
                     ball.velocityX *= -1;
@@ -211,7 +222,10 @@ const Home = () => {
     };
 
     const movePlayer = (e: any): void => {
-        console.log(e.key);
+        if (e.key === "z" || e.key === "s") player1.stopPlayer = false;
+        if (e.key === "ArrowUp" || e.key === "ArrowDown")
+            player2.stopPlayer = false;
+
         if (e.key === "z") {
             player1.velocityY = -2;
         } else if (e.key === "s") {
@@ -223,7 +237,7 @@ const Home = () => {
         } else if (e.key === "ArrowDown") {
             player2.velocityY = 2;
         }
-        // console.log(e.key);
+
         // to pause
         if (e.key === "p" || e.key === "Escape") {
             if (isPlaying === true && document.querySelector(".btn") === null) {
@@ -231,7 +245,7 @@ const Home = () => {
                 if (!isBlurry) {
                     setBlurry(true);
                 }
-                alert("Paused! Press 'Enter' To Resume");
+                alert("Paused! Press [ESC] or [Enter] to continue ");
             }
         }
     };
@@ -314,6 +328,16 @@ const Home = () => {
         setIsPlaying(true);
     };
 
+    const stopMovingPlayer = (e: any): void => {
+        if (e.key === "z" || e.key === "s") {
+            player1.stopPlayer = true;
+        }
+
+        if (e.key === "ArrowUp" || e.key === "ArrowDown") {
+            player2.stopPlayer = true;
+        }
+    };
+
     useEffect(() => {
         board = document.getElementById("board") as HTMLCanvasElement;
         board.height = boardHeight;
@@ -324,71 +348,46 @@ const Home = () => {
         // drawing a rectangle
         context.fillRect(player1.x, player1.y, player1.width, player1.height); // fillRect(x,y,width,height)
 
-        // setBlurry(false);
-        // demo
-        // const driverObj = driver({
-        //     showProgress: true,
-        //     steps: [
-        //         {
-        //             element: "#board",
-        //             popover: {
-        //                 title: "Title",
-        //                 description:
-        //                     "The board is the central region of the board is the primary gameplay area where the ball and paddles interact.",
-        //             },
-        //         },
-        //         {
-        //             element: ".names",
-        //             popover: {
-        //                 title: "Player names",
-        //                 description: "Player names",
-        //             },
-        //         },
-        //         {
-        //             element: ".options-container",
-        //             popover: {
-        //                 title: "Settings",
-        //                 description: "Modify games settings",
-        //             },
-        //         },
-        //     ],
-        // });
-        // driverObj.drive();
-
         // entering names
         enterPlayerNames();
         // loop of game
         requestAnimationFrame(animate);
         window.addEventListener("keydown", movePlayer);
+        window.addEventListener("keyup", stopMovingPlayer);
         // return () => {};
     }, []);
 
-    const handleSelectChange = (e: any): void => {
-        const selectedOption = e.target.value;
-        console.log(e.target.value);
+    // const handleSelectChange = (e: any): void => {
+    //     const selectedOption = e.target.value;
+    //     console.log(e.target.value);
 
-        if (selectedOption === "easy") {
-            ball.velocityX = 1;
-            ball.velocityY = 2;
-        } else if (selectedOption === "medium") {
-            // changing ball velocity
-            ball.velocityX = 5;
-            ball.velocityY = 5;
-            // setBallVelocity({
-            //     velocityX: 5,
-            //     velocityY: 5,
-            // });
+    //     if (selectedOption === "easy") {
+    //         ball.velocityX = 1;
+    //         ball.velocityY = 2;
+    //     } else if (selectedOption === "medium") {
+    //         // changing ball velocity
+    //         ball.velocityX = 5;
+    //         ball.velocityY = 5;
+    //         // setBallVelocity({
+    //         //     velocityX: 5,
+    //         //     velocityY: 5,
+    //         // });
 
-            // changing players velocity
-            // player1.velocityY = 3;
-            // player2.velocityY = 3;
+    //         // changing players velocity
+    //         // player1.velocityY = 3;
+    //         // player2.velocityY = 3;
 
-        }
-    };
+    //     }
+    // };
 
     return (
         <section className={isBlurry === true ? "blurry" : ""}>
-            <div className="title">pong game</div>
+            <div className="title">
+                <h3>pong game</h3>
+                <div className="img-container">
+                    <img src={pongImage} alt="Pong" className="pong-header" />
+                </div>
+            </div>
             <div className="options-container">
                 <span className="playing-state">Press p to pause game</span>
 

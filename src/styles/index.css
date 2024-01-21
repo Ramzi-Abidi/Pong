@@ -31,13 +31,27 @@ section {
 }
 
 .title {
-    font-size: 1.5rem;
+    display: flex;
+    justify-content: center;
+    font-size: 2rem;
     text-transform: capitalize;
     color: #fff;
     text-align: center;
     font-weight: bold;
-    margin-top: 1.5rem;
+    /* margin-top: 1.5rem; */
     margin-bottom: 3rem;
+    position: relative;
+}
+.title::before {
+    content: "";
+    position: absolute;
+    transform: translate(-50%, -50%);
+    bottom: 0;
+    left:50%;
+    width: 50px;
+    height: 4px;
+    border-radius: 4px;
+    background-color: #0eeda3;
 }
 
 .names {
@@ -93,6 +107,17 @@ section {
     text-transform: capitalize;
 }
 
-/* .playing-state:hover {
-    background-color: rgb(24, 233, 163);
-} */
+.pong-header {
+    width: 50%;
+}
+
+.img-container {
+    width: 50px;
+}
+
+.img-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    margin-left: .5rem;
+}
