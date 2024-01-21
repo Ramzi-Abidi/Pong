@@ -43,12 +43,13 @@ const Home = () => {
         y: boardHeight / 2,
         width: ballWidth,
         height: ballHeight,
-        velocityX: 2, // shhifting by 1px
-        velocityY: 1.5, // shhifting by 2px
+        velocityX: 1.5, // shhifting by 1px
+        velocityY: 1.2, // shhifting by 2px
     };
     const [audio] = useState(new Audio(sound));
     audio.volume = 0.18;
     const [firstPlayerName, setFirstNamePlayer] = useState<string>("Player 1");
+    const [winningNumber, setWinningNumber] = useState<number>(11);
     const [secondPlayerName, setSecondNamePlayer] = useState("Player 2");
     const [isBlurry, setBlurry] = useState<boolean>(true);
     const [isPlaying, setIsPlaying] = useState<boolean>(true);
@@ -78,7 +79,9 @@ const Home = () => {
         setBlurry(true);
         resetScores();
 
-        alert(`${playerName} wins !`);
+        setTimeout(() => {
+            alert(`${playerName} wins !`);
+        }, 500);
         swal({
             title: `Feedback!`,
             text: `Ready for another round? Click 'Play again' to dive back into the excitement! :))`,
@@ -180,10 +183,10 @@ const Home = () => {
             if (isPlaying1) {
                 if (ball.x < 0) {
                     score.current[2] += 1;
-                    resetGame(1);
+                    resetGame(1.5);
                 } else if (ball.x + ballWidth > boardWidth) {
                     score.current[1] += 1;
-                    resetGame(-1);
+                    resetGame(-1.5);
                 }
             }
 
@@ -202,7 +205,7 @@ const Home = () => {
             // console.log(document.querySelector(".btn"));
             // console.log(document.querySelector(".btn") === null);
             if (
-                score.current[1] >= 6 &&
+                score.current[1] >= winningNumber &&
                 isPlaying === true &&
                 document.querySelector(".btn") === null &&
                 document.querySelector(".driver-popover-title") === null
@@ -210,7 +213,7 @@ const Home = () => {
                 isPlaying1 = false;
                 win(firstPlayerName1);
             } else if (
-                score.current[2] >= 6 &&
+                score.current[2] >= winningNumber &&
                 isPlaying === true &&
                 document.querySelector(".btn") === null &&
                 document.querySelector(".driver-popover-title") === null
