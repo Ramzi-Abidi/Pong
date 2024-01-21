@@ -43,8 +43,8 @@ const Home = () => {
         y: boardHeight / 2,
         width: ballWidth,
         height: ballHeight,
-        velocityX: 1.8, // shhifting by 1px
-        velocityY: 0.9, // shhifting by 2px
+        velocityX: 3.5, // shhifting by 1px
+        velocityY: 2.8, // shhifting by 2px
     };
     const [audio] = useState(new Audio(sound));
     audio.volume = 0.18;
@@ -181,10 +181,10 @@ const Home = () => {
             if (isPlaying1) {
                 if (ball.x < 0) {
                     score.current[2] += 1;
-                    resetGame(1.8);
+                    resetGame(3.5);
                 } else if (ball.x + ballWidth > boardWidth) {
                     score.current[1] += 1;
-                    resetGame(-1.8);
+                    resetGame(-3.5);
                 }
             }
 
@@ -228,15 +228,15 @@ const Home = () => {
             player2.stopPlayer = false;
 
         if (e.key === "z") {
-            player1.velocityY = -2;
+            player1.velocityY = -3.5;
         } else if (e.key === "s") {
-            player1.velocityY = 2;
+            player1.velocityY = 3.5;
         }
 
         if (e.key === "ArrowUp") {
-            player2.velocityY = -2;
+            player2.velocityY = -3.5;
         } else if (e.key === "ArrowDown") {
-            player2.velocityY = 2;
+            player2.velocityY = 3.5;
         }
 
         // to pause
