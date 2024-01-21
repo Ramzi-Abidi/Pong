@@ -268,7 +268,7 @@ const Home = () => {
             className: "btn",
             closeOnEsc: true,
         };
-        const name = await swal();
+        const name = await swal(obj);
 
         document.querySelector(".btn")?.remove();
         if (name !== null && name.trim() !== "") {
@@ -303,8 +303,11 @@ const Home = () => {
         obj = {
             title: `Let the fun flow, ${title}!`,
             text: `How to play ?
+
             ${firstPlayerName1}, use 'z' and 's' keys.
+
             ${secondPlayerName1}, use 'top' and 'bottom' arrow keys.
+            
             Let the game begin by pressing [ESC] or [Enter]!
             `,
             button: {
