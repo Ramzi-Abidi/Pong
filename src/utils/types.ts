@@ -4,6 +4,7 @@ export type player = {
     width: number;
     height: number;
     velocityY: number;
+    stopPlayer: boolean,
 };
 
 export type ball = player & {
