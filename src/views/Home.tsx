@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import swal from "sweetalert";
-import { ball, player, score } from "../utils/types";
+import {  ball, player, score } from "../utils/types";
 import pongImage from "../assets/pong-header.png";
 import sound from "/Paddle Ball Hit Sound Effect HD.mp3";
 
@@ -43,12 +43,13 @@ const Home = () => {
         y: boardHeight / 2,
         width: ballWidth,
         height: ballHeight,
-        velocityX: 2, // shhifting by 1px
-        velocityY: 1.5, // shhifting by 2px
+        velocityX: 1.8, // shhifting by 1px
+        velocityY: 0.9, // shhifting by 2px
     };
     const [audio] = useState(new Audio(sound));
     audio.volume = 0.18;
     const [firstPlayerName, setFirstNamePlayer] = useState<string>("Player 1");
+    const [winningNumber, setWinningNumber] = useState<number>(11);
     const [secondPlayerName, setSecondNamePlayer] = useState("Player 2");
     const [isBlurry, setBlurry] = useState<boolean>(true);
     const [isPlaying, setIsPlaying] = useState<boolean>(true);
@@ -86,7 +87,7 @@ const Home = () => {
                 star: "Star GitHub⭐",
                 // menu: "Return to menu",
                 play: "Play again",
-            },
+            } as any,
             className: "btn",
         }).then((value) => {
             console.log(value);
@@ -180,10 +181,10 @@ const Home = () => {
             if (isPlaying1) {
                 if (ball.x < 0) {
                     score.current[2] += 1;
-                    resetGame(1);
+                    resetGame(1.9);
                 } else if (ball.x + ballWidth > boardWidth) {
                     score.current[1] += 1;
-                    resetGame(-1);
+                    resetGame(-1.9);
                 }
             }
 
@@ -202,7 +203,7 @@ const Home = () => {
             // console.log(document.querySelector(".btn"));
             // console.log(document.querySelector(".btn") === null);
             if (
-                score.current[1] >= 6 &&
+                score.current[1] >= winningNumber &&
                 isPlaying === true &&
                 document.querySelector(".btn") === null &&
                 document.querySelector(".driver-popover-title") === null
@@ -210,7 +211,7 @@ const Home = () => {
                 isPlaying1 = false;
                 win(firstPlayerName1);
             } else if (
-                score.current[2] >= 6 &&
+                score.current[2] >= winningNumber &&
                 isPlaying === true &&
                 document.querySelector(".btn") === null &&
                 document.querySelector(".driver-popover-title") === null
@@ -256,41 +257,42 @@ const Home = () => {
     };
 
     const enterPlayerNames = async (): Promise<void> => {
-        // setIsPlaying(false);
-
-        const name = await swal({
+        let obj: any = {
             title: "Player 1, your name ?",
             text: "If you're feeling mysterious, hit [ESC] or [Enter] to skip.",
-            content: "input",
+            content: "input" as any,
             button: {
                 text: "Ok!",
                 closeModal: true,
             },
             className: "btn",
             closeOnEsc: true,
-        });
+        };
+        const name = await swal();
+
         document.querySelector(".btn")?.remove();
         if (name !== null && name.trim() !== "") {
             firstPlayerName1 = name.trim();
             setFirstNamePlayer(name.trim());
             console.log(firstPlayerName1, name.trim());
         }
-        const name1 = await swal({
+        obj = {
             title: "Player 2, your name ?",
             text: "If you're feeling mysterious, hit [ESC] or [Enter] to skip.",
-            content: "input",
+            content: "input" as any,
             button: {
                 text: "Ok!",
                 closeModal: true,
             },
             className: "btn",
             closeOnEsc: true,
-        });
+        };
+        const name1 = await swal(obj);
+
         document.querySelector(".btn")?.remove();
         if (name1 !== null && name1.trim() !== "") {
             secondPlayerName1 = name1.trim();
             setSecondNamePlayer(name1.trim());
-            // console.log(secondPlayerName1);
         }
 
         const title: string =
@@ -298,14 +300,11 @@ const Home = () => {
                 ? `${firstPlayerName1} and ${secondPlayerName1}`
                 : "";
 
-        await swal({
+        obj = {
             title: `Let the fun flow, ${title}!`,
             text: `How to play ?
-            
             ${firstPlayerName1}, use 'z' and 's' keys.
-            
             ${secondPlayerName1}, use 'top' and 'bottom' arrow keys.
-            
             Let the game begin by pressing [ESC] or [Enter]!
             `,
             button: {
@@ -314,7 +313,10 @@ const Home = () => {
             },
             className: "btn",
             closeOnEsc: true,
-        });
+        };
+
+        await swal(obj);
+
         document.querySelector(".btn")?.remove();
 
         alert(`Once you click 'OK' your game will launch instantly! :))`);
