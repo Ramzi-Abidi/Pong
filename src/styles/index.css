@@ -1,6 +1,7 @@
 body {
     background-color: #292b29fe;
     font-family: "Montserrat", sans-serif;
+    overflow-y: hidden;
 }
 
 section {
@@ -46,6 +47,7 @@ section {
     font-size: 1.5rem;
     text-transform: capitalize;
     margin: 1rem 0;
+    padding: 0 2.5rem;
 }
 
 .label {
@@ -86,11 +88,9 @@ section {
 
 .playing-state {
     padding: 10px 20px;
-    /* background-color: #15b7cd; */
     color: #fff;
     outline: none;
     text-transform: capitalize;
-    cursor: pointer;
 }
 
 /* .playing-state:hover {

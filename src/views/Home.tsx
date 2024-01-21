@@ -3,8 +3,8 @@ import swal from "sweetalert";
 import { ball, player, score } from "../utils/types";
 
 const Home = () => {
-    let boardWidth: number = 900;
-    let boardHeight: number = 500;
+    let boardWidth: number = 600;
+    let boardHeight: number = 400;
     let context: CanvasRenderingContext2D;
     let board: HTMLCanvasElement;
     let playerWidth: number = 10;
@@ -26,9 +26,13 @@ const Home = () => {
         height: playerHeight,
         velocityY: playerVelocityY, // change in teh position over time
     };
-
     const ballWidth = 10;
     const ballHeight = 10;
+
+    // const [ballVelocity, setBallVelocity] = useState({
+    //     velocityX: 1,
+    //     velocityY: 2,
+    // });
 
     let ball: ball = {
         x: boardWidth / 2,
@@ -36,12 +40,11 @@ const Home = () => {
         width: ballWidth,
         height: ballHeight,
         velocityX: 1, // shhifting by 1px
-        velocityY: 3, // shhifting by 2px
+        velocityY: 2, // shhifting by 2px
     };
 
-    const [firstPlayerName, setFirstNamePlayer] = useState("Player 1");
-    const [secondPlayerName, setSecondNamePlayer] =
-        useState("Player 2");
+    const [firstPlayerName, setFirstNamePlayer] = useState<string>("Player 1");
+    const [secondPlayerName, setSecondNamePlayer] = useState("Player 2");
     const [isBlurry, setBlurry] = useState<boolean>(true);
     const [isPlaying, setIsPlaying] = useState<boolean>(true);
     let isPlaying1 = false;
@@ -75,8 +78,8 @@ const Home = () => {
             title: `Feedback!`,
             text: `Ready for another round? Click 'Play again' to dive back into the excitement! :))`,
             buttons: {
-                star: "Star on GitHub⭐",
-                menu: "Return to menu",
+                star: "Star GitHub⭐",
+                // menu: "Return to menu",
                 play: "Play again",
             },
             className: "btn",
@@ -129,6 +132,8 @@ const Home = () => {
             ); // fillRect(x,y,width,height)
             // changing the color of the ball
             context.fillStyle = "#fff";
+            if(ball.velocityX !== -1 && ball.velocityX !== 1)
+            console.log(ball.velocityX);
             // changing the pos of the ball
             ball.x += ball.velocityX;
             ball.y += ball.velocityY;
@@ -157,7 +162,7 @@ const Home = () => {
                     width: ballWidth,
                     height: ballHeight,
                     velocityX: direction,
-                    velocityY: 2,
+                    velocityY: ball.velocityY,
                 };
             };
             // game over
@@ -208,15 +213,15 @@ const Home = () => {
     const movePlayer = (e: any): void => {
         console.log(e.key);
         if (e.key === "z") {
-            player1.velocityY = -3;
+            player1.velocityY = -2;
         } else if (e.key === "s") {
-            player1.velocityY = 3;
+            player1.velocityY = 2;
         }
 
         if (e.key === "ArrowUp") {
-            player2.velocityY = -3;
+            player2.velocityY = -2;
         } else if (e.key === "ArrowDown") {
-            player2.velocityY = 3;
+            player2.velocityY = 2;
         }
         // console.log(e.key);
         // to pause
@@ -241,7 +246,7 @@ const Home = () => {
 
         const name = await swal({
             title: "Player 1, your name ?",
-            text: "If you're feeling mysterious, hit [Enter] to skip.",
+            text: "If you're feeling mysterious, hit [ESC] or [Enter] to skip.",
             content: "input",
             button: {
                 text: "Ok!",
@@ -258,7 +263,7 @@ const Home = () => {
         }
         const name1 = await swal({
             title: "Player 2, your name ?",
-            text: "If you're feeling mysterious, hit [Enter] to skip.",
+            text: "If you're feeling mysterious, hit [ESC] or [Enter] to skip.",
             content: "input",
             button: {
                 text: "Ok!",
@@ -287,7 +292,7 @@ const Home = () => {
             
             ${secondPlayerName1}, use 'top' and 'bottom' arrow keys.
             
-            Let the game begin by pressing [Enter]!
+            Let the game begin by pressing [ESC] or [Enter]!
             `,
             button: {
                 Text: "ok!",
@@ -358,22 +363,48 @@ const Home = () => {
         // return () => {};
     }, []);
 
+    const handleSelectChange = (e: any): void => {
+        const selectedOption = e.target.value;
+        console.log(e.target.value);
+
+        if (selectedOption === "easy") {
+            ball.velocityX = 1;
+            ball.velocityY = 2;
+        } else if (selectedOption === "medium") {
+            // changing ball velocity
+            ball.velocityX = 5;
+            ball.velocityY = 5;
+            // setBallVelocity({
+            //     velocityX: 5,
+            //     velocityY: 5,
+            // });
+
+            // changing players velocity
+            // player1.velocityY = 3;
+            // player2.velocityY = 3;
+
+        }
+    };
+
     return (
         <section className={isBlurry === true ? "blurry" : ""}>
             <div className="title">pong game</div>
             <div className="options-container">
-                <span className="playing-state">
-                    {/* {isPlaying1 ? "Pause" : "Resume"}
-                    <img
-                        src={
-                            isPlaying1
-                                ? "../assets/pause1.png"
-                                : "../assets/resume1.png"
-                        }
-                        alt="state"
-                    />{" "} */}
-                    Press p to pause game
-                </span>
+                <span className="playing-state">Press p to pause game</span>
+
+                {/* <div className="velocity">
+                    <select
+                        name=""
+                        id=""
+                        value=""
+                        onChange={handleSelectChange}
+                    >
+                        Change velocity
+                        <option value="easy">velo1</option>
+                        <option value="medium">velo2</option>
+                        <option value="hard">velo3</option>
+                    </select>
+                </div> */}
             </div>
 
             <div className="names">
