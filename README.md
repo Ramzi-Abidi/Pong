@@ -1,4 +1,8 @@
-# Pong Game
+<p align="center">
+  <img src="https://github.com/florinpop17/10-projects-10-hours/assets/69228547/3acde27c-742a-4e79-b0e5-6781923e241f" width="100px" alt="Image Description">
+</p>
+
+# Welcome to Pong Game using react
 
 Welcome to the Pong Game! Immerse yourself in this classic Pong experience, reimagined with React and TypeScript, blending nostalgic gameplay with the capabilities of a modern web environment.
 
@@ -16,7 +20,7 @@ npm install
 1. Start the development server: `npm run dev`
 2. Open [http://localhost:5173](http://localhost:5173) in your browser.
 
-## Demo
+## Snapshot Showcase
 ![intro_page](https://github.com/Ramzi-Abidi/Pong/assets/69228547/cecbef82-985c-4238-9187-642f489c244c)
 ![rules_page](https://github.com/Ramzi-Abidi/Pong/assets/69228547/ed74adc6-3633-4a93-ad28-ab64cf205193)
 ![game_play](https://github.com/Ramzi-Abidi/Pong/assets/69228547/1f008f9a-020a-4d44-9bef-e8bf9da534a2)
