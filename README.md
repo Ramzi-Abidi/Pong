@@ -1,14 +1,16 @@
-# Pong Game
+# React Pong Game
 
-Welcome to the React Pong Game! This classic Pong game is built using React with TypeScript, providing a nostalgic gaming experience within a modern web environment.
+Welcome to the Pong Game! Immerse yourself in this classic Pong experience, reimagined with React and TypeScript, blending nostalgic gameplay with the capabilities of a modern web environment.
 
-## How to install the project on your local machine
+## Installation
 
+To get the game running on your local machine, follow these simple steps:
+
+```bash
 git clone https://github.com/your-username/react-pong-game.git
-
 cd pong
-
 npm install
+```
 
 ## Usage
 1. Start the development server: `npm run dev`
@@ -24,11 +26,12 @@ npm install
 ## Contribution
 
 Fork the repo
-
-git checkout -b feature-or-bugfix-branch <br />
-git commit -m "Brief description of your changes" <br />
-git push origin feature-or-bugfix-branch <br />
-submit your PR. <br />
+```bash
+git checkout -b feature-or-bugfix-branch
+git commit -m "Brief description of your changes"
+git push origin feature-or-bugfix-branch 
+```
+Submit your PR. <br />
 
 ## Contact
 Email: ramziabidi.dev@gmail.com 
