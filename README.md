@@ -1,4 +1,4 @@
-# React Pong Game
+# Pong Game
 
 Welcome to the Pong Game! Immerse yourself in this classic Pong experience, reimagined with React and TypeScript, blending nostalgic gameplay with the capabilities of a modern web environment.
 
