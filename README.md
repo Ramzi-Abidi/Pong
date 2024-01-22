@@ -7,6 +7,7 @@ Welcome to the React Pong Game! This classic Pong game is built using React with
 git clone https://github.com/your-username/react-pong-game.git
 
 cd pong
+
 npm install
 
 ## Usage
