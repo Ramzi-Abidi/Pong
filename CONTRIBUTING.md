@@ -7,7 +7,7 @@ Thank you for considering contributing to the Pong Game! We appreciate your time
 1. Fork the repository and clone it locally.
 
     ```bash
-    git clone https://github.com/your-username/pong-game.git
+    git clone https://github.com/Ramzi-Abidi/Pong
     ```
 
 2. Create a new branch for your feature or bug fix.
