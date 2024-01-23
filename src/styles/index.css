@@ -1,7 +1,7 @@
 body {
     background-color: #292b29fe;
     font-family: "Montserrat", sans-serif;
-    overflow-y: hidden;
+    /* overflow-y: hidden; */
 }
 
 section {

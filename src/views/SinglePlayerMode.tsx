@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import swal from "sweetalert";
-import {  ball, player, score } from "../utils/types";
+import { ball, player, score } from "../utils/types";
 import pongImage from "../assets/pong-header.png";
 import sound from "/Paddle Ball Hit Sound Effect HD.mp3";
 
-const Home = () => {
+const SinglePlayerMode = () => {
     let boardWidth: number = 600;
     let boardHeight: number = 400;
     let context: CanvasRenderingContext2D;
@@ -43,11 +43,12 @@ const Home = () => {
         y: boardHeight / 2,
         width: ballWidth,
         height: ballHeight,
-        velocityX: 1.8, // shhifting by 1px
+        velocityX: 1.6, // shhifting by 1px
         velocityY: 0.9, // shhifting by 2px
     };
     const [audio] = useState(new Audio(sound));
     audio.volume = 0.18;
+
     const [firstPlayerName, setFirstNamePlayer] = useState<string>("Player 1");
     const [winningNumber, setWinningNumber] = useState<number>(11);
     const [secondPlayerName, setSecondNamePlayer] = useState("Player 2");
@@ -114,20 +115,6 @@ const Home = () => {
             // clearing the canvas
             context.clearRect(0, 0, boardWidth, boardHeight);
 
-            // moving the player 1 up and down
-            context.fillStyle = "skyBlue";
-            if (!outOfBound(player1.y + player1.velocityY)) {
-                if (player1.stopPlayer === false) {
-                    player1.y += player1.velocityY;
-                }
-            }
-            context.fillRect(
-                player1.x,
-                player1.y,
-                player1.width,
-                player1.height,
-            );
-
             // moving the player 2 up and down
             if (!outOfBound(player2.y + player2.velocityY)) {
                 if (player2.stopPlayer === false) {
@@ -139,14 +126,34 @@ const Home = () => {
                 player2.y,
                 player2.width,
                 player2.height,
-            ); // fillRect(x,y,width,height)
-            // changing the color of the ball
+            );
+
             context.fillStyle = "#fff";
-            if (ball.velocityX !== -1 && ball.velocityX !== 1)
-                console.log(ball.velocityX);
+
             // changing the pos of the ball
             ball.x += ball.velocityX;
             ball.y += ball.velocityY;
+
+            // moving the player 1 up and down according following the ball position
+            if (ball.y > player1.y) {
+                player1.velocityY = 2;
+            } else if (ball.y < player1.y) {
+                player1.velocityY = -2;
+            }
+
+            if (!outOfBound(player1.y + player1.velocityY)) {
+                player1.y += player1.velocityY;
+            }
+
+            context.fillStyle = "skyBlue";
+            context.fillRect(
+                player1.x,
+                player1.y,
+                player1.width,
+                player1.height,
+            );
+
+            context.fillStyle = "#fff";
             // recreating the ball
             context.fillRect(ball.x, ball.y, ball.width, ball.height);
             // changing the velocity/direction of the ball when it hits the top/bottom of boundries.
@@ -181,10 +188,10 @@ const Home = () => {
             if (isPlaying1) {
                 if (ball.x < 0) {
                     score.current[2] += 1;
-                    resetGame(1.8);
+                    resetGame(1.6);
                 } else if (ball.x + ballWidth > boardWidth) {
                     score.current[1] += 1;
-                    resetGame(-1.8);
+                    resetGame(-1.6);
                 }
             }
 
@@ -198,10 +205,10 @@ const Home = () => {
             );
 
             // drawing line
-            context.fillStyle = "#15b7cd";
+            context.fillStyle = "skyBlue";
             context.fillRect(board.width / 2, 0, 5, board.height);
-            // console.log(document.querySelector(".btn"));
-            // console.log(document.querySelector(".btn") === null);
+
+            // Winning
             if (
                 score.current[1] >= winningNumber &&
                 isPlaying === true &&
@@ -223,15 +230,15 @@ const Home = () => {
     };
 
     const movePlayer = (e: any): void => {
-        if (e.key === "z" || e.key === "s") player1.stopPlayer = false;
+        // if (e.key === "z" || e.key === "s") player1.stopPlayer = false;
         if (e.key === "ArrowUp" || e.key === "ArrowDown")
             player2.stopPlayer = false;
 
-        if (e.key === "z") {
-            player1.velocityY = -2;
-        } else if (e.key === "s") {
-            player1.velocityY = 2;
-        }
+        // if (e.key === "z") {
+        //     player1.velocityY = -2;
+        // } else if (e.key === "s") {
+        //     player1.velocityY = 2;
+        // }
 
         if (e.key === "ArrowUp") {
             player2.velocityY = -2;
@@ -395,20 +402,6 @@ const Home = () => {
             </div>
             <div className="options-container">
                 <span className="playing-state">Press p to pause game</span>
-
-                {/* <div className="velocity">
-                    <select
-                        name=""
-                        id=""
-                        value=""
-                        onChange={handleSelectChange}
-                    >
-                        Change velocity
-                        <option value="easy">velo1</option>
-                        <option value="medium">velo2</option>
-                        <option value="hard">velo3</option>
-                    </select>
-                </div> */}
             </div>
 
             <div className="names">
@@ -421,4 +414,4 @@ const Home = () => {
     );
 };
 
-export default Home;
+export default SinglePlayerMode;
