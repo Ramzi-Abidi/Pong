@@ -2,7 +2,7 @@
   <img src="https://github.com/florinpop17/10-projects-10-hours/assets/69228547/3acde27c-742a-4e79-b0e5-6781923e241f" width="100px" alt="Image Description">
 </p>
 
-# Welcome to Pong Game using react
+# Welcome to Pong Game using react 🕹️🚀
 
 Welcome to the Pong Game! Immerse yourself in this classic Pong experience, reimagined with React and TypeScript, blending nostalgic gameplay with the capabilities of a modern web environment.
 
