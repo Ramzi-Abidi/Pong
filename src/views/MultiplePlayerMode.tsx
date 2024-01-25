@@ -54,6 +54,23 @@ const MultiplePlayerMode = () => {
     const [secondPlayerName, setSecondNamePlayer] = useState("Player 2");
     const [isBlurry, setBlurry] = useState<boolean>(true);
     const [isPlaying, setIsPlaying] = useState<boolean>(true);
+
+    const [timer, setTimer] = useState(0);
+
+    const timerRef = useRef<number | null>(null);
+
+    const startTimer = () => {
+        timerRef.current = window.setInterval(() => {
+            setTimer((prevTimer) => prevTimer + 1);
+        }, 1000);
+    };
+
+    const resetTimer = () => {
+        setTimer(0);
+        if (timerRef.current !== null) {
+            clearInterval(timerRef.current);
+        }
+    };
     let isPlaying1 = false;
     const score = useRef<score>({
         1: 0,
@@ -99,7 +116,9 @@ const MultiplePlayerMode = () => {
                 enterPlayerNames();
             } else if (value === "play") {
                 // play again
+                resetTimer();
                 enterPlayerNames();
+                startTimer();
             } else {
                 // navigate("/https://github.com/Ramzi-Abidi/Pong");
                 // window.location.href = '';
@@ -356,10 +375,17 @@ const MultiplePlayerMode = () => {
 
         // entering names
         enterPlayerNames();
+        startTimer();
         // loop of game
         requestAnimationFrame(animate);
         window.addEventListener("keydown", movePlayer);
         window.addEventListener("keyup", stopMovingPlayer);
+
+        return () => {
+            resetTimer();
+            window.removeEventListener("keydown", movePlayer);
+            window.removeEventListener("keyup", stopMovingPlayer);
+        };
         // return () => {};
     }, []);
 
@@ -396,7 +422,7 @@ const MultiplePlayerMode = () => {
             </div>
             <div className="options-container">
                 <span className="playing-state">Press p to pause game</span>
-
+                <div className="playing-state">Time: {timer}s</div>
                 {/* <div className="velocity">
                     <select
                         name=""
