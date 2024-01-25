@@ -3,6 +3,8 @@ import swal from "sweetalert";
 import { ball, player, score } from "../utils/types";
 import pongImage from "../assets/pong-header.png";
 import sound from "/Paddle Ball Hit Sound Effect HD.mp3";
+import { Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const SinglePlayerMode = () => {
     let boardWidth: number = 600;
@@ -76,6 +78,8 @@ const SinglePlayerMode = () => {
         1: 0,
         2: 0,
     });
+    const navigate = useNavigate();
+
     let firstPlayerName1: string = firstPlayerName;
     let secondPlayerName1: string = secondPlayerName;
 
@@ -287,16 +291,27 @@ const SinglePlayerMode = () => {
             title: "Player 1, your name ?",
             text: "If you're feeling mysterious, hit [ESC] or [Enter] to skip.",
             content: "input" as any,
-            button: {
-                text: "Ok!",
-                closeModal: true,
+            buttons: {
+                return: "Return to menu",
+                ok: {
+                    button: {
+                        text: "Ok!",
+                        closeModal: true,
+                    },
+                },
             },
             className: "btn",
             closeOnEsc: true,
         };
+        document.querySelector(".btn")?.remove();
+
         const name = await swal(obj);
 
-        document.querySelector(".btn")?.remove();
+        if (name === "return") {
+            navigate("/");
+            return;
+        }
+
         if (name !== null && name.trim() !== "") {
             firstPlayerName1 = name.trim();
             setFirstNamePlayer(name.trim());
@@ -306,16 +321,27 @@ const SinglePlayerMode = () => {
             title: "Player 2, your name ?",
             text: "If you're feeling mysterious, hit [ESC] or [Enter] to skip.",
             content: "input" as any,
-            button: {
-                text: "Ok!",
-                closeModal: true,
+            buttons: {
+                return: "Return to menu",
+                ok: {
+                    button: {
+                        text: "Ok!",
+                        closeModal: true,
+                    },
+                },
             },
             className: "btn",
             closeOnEsc: true,
         };
+        document.querySelector(".btn")?.remove();
+
         const name1 = await swal(obj);
 
-        document.querySelector(".btn")?.remove();
+        if (name1 === "return") {
+            navigate("/");
+            return;
+        }
+
         if (name1 !== null && name1.trim() !== "") {
             secondPlayerName1 = name1.trim();
             setSecondNamePlayer(name1.trim());
@@ -395,28 +421,9 @@ const SinglePlayerMode = () => {
         // return () => {};
     }, []);
 
-    // const handleSelectChange = (e: any): void => {
-    //     const selectedOption = e.target.value;
-    //     console.log(e.target.value);
-
-    //     if (selectedOption === "easy") {
-    //         ball.velocityX = 1;
-    //         ball.velocityY = 2;
-    //     } else if (selectedOption === "medium") {
-    //         // changing ball velocity
-    //         ball.velocityX = 5;
-    //         ball.velocityY = 5;
-    //         // setBallVelocity({
-    //         //     velocityX: 5,
-    //         //     velocityY: 5,
-    //         // });
-
-    //         // changing players velocity
-    //         // player1.velocityY = 3;
-    //         // player2.velocityY = 3;
-
-    //     }
-    // };
+    const handleClick = () => {
+        navigate("/");
+    };
 
     return (
         <section className={isBlurry === true ? "blurry" : ""}>
@@ -429,6 +436,9 @@ const SinglePlayerMode = () => {
             <div className="options-container">
                 <span className="playing-state">Press p to pause game</span>
                 <div className="playing-state">Time: {timer}s</div>
+                <Button onClick={handleClick} className="">
+                    Return to menu
+                </Button>
             </div>
 
             <div className="names">
