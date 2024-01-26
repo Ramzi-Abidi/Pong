@@ -4,7 +4,11 @@ import { ball, player, score } from "../utils/types";
 import pongImage from "../assets/pong-header.png";
 import sound from "/Paddle Ball Hit Sound Effect HD.mp3";
 
-const SinglePlayerMode = () => {
+interface SinglePlayerModeProps {
+    isSoundOn: boolean;
+}
+
+const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ isSoundOn }) => {
     let boardWidth: number = 600;
     let boardHeight: number = 400;
     let context: CanvasRenderingContext2D;
@@ -47,7 +51,12 @@ const SinglePlayerMode = () => {
         velocityY: 0.9, // shhifting by 2px
     };
     const [audio] = useState(new Audio(sound));
-    audio.volume = 0.18;
+
+    useEffect(() => {
+        audio.volume = isSoundOn ? 0.18 : 0;
+    }, [isSoundOn]);
+    
+    // audio.volume = 0.18;
 
     const [firstPlayerName, setFirstNamePlayer] = useState<string>("Player 1");
     const [winningNumber, setWinningNumber] = useState<number>(11);

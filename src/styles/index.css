@@ -121,3 +121,58 @@ section {
     object-fit: contain;
     margin-left: .5rem;
 }
+
+.menu-container {
+    text-align: center;
+    color: white;
+}
+
+.rules-menu {
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    color: rgba(0,0,0,.65);
+    margin: 0 auto;
+}
+
+.rules-box {
+    border: 3px solid #15b7cd;
+    width: 350px;
+    height: 250px;
+    background-color: #fff;
+    border-radius: 5px;
+    margin: 10px 20px;
+}
+
+.rules-box img {
+    cursor: pointer;
+}
+
+.options-heading {
+    cursor: pointer;
+}
+
+.rules-box-btn {
+    background-color: #7cd1f9;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 10px 24px;
+    margin: 10px;
+    cursor: pointer;
+}
+
+@media screen and (max-width: 640px) {
+    .rules-menu {
+        display: flex;
+        flex-direction: column;
+        margin-left: 17%;
+    }
+
+    .rules-box {
+        width: 200px;
+        height: 200px;
+    }
+}
