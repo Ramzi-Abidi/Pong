@@ -5,6 +5,7 @@ import pongImage from "../assets/pong-header.png";
 import sound from "/Paddle Ball Hit Sound Effect HD.mp3";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import "./SinglePlayer.css"
 
 const SinglePlayerMode = () => {
     let boardWidth: number = 600;
@@ -430,9 +431,9 @@ const SinglePlayerMode = () => {
             </div>
             <div className="options-container">
                 <span className="playing-state">Press p to pause game</span>
-                <Button onClick={handleClick} className="">
+                <button onClick={handleClick} className="Return-btn">
                     Return to menu
-                </Button>
+                </button>
             </div>
 
             <div className="names">
