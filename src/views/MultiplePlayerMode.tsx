@@ -4,8 +4,13 @@ import { ball, player, score } from "../utils/types";
 import pongImage from "../assets/pong-header.png";
 import sound from "/Paddle Ball Hit Sound Effect HD.mp3";
 import { useNavigate } from "react-router-dom";
+import { Button } from "@mui/material";
 
-const MultiplePlayerMode = () => {
+interface MultiplePlayerModeProps {
+    isSoundOn: boolean;
+}
+
+const MultiplePlayerMode: React.FC<MultiplePlayerModeProps> = ({ isSoundOn }) => {
     let boardWidth: number = 600;
     let boardHeight: number = 400;
     let context: CanvasRenderingContext2D;
@@ -48,7 +53,12 @@ const MultiplePlayerMode = () => {
         velocityY: 0.9, // shhifting by 2px
     };
     const [audio] = useState(new Audio(sound));
-    audio.volume = 0.18;
+
+    useEffect(() => {
+        audio.volume = isSoundOn ? 0.18 : 0;
+    }, [isSoundOn]);
+    
+    // audio.volume = 0.18;
 
     const [firstPlayerName, setFirstNamePlayer] = useState<string>("Player 1");
     const [winningNumber, setWinningNumber] = useState<number>(6);
@@ -437,9 +447,14 @@ const MultiplePlayerMode = () => {
     //     }
     // };
 
+    const handleClick = () => {
+        navigate("/");
+    };
+
     return (
         <section className={isBlurry === true ? "blurry" : ""}>
-            <div className="title-gameplay">
+            <div className="title">
+            <div className="timer">Time: {timer}s</div>
                 <h3>pong game</h3>
                 <div className="img-container">
                     <img src={pongImage} alt="Pong" className="pong-header" />
@@ -447,7 +462,10 @@ const MultiplePlayerMode = () => {
             </div>
             <div className="options-container">
                 <span className="playing-state">Press p to pause game</span>
-                <div className="playing-state">Time: {timer}s</div>
+                <Button onClick={handleClick} className="">
+                    Return to menu
+                </Button>
+                {/* <div className="playing-state">Time: {timer}s</div> */}
                 {/* <div className="velocity">
                     <select
                         name=""
