@@ -19,7 +19,7 @@ const Home = () => {
             <div className="overlay"></div>
             <div className="pong-background"></div>
             <section className="stepper disable-blur">
-                <div className="title disable-blur">
+                <div className="home-title disable-blur">
                     <h3>Welcome to pong game</h3>
                 </div>
                 <div className="menu">

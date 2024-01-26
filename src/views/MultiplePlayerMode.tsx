@@ -268,7 +268,7 @@ const MultiplePlayerMode = () => {
                 if (!isBlurry) {
                     setBlurry(true);
                 }
-                alert("Paused! Press [ESC] or [Enter] to continue ");
+                isPlaying1 = !isPlaying1;
             }
         }
     };

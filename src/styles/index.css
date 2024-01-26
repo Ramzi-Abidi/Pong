@@ -43,15 +43,25 @@ section {
 .title {
     display: flex;
     justify-content: center;
+    align-items: center;
     font-size: 1.2rem;
     text-transform: capitalize;
-    color: #333;
+    color: #fff;
     text-align: center;
     font-weight: bold;
     /* margin-top: 1.5rem; */
     margin-bottom: 3rem;
     position: relative;
 }
+
+.timer {
+    margin-right: 1rem;
+}
+
+.home-title {
+    color: #333;
+}
+
 .title::before {
     content: "";
     position: absolute;

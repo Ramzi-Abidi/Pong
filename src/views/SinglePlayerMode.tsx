@@ -57,7 +57,7 @@ const SinglePlayerMode = () => {
     const [isBlurry, setBlurry] = useState<boolean>(true);
     const [isPlaying, setIsPlaying] = useState<boolean>(true);
 
-    const [timer, setTimer] = useState(0);
+    const [timer, setTimer] = useState<number>(0);
 
     const timerRef = useRef<number | null>(null);
 
@@ -257,12 +257,6 @@ const SinglePlayerMode = () => {
         if (e.key === "ArrowUp" || e.key === "ArrowDown")
             player2.stopPlayer = false;
 
-        // if (e.key === "z") {
-        //     player1.velocityY = -2;
-        // } else if (e.key === "s") {
-        //     player1.velocityY = 2;
-        // }
-
         if (e.key === "ArrowUp") {
             player2.velocityY = -2;
         } else if (e.key === "ArrowDown") {
@@ -276,7 +270,7 @@ const SinglePlayerMode = () => {
                 if (!isBlurry) {
                     setBlurry(true);
                 }
-                alert("Paused! Press [ESC] or [Enter] to continue ");
+                isPlaying1 = !isPlaying1;
             }
         }
     };
@@ -428,6 +422,7 @@ const SinglePlayerMode = () => {
     return (
         <section className={isBlurry === true ? "blurry" : ""}>
             <div className="title">
+                <div className="timer">Time: {timer}s</div>
                 <h3>pong game</h3>
                 <div className="img-container">
                     <img src={pongImage} alt="Pong" className="pong-header" />
@@ -435,7 +430,6 @@ const SinglePlayerMode = () => {
             </div>
             <div className="options-container">
                 <span className="playing-state">Press p to pause game</span>
-                <div className="playing-state">Time: {timer}s</div>
                 <Button onClick={handleClick} className="">
                     Return to menu
                 </Button>
