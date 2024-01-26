@@ -5,7 +5,12 @@ import soundOff from "../assets/sound-off.png"
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-const Rules = ({ isSoundOn, onSoundChange }) => {
+interface RulesProps {
+    isSoundOn: boolean;
+    onSoundChange: () => void;
+}
+
+const Rules: React.FC<RulesProps> = ({ isSoundOn, onSoundChange }) => {
 
     const [optionsModal, setOptionsModal] = useState(false);
 
