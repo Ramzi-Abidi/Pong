@@ -31,13 +31,15 @@ https://github.com/Ramzi-Abidi/Pong/assets/69228547/37876ac4-5c52-4239-8f70-84c6
 
 ## Contribution
 
-Fork the repo
+1. Fork the repo
+2. Raise an issue or comment under the issue and I will asign it to you. 
+3. Run these commands:
 ```bash
 git checkout -b feature-or-bugfix-branch
 git commit -m "Brief description of your changes"
 git push origin feature-or-bugfix-branch 
 ```
-Submit your PR. <br />
+4. Submit your PR. <br />
 
 ## Contact
 Email: ramziabidi.dev@gmail.com
