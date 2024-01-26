@@ -5,6 +5,7 @@ import pongImage from "../assets/pong-header.png";
 import sound from "/Paddle Ball Hit Sound Effect HD.mp3";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import "../styles/SinglePlayer.css"
 
 interface SinglePlayerModeProps {
     isSoundOn: boolean;
@@ -439,9 +440,9 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ isSoundOn }) => {
             </div>
             <div className="options-container">
                 <span className="playing-state">Press p to pause game</span>
-                <Button onClick={handleClick} className="">
+                <button onClick={handleClick} className="return-btn">
                     Return to menu
-                </Button>
+                </button>
             </div>
 
             <div className="names">
