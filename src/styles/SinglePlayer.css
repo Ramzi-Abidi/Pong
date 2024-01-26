@@ -1,4 +1,4 @@
-.Return-btn{
+.return-btn{
     /* Add your styles for the return-tomenu-btn button here */
     background-color: transparent;
     color: #fff;
@@ -11,11 +11,11 @@
     text-decoration: none;
 }
 
-.Return-btn:hover {
+.return-btn:hover {
     background-color: #d32f2f;
 }
 
-.Return-btn:focus {
+.return-btn:focus {
     outline: none;
     box-shadow: 0 0 5px #f44336;
 }
