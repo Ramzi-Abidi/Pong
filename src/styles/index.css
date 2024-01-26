@@ -1,7 +1,6 @@
 body {
     background-color: #292b29fe;
     font-family: "Montserrat", sans-serif;
-    /* overflow-y: hidden; */
 }
 
 section {
@@ -9,11 +8,11 @@ section {
 }
 
 .blurry {
-    position: absolute;
+    /* position: absolute;
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
+    height: 100%; */
     filter: blur(8px);
     -webkit-filter: blur(8px);
 }
@@ -29,11 +28,23 @@ section {
     justify-content: space-between;
     color: #fff;
 }
+.title-gameplay {
+    display: flex;
+    justify-content: center;
+    font-size: 2rem;
+    text-transform: capitalize;
+    color: #fff;
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 3rem;
+    position: relative;
+}
 
 .title {
     display: flex;
     justify-content: center;
-    font-size: 2rem;
+    align-items: center;
+    font-size: 1.2rem;
     text-transform: capitalize;
     color: #fff;
     text-align: center;
@@ -42,12 +53,21 @@ section {
     margin-bottom: 3rem;
     position: relative;
 }
+
+.timer {
+    margin-right: 1rem;
+}
+
+.home-title {
+    color: #333;
+}
+
 .title::before {
     content: "";
     position: absolute;
     transform: translate(-50%, -50%);
     bottom: 12px;
-    left:50%;
+    left: 50%;
     width: 50px;
     height: 4px;
     border-radius: 4px;
@@ -81,8 +101,6 @@ section {
 }
 
 .swal-overlay {
-    /* background-color: rgba(0, 71, 71, 0.45); */
-
     background-color: #02515b1d;
 }
 
@@ -119,5 +137,65 @@ section {
     width: 100%;
     height: 100%;
     object-fit: contain;
-    margin-left: .5rem;
+    margin-left: 0.5rem;
+}
+
+.pong-background {
+    background-image: url("../assets/pong-background5.jpeg");
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 998;
+}
+
+.slowed-blurry-background {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.slowed-blurry-background > * {
+    filter: blur(3px);
+}
+
+.disable-blur {
+    filter: blur(0);
+}
+
+.stepper {
+    text-align: center;
+    background-color: #fff;
+    width: 500px;
+    border-radius: 6px;
+    padding: 1rem;
+    margin-top: 5rem;
+    z-index: 1000;
+}
+
+.overlay {
+    background-color: rgba(0, 0, 0, 0.65);
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 999;
+}
+
+.menu {
+    position: relative;
+}
+
+.menu .checkbox {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+}
+.container-btn {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }

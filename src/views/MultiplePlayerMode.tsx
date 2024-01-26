@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import swal from "sweetalert";
-import {  ball, player, score } from "../utils/types";
+import { ball, player, score } from "../utils/types";
 import pongImage from "../assets/pong-header.png";
 import sound from "/Paddle Ball Hit Sound Effect HD.mp3";
+import { useNavigate } from "react-router-dom";
 
 const MultiplePlayerMode = () => {
     let boardWidth: number = 600;
@@ -50,7 +51,7 @@ const MultiplePlayerMode = () => {
     audio.volume = 0.18;
 
     const [firstPlayerName, setFirstNamePlayer] = useState<string>("Player 1");
-    const [winningNumber, setWinningNumber] = useState<number>(11);
+    const [winningNumber, setWinningNumber] = useState<number>(6);
     const [secondPlayerName, setSecondNamePlayer] = useState("Player 2");
     const [isBlurry, setBlurry] = useState<boolean>(true);
     const [isPlaying, setIsPlaying] = useState<boolean>(true);
@@ -76,6 +77,7 @@ const MultiplePlayerMode = () => {
         1: 0,
         2: 0,
     });
+    const navigate = useNavigate();
     let firstPlayerName1: string = firstPlayerName;
     let secondPlayerName1: string = secondPlayerName;
 
@@ -266,7 +268,7 @@ const MultiplePlayerMode = () => {
                 if (!isBlurry) {
                     setBlurry(true);
                 }
-                alert("Paused! Press [ESC] or [Enter] to continue ");
+                isPlaying1 = !isPlaying1;
             }
         }
     };
@@ -281,16 +283,27 @@ const MultiplePlayerMode = () => {
             title: "Player 1, your name ?",
             text: "If you're feeling mysterious, hit [ESC] or [Enter] to skip.",
             content: "input" as any,
-            button: {
-                text: "Ok!",
-                closeModal: true,
+            buttons: {
+                return: "Return to menu",
+                ok: {
+                    button: {
+                        text: "Ok!",
+                        closeModal: true,
+                    },
+                },
             },
             className: "btn",
             closeOnEsc: true,
         };
+        document.querySelector(".btn")?.remove();
+
         const name = await swal(obj);
 
-        document.querySelector(".btn")?.remove();
+        if (name === "return") {
+            navigate("/");
+            return;
+        }
+
         if (name !== null && name.trim() !== "") {
             firstPlayerName1 = name.trim();
             setFirstNamePlayer(name.trim());
@@ -300,16 +313,29 @@ const MultiplePlayerMode = () => {
             title: "Player 2, your name ?",
             text: "If you're feeling mysterious, hit [ESC] or [Enter] to skip.",
             content: "input" as any,
-            button: {
-                text: "Ok!",
-                closeModal: true,
+            buttons: {
+                return: "Return to menu",
+                ok: {
+                    button: {
+                        text: "Ok!",
+                        closeModal: true,
+                    },
+                },
             },
             className: "btn",
             closeOnEsc: true,
         };
+        document.querySelector(".btn")?.remove();
+
         const name1 = await swal(obj);
 
-        document.querySelector(".btn")?.remove();
+        console.log(name1);
+
+        if (name1 === "return") {
+            navigate("/");
+            return;
+        }
+
         if (name1 !== null && name1.trim() !== "") {
             secondPlayerName1 = name1.trim();
             setSecondNamePlayer(name1.trim());
@@ -337,10 +363,9 @@ const MultiplePlayerMode = () => {
             className: "btn",
             closeOnEsc: true,
         };
-
-        await swal(obj);
-
         document.querySelector(".btn")?.remove();
+
+        const rule = await swal(obj);
 
         alert(`Once you click 'OK' your game will launch instantly! :))`);
 
@@ -414,7 +439,7 @@ const MultiplePlayerMode = () => {
 
     return (
         <section className={isBlurry === true ? "blurry" : ""}>
-            <div className="title">
+            <div className="title-gameplay">
                 <h3>pong game</h3>
                 <div className="img-container">
                     <img src={pongImage} alt="Pong" className="pong-header" />
