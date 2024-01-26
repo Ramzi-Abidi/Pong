@@ -32,7 +32,7 @@ https://github.com/Ramzi-Abidi/Pong/assets/69228547/37876ac4-5c52-4239-8f70-84c6
 ## Contribution
 
 1. Fork the repo
-2. Raise an issue or comment under the issue and I will asign it to you. 
+2. Raise an issue or comment under it and I will assign it to you. 
 3. Run these commands:
 ```bash
 git checkout -b feature-or-bugfix-branch
