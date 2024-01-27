@@ -113,16 +113,18 @@ section {
 }
 
 .options-container {
+    color: #b6b6b6;
     position: absolute;
     top: 13px;
     left: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: baseline;
 }
 
 .playing-state {
     padding: 10px 20px;
-    color: #fff;
     outline: none;
-    text-transform: capitalize;
 }
 
 .pong-header {
@@ -207,7 +209,6 @@ section {
     align-items: center;
 }
 
-
 .home-title-section {
     color: black;
     margin-bottom: 0;
@@ -216,4 +217,27 @@ section {
 .sound-icon {
     width: 25px;
     cursor: pointer;
+}
+
+.return-btn {
+    background-color: transparent;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    text-align: center;
+    text-decoration: none;
+    background-color: #1096a827;
+    transition: .5s;
+}
+
+.return-btn:hover {
+    background-color: #1096a8a7;
+}
+
+.return-btn:focus {
+    outline: none;
+    box-shadow: 0 0 5px #15b7cd;
 }
