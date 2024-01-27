@@ -5,7 +5,6 @@ import pongImage from "../assets/pong-header.png";
 import sound from "/Paddle Ball Hit Sound Effect HD.mp3";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import "../styles/SinglePlayer.css"
 
 interface SinglePlayerModeProps {
     isSoundOn: boolean;
@@ -58,7 +57,7 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ isSoundOn }) => {
     useEffect(() => {
         audio.volume = isSoundOn ? 0.18 : 0;
     }, [isSoundOn]);
-    
+
     // audio.volume = 0.18;
 
     const [firstPlayerName, setFirstNamePlayer] = useState<string>("Player 1");
@@ -71,9 +70,11 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ isSoundOn }) => {
 
     const timerRef = useRef<number | null>(null);
 
-    const startTimer = () => {
+    const startTimer = (): void => {
         timerRef.current = window.setInterval(() => {
-            setTimer((prevTimer) => prevTimer + 1);
+            if (isPlaying1) {
+                setTimer((prevTimer) => prevTimer + 1);
+            }
         }, 1000);
     };
 
@@ -134,8 +135,6 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ isSoundOn }) => {
                 enterPlayerNames();
                 startTimer();
             } else {
-                // navigate("/https://github.com/Ramzi-Abidi/Pong");
-                // window.location.href = '';
                 window.open("https://github.com/Ramzi-Abidi/Pong", "_blank");
             }
         });
@@ -307,9 +306,9 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ isSoundOn }) => {
             className: "btn",
             closeOnEsc: true,
         };
-        document.querySelector(".btn")?.remove();
 
         const name = await swal(obj);
+        document.querySelector(".btn")?.remove();
 
         if (name === "return") {
             navigate("/");
@@ -337,9 +336,9 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ isSoundOn }) => {
             className: "btn",
             closeOnEsc: true,
         };
-        document.querySelector(".btn")?.remove();
 
         const name1 = await swal(obj);
+        document.querySelector(".btn")?.remove();
 
         if (name1 === "return") {
             navigate("/");
@@ -381,6 +380,8 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ isSoundOn }) => {
         alert(`Once you click 'OK' your game will launch instantly! :))`);
 
         isPlaying1 = true;
+
+        startTimer();
         // reset the players' scores
         resetScores();
         // set blurry backerground
@@ -411,7 +412,7 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ isSoundOn }) => {
 
         // entering names
         enterPlayerNames();
-        startTimer();
+
         // loop of game
         requestAnimationFrame(animate);
         window.addEventListener("keydown", movePlayer);
@@ -439,7 +440,9 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ isSoundOn }) => {
                 </div>
             </div>
             <div className="options-container">
-                <span className="playing-state">Press p to pause game</span>
+                <span className="playing-state">
+                    &#123; &#40; &#41;&#61;&gt; Press p to pause game &#125;
+                </span>
                 <button onClick={handleClick} className="return-btn">
                     Return to menu
                 </button>

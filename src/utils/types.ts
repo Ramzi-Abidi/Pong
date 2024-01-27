@@ -17,3 +17,8 @@ export type score = {
     1: number;
     2: number;
 };
+
+export interface HomeProps {
+    isSoundOn: boolean;
+    onSoundChange: () => void;
+}

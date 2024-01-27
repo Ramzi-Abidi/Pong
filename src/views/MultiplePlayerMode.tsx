@@ -4,13 +4,14 @@ import { ball, player, score } from "../utils/types";
 import pongImage from "../assets/pong-header.png";
 import sound from "/Paddle Ball Hit Sound Effect HD.mp3";
 import { useNavigate } from "react-router-dom";
-import { Button } from "@mui/material";
 
 interface MultiplePlayerModeProps {
     isSoundOn: boolean;
 }
 
-const MultiplePlayerMode: React.FC<MultiplePlayerModeProps> = ({ isSoundOn }) => {
+const MultiplePlayerMode: React.FC<MultiplePlayerModeProps> = ({
+    isSoundOn,
+}) => {
     let boardWidth: number = 600;
     let boardHeight: number = 400;
     let context: CanvasRenderingContext2D;
@@ -57,7 +58,7 @@ const MultiplePlayerMode: React.FC<MultiplePlayerModeProps> = ({ isSoundOn }) =>
     useEffect(() => {
         audio.volume = isSoundOn ? 0.18 : 0;
     }, [isSoundOn]);
-    
+
     // audio.volume = 0.18;
 
     const [firstPlayerName, setFirstNamePlayer] = useState<string>("Player 1");
@@ -70,9 +71,11 @@ const MultiplePlayerMode: React.FC<MultiplePlayerModeProps> = ({ isSoundOn }) =>
 
     const timerRef = useRef<number | null>(null);
 
-    const startTimer = () => {
+    const startTimer = (): void => {
         timerRef.current = window.setInterval(() => {
-            setTimer((prevTimer) => prevTimer + 1);
+            if (isPlaying1) {
+                setTimer((prevTimer) => prevTimer + 1);
+            }
         }, 1000);
     };
 
@@ -142,6 +145,8 @@ const MultiplePlayerMode: React.FC<MultiplePlayerModeProps> = ({ isSoundOn }) =>
     const animate = (): void => {
         requestAnimationFrame(animate); // The requestAnimationFrame() method used to repeat something pretty fast :) => alternative to setInterval()
         // if (!ok) return;
+        // console.log(isPlaying1);
+
         if (isPlaying1 === true) {
             // clearing the canvas
             context.clearRect(0, 0, boardWidth, boardHeight);
@@ -174,8 +179,7 @@ const MultiplePlayerMode: React.FC<MultiplePlayerModeProps> = ({ isSoundOn }) =>
             ); // fillRect(x,y,width,height)
             // changing the color of the ball
             context.fillStyle = "#fff";
-            if (ball.velocityX !== -1 && ball.velocityX !== 1)
-                console.log(ball.velocityX);
+
             // changing the pos of the ball
             ball.x += ball.velocityX;
             ball.y += ball.velocityY;
@@ -256,6 +260,9 @@ const MultiplePlayerMode: React.FC<MultiplePlayerModeProps> = ({ isSoundOn }) =>
 
     const movePlayer = (e: any): void => {
         if (e.key === "z" || e.key === "s") player1.stopPlayer = false;
+        // startTimer();
+
+        // start moving the paddle (player2)
         if (e.key === "ArrowUp" || e.key === "ArrowDown")
             player2.stopPlayer = false;
 
@@ -273,7 +280,9 @@ const MultiplePlayerMode: React.FC<MultiplePlayerModeProps> = ({ isSoundOn }) =>
 
         // to pause
         if (e.key === "p" || e.key === "Escape") {
+            // console.log(document.querySelector(".btn") === null);
             if (isPlaying === true && document.querySelector(".btn") === null) {
+                console.log("a");
                 // set blurry background
                 if (!isBlurry) {
                     setBlurry(true);
@@ -305,9 +314,9 @@ const MultiplePlayerMode: React.FC<MultiplePlayerModeProps> = ({ isSoundOn }) =>
             className: "btn",
             closeOnEsc: true,
         };
-        document.querySelector(".btn")?.remove();
 
         const name = await swal(obj);
+        document.querySelector(".btn")?.remove();
 
         if (name === "return") {
             navigate("/");
@@ -335,9 +344,9 @@ const MultiplePlayerMode: React.FC<MultiplePlayerModeProps> = ({ isSoundOn }) =>
             className: "btn",
             closeOnEsc: true,
         };
-        document.querySelector(".btn")?.remove();
 
         const name1 = await swal(obj);
+        document.querySelector(".btn")?.remove();
 
         console.log(name1);
 
@@ -373,13 +382,15 @@ const MultiplePlayerMode: React.FC<MultiplePlayerModeProps> = ({ isSoundOn }) =>
             className: "btn",
             closeOnEsc: true,
         };
-        document.querySelector(".btn")?.remove();
 
-        const rule = await swal(obj);
+        await swal(obj);
+        document.querySelector(".btn")?.remove();
 
         alert(`Once you click 'OK' your game will launch instantly! :))`);
 
         isPlaying1 = true;
+
+        startTimer();
         // reset the players' scores
         resetScores();
         // set blurry backerground
@@ -410,7 +421,6 @@ const MultiplePlayerMode: React.FC<MultiplePlayerModeProps> = ({ isSoundOn }) =>
 
         // entering names
         enterPlayerNames();
-        startTimer();
         // loop of game
         requestAnimationFrame(animate);
         window.addEventListener("keydown", movePlayer);
@@ -421,64 +431,28 @@ const MultiplePlayerMode: React.FC<MultiplePlayerModeProps> = ({ isSoundOn }) =>
             window.removeEventListener("keydown", movePlayer);
             window.removeEventListener("keyup", stopMovingPlayer);
         };
-        // return () => {};
     }, []);
 
-    // const handleSelectChange = (e: any): void => {
-    //     const selectedOption = e.target.value;
-    //     console.log(e.target.value);
-
-    //     if (selectedOption === "easy") {
-    //         ball.velocityX = 1;
-    //         ball.velocityY = 2;
-    //     } else if (selectedOption === "medium") {
-    //         // changing ball velocity
-    //         ball.velocityX = 5;
-    //         ball.velocityY = 5;
-    //         // setBallVelocity({
-    //         //     velocityX: 5,
-    //         //     velocityY: 5,
-    //         // });
-
-    //         // changing players velocity
-    //         // player1.velocityY = 3;
-    //         // player2.velocityY = 3;
-
-    //     }
-    // };
-
     const handleClick = () => {
+        // to stop the game first;
+        isPlaying1 = false;
         navigate("/");
     };
 
     return (
         <section className={isBlurry === true ? "blurry" : ""}>
             <div className="title">
-            <div className="timer">Time: {timer}s</div>
+                <div className="timer">Time: {timer}s</div>
                 <h3>pong game</h3>
                 <div className="img-container">
                     <img src={pongImage} alt="Pong" className="pong-header" />
                 </div>
             </div>
             <div className="options-container">
-                <span className="playing-state">Press p to pause game</span>
-                <Button onClick={handleClick} className="">
+                <span className="playing-state"> Press p to pause game</span>
+                <button onClick={handleClick} className="return-btn">
                     Return to menu
-                </Button>
-                {/* <div className="playing-state">Time: {timer}s</div> */}
-                {/* <div className="velocity">
-                    <select
-                        name=""
-                        id=""
-                        value=""
-                        onChange={handleSelectChange}
-                    >
-                        Change velocity
-                        <option value="easy">velo1</option>
-                        <option value="medium">velo2</option>
-                        <option value="hard">velo3</option>
-                    </select>
-                </div> */}
+                </button>
             </div>
 
             <div className="names">
