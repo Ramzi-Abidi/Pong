@@ -42,8 +42,12 @@ git push origin feature-or-bugfix-branch
 4. Submit your PR. <br />
 
 ## Feedback
+
 If you like the project, don't forget to **star** the repo. 
 
-## Contact
-1. Email: ramziabidi.dev@gmail.com
-2. Linkedin: https://www.linkedin.com/in/ramzi-abidi-335006210/
+## Acknowledgments
+
+* Hat tip to anyone whose code was used
+* Inspiration
+* etc
+
