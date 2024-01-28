@@ -1,30 +1,44 @@
-import { Button, Checkbox } from "@mui/material";
+import { Alert, Button, Checkbox } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import pongImage from "../assets/pong-header.png";
 import soundOnImage from "../assets/sound-on.png";
 import soundOffImage from "../assets/sound-off.png";
-import GitHubIcon from '@mui/icons-material/GitHub';
+import GitHubIcon from "@mui/icons-material/GitHub";
 import { HomeProps } from "../utils/types";
 import { useEffect } from "react";
 
 const Home: React.FC<HomeProps> = ({ isSoundOn, onSoundChange }) => {
     useEffect(() => {
-        // check if the DOM does contain an alert (sweetAlert) just remove it.
-        return () => {};
+        // check if the DOM does contain any sweet alert element just remove it.
+        const swalEl: HTMLElement | null = document.querySelector(
+            ".swal-overlay",
+        ) as HTMLElement | null;
+        if (swalEl) {
+            swalEl.remove();
+        }
     }, []);
+
     const navigate = useNavigate();
 
     const handleClick = (e: any): void => {
-        // console.log(e.target.innerHTML.toString().trim().toLowerCase().indexOf("single") !== -1);
-        if (
-            e.target.innerHTML
-                .toString()
-                .trim()
-                .toLowerCase()
-                .indexOf("single") !== -1
-        ) {
+        // prevent the default behavior of the button
+        // e.preventDefault();
+
+        const clickedEl: string = e.target.innerHTML
+            .toString()
+            .trim()
+            .toLowerCase();
+
+        // if user clicks on settings button
+        if (clickedEl.indexOf("settings") !== -1) {
+            alert("Still working on the settings!");
+        }
+        // if user clicks on single-player button
+        else if (clickedEl.indexOf("single") !== -1) {
             navigate("/single-player");
-        } else {
+        }
+        // if user clicks on multiple-player button
+        else {
             navigate("/multiple-player");
         }
     };
@@ -33,15 +47,19 @@ const Home: React.FC<HomeProps> = ({ isSoundOn, onSoundChange }) => {
         <div className="slowed-blurry-background">
             <div className="overlay"></div>
             <div className="pong-background"></div>
+
             <section className="stepper disable-blur">
-            <a href="https://github.com/Ramzi-Abidi/Pong" target="__blank" className="star-github-link">
-            <div className="star-github-button">
-                <GitHubIcon className="github-star-icon"/>
-                <p>Star GitHub</p>
-            </div>
-            </a>
-            
                 <div className="title home-title-section">
+                    <a
+                        href="https://github.com/Ramzi-Abidi/Pong"
+                        target="__blank"
+                        className="star-github-link"
+                    >
+                        <div className="star-github-button">
+                            <GitHubIcon className="github-star-icon" />
+                            <p>Star GitHub</p>
+                        </div>
+                    </a>
                     <h3>pong game</h3>
                     <div className="img-container">
                         <img
@@ -83,6 +101,11 @@ const Home: React.FC<HomeProps> = ({ isSoundOn, onSoundChange }) => {
                         <Button onClick={handleClick} className="two-player">
                             {" "}
                             Two players{" "}
+                        </Button>
+
+                        <Button onClick={handleClick} className="settings">
+                            {" "}
+                            Settings{" "}
                         </Button>
                     </div>
                 </div>
