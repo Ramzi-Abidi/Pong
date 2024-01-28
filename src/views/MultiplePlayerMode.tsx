@@ -434,7 +434,7 @@ const MultiplePlayerMode: React.FC<MultiplePlayerModeProps> = ({
     }, []);
 
     const handleClick = () => {
-        // to stop the game first;
+        // Stop the game first;
         isPlaying1 = false;
         navigate("/");
     };

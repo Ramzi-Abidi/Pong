@@ -113,7 +113,7 @@ section {
 }
 
 .options-container {
-    color: #b6b6b6;
+    color: #fff;
     position: absolute;
     top: 13px;
     left: 1.5rem;
@@ -132,14 +132,14 @@ section {
 }
 
 .img-container {
-    width: 50px;
+    width: 43px;
 }
 
 .img-container img {
     width: 100%;
     height: 100%;
     object-fit: contain;
-    margin-left: 0.5rem;
+    margin-left: 1rem;
 }
 
 .pong-background {
@@ -164,12 +164,14 @@ section {
     height: auto;
     padding: 0 5px;
     position: absolute;
-    background-color: #F1F1F1;
-    bottom: 6px;
+    background-color: #f1f1f1;
+    top: 1rem;
     left: 15px;
     color: black;
-    font-size: 14px;
+    font-size: 12px;
     border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
 }
 
 .github-star-icon {
@@ -190,7 +192,7 @@ section {
     text-align: center;
     background-color: #fff;
     width: 600px;
-    height: 230px;
+    /* height: 500px; */
     border-radius: 6px;
     padding: 1rem;
     margin-top: 5rem;
@@ -235,6 +237,11 @@ section {
     margin-bottom: 0;
 }
 
+.home-title {
+    margin-top: 2rem;
+    padding: 1rem 0;
+}
+
 .sound-icon {
     width: 25px;
     cursor: pointer;
@@ -250,15 +257,15 @@ section {
     font-size: 16px;
     text-align: center;
     text-decoration: none;
-    background-color: #1096a827;
-    transition: .5s;
+    transition: 0.5s;
 }
 
 .return-btn:hover {
-    background-color: #1096a8a7;
+    background: #15b8cd0a;
+    color: #15b7cd;
 }
 
-.return-btn:focus {
+/* .return-btn:focus {
     outline: none;
     box-shadow: 0 0 5px #15b7cd;
-}
+} */
