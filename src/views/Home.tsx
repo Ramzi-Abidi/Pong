@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import pongImage from "../assets/pong-header.png";
 import soundOnImage from "../assets/sound-on.png";
 import soundOffImage from "../assets/sound-off.png";
+import GitHubIcon from '@mui/icons-material/GitHub';
 import { HomeProps } from "../utils/types";
 import { useEffect } from "react";
 
@@ -33,6 +34,13 @@ const Home: React.FC<HomeProps> = ({ isSoundOn, onSoundChange }) => {
             <div className="overlay"></div>
             <div className="pong-background"></div>
             <section className="stepper disable-blur">
+            <a href="https://github.com/Ramzi-Abidi/Pong" target="__blank" className="star-github-link">
+            <div className="star-github-button">
+                <GitHubIcon className="github-star-icon"/>
+                <p>Star GitHub</p>
+            </div>
+            </a>
+            
                 <div className="title home-title-section">
                     <h3>pong game</h3>
                     <div className="img-container">
