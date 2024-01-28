@@ -45,9 +45,3 @@ git push origin feature-or-bugfix-branch
 
 If you like the project, don't forget to **star** the repo. 
 
-## Acknowledgments
-
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
-
