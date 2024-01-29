@@ -426,9 +426,28 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ isSoundOn }) => {
         // return () => {};
     }, []);
 
-    const handleClick = () => {
-        navigate("/");
-    };
+    // const handleClick = () => {
+    //     navigate("/");
+    // };
+
+    const handleReturnToMenu = () => {
+
+        swal({
+          title: 'Want to exit the gameplay?',
+          buttons: {
+            cancel: true,
+            confirm: 'Yes',
+          } as any,
+          dangerMode: true,
+        }).then((isConfirmed) => {
+          if (isConfirmed) {
+            // Stop the game first;
+            isPlaying1 = false;
+            navigate('/');
+          }
+          
+        });
+      };
 
     return (
         <section className={isBlurry === true ? "blurry" : ""}>
@@ -443,7 +462,7 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ isSoundOn }) => {
                 <span className="playing-state">
                     &#123; &#40; &#41;&#61;&gt; Press p to pause game &#125;
                 </span>
-                <button onClick={handleClick} className="return-btn">
+                <button onClick={handleReturnToMenu} className="return-btn">
                     Return to menu
                 </button>
             </div>

@@ -433,11 +433,30 @@ const MultiplePlayerMode: React.FC<MultiplePlayerModeProps> = ({
         };
     }, []);
 
-    const handleClick = () => {
-        // Stop the game first;
-        isPlaying1 = false;
-        navigate("/");
-    };
+    // const handleClick = () => {
+    //     // Stop the game first;
+    //     isPlaying1 = false;
+    //     navigate("/");
+    // };
+
+    const handleReturnToMenu = () => {
+
+        swal({
+          title: 'Want to exit the gameplay?',
+          buttons: {
+            cancel: true,
+            confirm: 'Yes',
+          } as any,
+          dangerMode: true,
+        }).then((isConfirmed) => {
+          if (isConfirmed) {
+            // Stop the game first;
+            isPlaying1 = false;
+            navigate('/');
+          }
+          
+        });
+      };
 
     return (
         <section className={isBlurry === true ? "blurry" : ""}>
@@ -450,7 +469,7 @@ const MultiplePlayerMode: React.FC<MultiplePlayerModeProps> = ({
             </div>
             <div className="options-container">
                 <span className="playing-state"> Press p to pause game</span>
-                <button onClick={handleClick} className="return-btn">
+                <button onClick={handleReturnToMenu} className="return-btn">
                     Return to menu
                 </button>
             </div>
