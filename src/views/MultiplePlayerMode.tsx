@@ -2,8 +2,10 @@ import React, { useEffect, useRef, useState } from "react";
 import swal from "sweetalert";
 import { ball, player, score } from "../utils/types";
 import pongImage from "../assets/pong-header.png";
-import sound from "/Paddle Ball Hit Sound Effect HD.mp3";
+import hitSound from "../assets/Paddle Ball Hit Sound Effect HD.mp3";
+import goalSound from "../assets/goal.mp3";
 import { useNavigate } from "react-router-dom";
+import AudioComponent from "../components/Audio";
 
 interface MultiplePlayerModeProps {
     isSoundOn: boolean;
@@ -53,11 +55,11 @@ const MultiplePlayerMode: React.FC<MultiplePlayerModeProps> = ({
         velocityX: 1.6, // shhifting by 1px
         velocityY: 0.9, // shhifting by 2px
     };
-    const [audio] = useState(new Audio(sound));
+    // const [audio] = useState(new Audio(sound));
 
-    useEffect(() => {
-        audio.volume = isSoundOn ? 0.18 : 0;
-    }, [isSoundOn]);
+    // useEffect(() => {
+    //     audio.volume = isSoundOn ? 0.18 : 0;
+    // }, [isSoundOn]);
 
     // audio.volume = 0.18;
 
@@ -66,6 +68,8 @@ const MultiplePlayerMode: React.FC<MultiplePlayerModeProps> = ({
     const [secondPlayerName, setSecondNamePlayer] = useState("Player 2");
     const [isBlurry, setBlurry] = useState<boolean>(true);
     const [isPlaying, setIsPlaying] = useState<boolean>(true);
+    const [playHit, setPlayHit] = useState<boolean>(false);
+    const [playGoal, setPlayGoal] = useState<boolean>(false);
 
     const [timer, setTimer] = useState(0);
 
@@ -191,13 +195,13 @@ const MultiplePlayerMode: React.FC<MultiplePlayerModeProps> = ({
             }
             // detecting collision with player1 or with player2
             if (detectCollision(ball, player1)) {
-                audio.play();
+                setPlayHit(true)
                 // left side of ball touches right side of player1
                 if (ball.x <= player1.x + player1.width) {
                     ball.velocityX *= -1;
                 }
             } else if (detectCollision(ball, player2)) {
-                audio.play();
+                setPlayHit(true)
                 // right side of ball touches left side player2
                 if (ball.x + ballWidth >= player2.x) {
                     ball.velocityX *= -1;
@@ -217,9 +221,13 @@ const MultiplePlayerMode: React.FC<MultiplePlayerModeProps> = ({
             // scoring goal
             if (isPlaying1) {
                 if (ball.x < 0) {
+                    // Play the audio
+                    setPlayGoal(true);
                     score.current[2] += 1;
                     resetGame(1.6);
                 } else if (ball.x + ballWidth > boardWidth) {
+                    // Play the audio
+                    setPlayGoal(true);
                     score.current[1] += 1;
                     resetGame(-1.6);
                 }
@@ -462,6 +470,8 @@ const MultiplePlayerMode: React.FC<MultiplePlayerModeProps> = ({
                 <span>{secondPlayerName}</span>
             </div>
             <canvas id="board"></canvas>
+            {isSoundOn && playHit && <AudioComponent onAudioEnd={() => setPlayHit(false)} path={hitSound} volume={0.18}/>}
+            {isSoundOn && playGoal && <AudioComponent onAudioEnd={() => setPlayGoal(false)} path={goalSound} volume={0.18}/>}
         </section>
     );
 };
