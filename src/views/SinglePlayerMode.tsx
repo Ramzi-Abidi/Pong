@@ -84,6 +84,7 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ isSoundOn }) => {
             clearInterval(timerRef.current);
         }
     };
+
     let isPlaying1 = false;
     const score = useRef<score>({
         1: 0,
@@ -166,7 +167,7 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ isSoundOn }) => {
             ball.x += ball.velocityX;
             ball.y += ball.velocityY;
 
-            // moving the player 1 up and down according following the ball position
+            // moving the player 1 up and down following the ball position
             if (ball.y > player1.y) {
                 player1.velocityY = 2;
             } else if (ball.y < player1.y) {
@@ -216,7 +217,8 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ isSoundOn }) => {
                     velocityY: ball.velocityY,
                 };
             };
-            // game over
+
+            // Scoring goal
             if (isPlaying1) {
                 if (ball.x < 0) {
                     score.current[2] += 1;

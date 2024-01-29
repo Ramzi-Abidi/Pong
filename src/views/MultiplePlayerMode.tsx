@@ -213,7 +213,8 @@ const MultiplePlayerMode: React.FC<MultiplePlayerModeProps> = ({
                     velocityY: ball.velocityY,
                 };
             };
-            // game over
+            
+            // scoring goal
             if (isPlaying1) {
                 if (ball.x < 0) {
                     score.current[2] += 1;
