@@ -4,7 +4,7 @@
   <img src="https://github.com/florinpop17/10-projects-10-hours/assets/69228547/3acde27c-742a-4e79-b0e5-6781923e241f" width="100px" alt="Image Description">
 </p>
 
-## Overview ⚡️
+⚡️
 
 ![image](https://github.com/Ramzi-Abidi/Pong/assets/69228547/83938312-4b47-48e3-8acd-2a05b882fd6c)
 <div align="center">
