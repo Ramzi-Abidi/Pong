@@ -1,10 +1,21 @@
+# Welcome to Pong game using react 🕹️🚀
+
 <p align="center">
   <img src="https://github.com/florinpop17/10-projects-10-hours/assets/69228547/3acde27c-742a-4e79-b0e5-6781923e241f" width="100px" alt="Image Description">
 </p>
 
-# Welcome to Pong Game using react 🕹️🚀
+## Overview ⚡️
 
-Welcome to the Pong Game! Immerse yourself in this classic Pong experience, reimagined with React and TypeScript, blending nostalgic gameplay with the capabilities of a modern web environment.
+![image](https://github.com/Ramzi-Abidi/Pong/assets/69228547/83938312-4b47-48e3-8acd-2a05b882fd6c)
+<div align="center">
+
+[Play it](https://pong-paddle-game.netlify.app/)
+
+</div>
+
+## 💡 About
+
+Welcome to the Pong Game! Immerse yourself in this classic Pong experience, reimagined with React and TypeScript, blending nostalgic gameplay with the capabilities of a modern web development stack.
 
 ## Installation
 
