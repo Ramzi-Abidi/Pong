@@ -479,7 +479,7 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ isSoundOn }) => {
             </div>
 
             {isPaused && (
-                <h2 className="game-paused-info">Game is paused!</h2>
+                <h2 className="game-paused-info">Game is paused, press p to resume!</h2>
             )}
 
             <div className="names">
