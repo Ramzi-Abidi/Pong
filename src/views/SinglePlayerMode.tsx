@@ -2,9 +2,11 @@ import React, { useEffect, useRef, useState } from "react";
 import swal from "sweetalert";
 import { ball, player, score } from "../utils/types";
 import pongImage from "../assets/pong-header.png";
-import sound from "/Paddle Ball Hit Sound Effect HD.mp3";
+import hitSound from "../assets/Paddle Ball Hit Sound Effect HD.mp3";
+import goalSound from "../assets/goal.mp3";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import AudioComponent from "../components/Audio";
 
 interface SinglePlayerModeProps {
     isSoundOn: boolean;
@@ -52,19 +54,14 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ isSoundOn }) => {
         velocityX: 1.6, // shhifting by 1px
         velocityY: 0.9, // shhifting by 2px
     };
-    const [audio] = useState(new Audio(sound));
-
-    useEffect(() => {
-        audio.volume = isSoundOn ? 0.18 : 0;
-    }, [isSoundOn]);
-
-    // audio.volume = 0.18;
 
     const [firstPlayerName, setFirstNamePlayer] = useState<string>("Player 1");
     const [winningNumber, setWinningNumber] = useState<number>(11);
     const [secondPlayerName, setSecondNamePlayer] = useState("Player 2");
     const [isBlurry, setBlurry] = useState<boolean>(true);
     const [isPlaying, setIsPlaying] = useState<boolean>(true);
+    const [playHit, setPlayHit] = useState<boolean>(false);
+    const [playGoal, setPlayGoal] = useState<boolean>(false);
 
     const [timer, setTimer] = useState<number>(0);
 
@@ -84,6 +81,7 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ isSoundOn }) => {
             clearInterval(timerRef.current);
         }
     };
+
     let isPlaying1 = false;
     const score = useRef<score>({
         1: 0,
@@ -166,7 +164,7 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ isSoundOn }) => {
             ball.x += ball.velocityX;
             ball.y += ball.velocityY;
 
-            // moving the player 1 up and down according following the ball position
+            // moving the player 1 up and down following the ball position
             if (ball.y > player1.y) {
                 player1.velocityY = 2;
             } else if (ball.y < player1.y) {
@@ -194,13 +192,13 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ isSoundOn }) => {
             }
             // detecting collision with player1 or with player2
             if (detectCollision(ball, player1)) {
-                audio.play();
+                setPlayHit(true);
                 // left side of ball touches right side of player1
                 if (ball.x <= player1.x + player1.width) {
                     ball.velocityX *= -1;
                 }
             } else if (detectCollision(ball, player2)) {
-                audio.play();
+                setPlayHit(true);
                 // right side of ball touches left side player2
                 if (ball.x + ballWidth >= player2.x) {
                     ball.velocityX *= -1;
@@ -216,12 +214,17 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ isSoundOn }) => {
                     velocityY: ball.velocityY,
                 };
             };
-            // game over
+
+            // Scoring goal
             if (isPlaying1) {
                 if (ball.x < 0) {
+                     // Play the audio
+                    setPlayGoal(true);                   
                     score.current[2] += 1;
                     resetGame(1.6);
                 } else if (ball.x + ballWidth > boardWidth) {
+                    // Play the audio
+                    setPlayGoal(true);
                     score.current[1] += 1;
                     resetGame(-1.6);
                 }
@@ -473,6 +476,8 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ isSoundOn }) => {
                 <span>{secondPlayerName}</span>
             </div>
             <canvas id="board"></canvas>
+            {isSoundOn && playHit && <AudioComponent onAudioEnd={() => setPlayHit(false)} path={hitSound} volume={0.18}/>}
+            {isSoundOn && playGoal && <AudioComponent onAudioEnd={() => setPlayGoal(false)} path={goalSound} volume={0.18}/>}
         </section>
     );
 };

@@ -22,3 +22,8 @@ export interface HomeProps {
     isSoundOn: boolean;
     onSoundChange: () => void;
 }
+export interface AudioComponentProps {
+  onAudioEnd: () => void;
+  path: string;
+  volume: number;
+}
