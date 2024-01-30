@@ -62,6 +62,7 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ isSoundOn }) => {
     const [isPlaying, setIsPlaying] = useState<boolean>(true);
     const [playHit, setPlayHit] = useState<boolean>(false);
     const [playGoal, setPlayGoal] = useState<boolean>(false);
+    const [isPaused, setIsPaused] = useState<boolean>(false);
 
     const [timer, setTimer] = useState<number>(0);
 
@@ -283,6 +284,7 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ isSoundOn }) => {
                     setBlurry(true);
                 }
                 isPlaying1 = !isPlaying1;
+                setIsPaused(prevState => !prevState);
             }
         }
     };
@@ -467,13 +469,18 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ isSoundOn }) => {
                 </div>
             </div>
             <div className="options-container">
-                <span className="playing-state">
+                {/* <span className="playing-state">
                     &#123; &#40; &#41;&#61;&gt; Press p to pause game &#125;
-                </span>
+                </span> */}
+                <span className="playing-state"> Press p to pause game</span>
                 <button onClick={handleReturnToMenu} className="return-btn">
                     Return to menu
                 </button>
             </div>
+
+            {isPaused && (
+                <h2 className="game-paused-info">Game is paused!</h2>
+            )}
 
             <div className="names">
                 <span>{firstPlayerName}</span>

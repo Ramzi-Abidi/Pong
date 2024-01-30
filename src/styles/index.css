@@ -269,3 +269,10 @@ section {
     outline: none;
     box-shadow: 0 0 5px #15b7cd;
 } */
+
+.game-paused-info {
+    position: absolute;
+    bottom: 20px;
+    left: 40px;
+    color: white;
+}

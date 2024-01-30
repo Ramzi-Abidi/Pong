@@ -70,6 +70,7 @@ const MultiplePlayerMode: React.FC<MultiplePlayerModeProps> = ({
     const [isPlaying, setIsPlaying] = useState<boolean>(true);
     const [playHit, setPlayHit] = useState<boolean>(false);
     const [playGoal, setPlayGoal] = useState<boolean>(false);
+    const [isPaused, setIsPaused] = useState<boolean>(false);
 
     const [timer, setTimer] = useState(0);
 
@@ -297,6 +298,7 @@ const MultiplePlayerMode: React.FC<MultiplePlayerModeProps> = ({
                     setBlurry(true);
                 }
                 isPlaying1 = !isPlaying1;
+                setIsPaused(prevState => !prevState);
             }
         }
     };
@@ -487,6 +489,10 @@ const MultiplePlayerMode: React.FC<MultiplePlayerModeProps> = ({
                     Return to menu
                 </button>
             </div>
+
+            {isPaused && (
+                <h2 className="game-paused-info">Game is paused!</h2>
+            )}
 
             <div className="names">
                 <span>{firstPlayerName}</span>
