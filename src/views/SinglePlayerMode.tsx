@@ -435,6 +435,8 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ isSoundOn }) => {
 
     const handleReturnToMenu = () => {
 
+        isPlaying1 = false;
+
         swal({
           title: 'Want to exit the gameplay?',
           buttons: {
@@ -447,6 +449,9 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ isSoundOn }) => {
             // Stop the game first;
             isPlaying1 = false;
             navigate('/');
+          }
+          else {
+            isPlaying1 = true;
           }
           
         });

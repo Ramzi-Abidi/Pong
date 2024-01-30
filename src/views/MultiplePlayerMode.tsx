@@ -450,6 +450,8 @@ const MultiplePlayerMode: React.FC<MultiplePlayerModeProps> = ({
 
     const handleReturnToMenu = () => {
 
+        isPlaying1 = false;
+
         swal({
           title: 'Want to exit the gameplay?',
           buttons: {
@@ -462,6 +464,9 @@ const MultiplePlayerMode: React.FC<MultiplePlayerModeProps> = ({
             // Stop the game first;
             isPlaying1 = false;
             navigate('/');
+          }
+          else {
+            isPlaying1 = true;
           }
           
         });
