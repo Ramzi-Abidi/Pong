@@ -3,6 +3,9 @@ import { useNavigate } from "react-router-dom";
 import pongImage from "../assets/pong-header.png";
 import soundOnImage from "../assets/sound-on.png";
 import soundOffImage from "../assets/sound-off.png";
+import singlePlayerIcon from "../assets/single-player.png";
+import multiPlayerIcon from "../assets/multi-player.png";
+import settingsIcon from "../assets/settings-icon.png";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import { HomeProps } from "../utils/types";
 import { useEffect } from "react";
@@ -94,19 +97,29 @@ const Home: React.FC<HomeProps> = ({ isSoundOn, onSoundChange }) => {
                         <h4>Sound{isSoundOn ? " On" : " Off"}</h4>
                     </div>
                     <div className="container-btn">
-                        <Button onClick={handleClick} className="single-player">
-                            {" "}
-                            Single player{" "}
-                        </Button>
-                        <Button onClick={handleClick} className="two-player">
-                            {" "}
-                            Two players{" "}
-                        </Button>
+                        <div className="home-page-option">
+                            <Button onClick={handleClick} className="single-player">
+                                {" "}
+                                <img src={singlePlayerIcon} alt="" />
+                                Single player{" "}
+                            </Button>
+                        </div>
 
-                        <Button onClick={handleClick} className="settings">
-                            {" "}
-                            Settings{" "}
-                        </Button>
+                        <div className="home-page-option">
+                            <Button onClick={handleClick} className="two-player">
+                                {" "}
+                                <img src={multiPlayerIcon} alt="" />
+                                Two players{" "}
+                            </Button>
+                        </div>
+
+                        <div className="home-page-option">
+                            <Button onClick={handleClick} className="settings">
+                                {" "}
+                                <img src={settingsIcon} alt="" />
+                                Settings{" "}
+                            </Button>
+                        </div>
                     </div>
                 </div>
             </section>
