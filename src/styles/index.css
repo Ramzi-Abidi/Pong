@@ -276,3 +276,17 @@ section {
     left: 40px;
     color: white;
 }
+
+.home-page-option {
+    display: flex;
+}
+
+.home-page-option button {
+    width: 200px;
+}
+
+.home-page-option img {
+    width: 24px;
+    margin-right: 10px;
+    object-fit: contain;
+}
