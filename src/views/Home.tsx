@@ -98,17 +98,29 @@ const Home: React.FC<HomeProps> = ({ isSoundOn, onSoundChange }) => {
                     </div>
                     <div className="container-btn">
                         <div className="home-page-option">
-                            <Button onClick={handleClick} className="single-player">
+                            <Button
+                                onClick={handleClick}
+                                className="single-player"
+                            >
                                 {" "}
-                                <img src={singlePlayerIcon} alt="" />
+                                <img
+                                    src={singlePlayerIcon}
+                                    alt=""
+                                />
                                 Single player{" "}
                             </Button>
                         </div>
 
                         <div className="home-page-option">
-                            <Button onClick={handleClick} className="two-player">
+                            <Button
+                                onClick={handleClick}
+                                className="two-player"
+                            >
                                 {" "}
-                                <img src={multiPlayerIcon} alt="" />
+                                <img
+                                    src={multiPlayerIcon}
+                                    alt=""
+                                />
                                 Two players{" "}
                             </Button>
                         </div>

@@ -238,7 +238,7 @@ section {
 }
 
 .home-title {
-    margin-top: 2rem;
+    margin-top: 1.25rem;
     padding: 1rem 0;
 }
 
@@ -286,7 +286,7 @@ section {
 }
 
 .home-page-option img {
-    width: 24px;
+    width: 17px;
     margin-right: 10px;
     object-fit: contain;
 }
