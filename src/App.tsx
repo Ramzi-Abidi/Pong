@@ -9,7 +9,7 @@ const App = () => {
     const [isSoundOn, setIsSoundOn] = useState(true);
 
     const handleSoundChange = () => {
-        setIsSoundOn(prevSound => !prevSound);
+        setIsSoundOn(isSoundOn => !isSoundOn);
     }
 
     return (
