@@ -58,7 +58,11 @@ git checkout -b feature-or-bugfix-branch
 git commit -m "Brief description of your changes"
 git push origin feature-or-bugfix-branch 
 ```
-4. Submit your PR. <br />
+4. Before submitting PR don't forget to rebase with main branch to avoid conflicts! 😅
+```bash
+git rebase main
+```
+5. Submit your PR. <br />
 
 ## Feedback
 
