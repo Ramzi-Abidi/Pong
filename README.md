@@ -17,7 +17,7 @@
 
 Welcome to the Pong Game! Immerse yourself in this classic Pong experience, reimagined with React and TypeScript, blending nostalgic gameplay with the capabilities of a modern web development stack.
 
-## Installation
+## ⚙️ Installation
 
 To get the game running on your local machine, follow these simple steps:
 
@@ -27,28 +27,28 @@ cd pong
 npm install
 ```
 
-## Usage
+## 🔄 Usage
 1. Start the development server: `npm run dev`
 2. Open [http://localhost:5173](http://localhost:5173) in your browser.
 
-## Demo
+## ▶️ Demo
 https://github.com/Ramzi-Abidi/Pong/assets/69228547/37876ac4-5c52-4239-8f70-84c60d780ed2
 
-## Snapshot Showcase
+## 📸 Snapshot Showcase
 
-#### Gameplay
+#### 🎮 Gameplay
 ![game_play](https://github.com/Ramzi-Abidi/Pong/assets/69228547/1f008f9a-020a-4d44-9bef-e8bf9da534a2)
 
-#### Win
+#### 🏆 Win
 ![win1](https://github.com/Ramzi-Abidi/Pong/assets/69228547/8ab04f2a-5004-47dc-a9ed-13258aae372a)
 
-#### Home
+#### 🏠 Home
 ![intro_page](https://github.com/Ramzi-Abidi/Pong/assets/69228547/cecbef82-985c-4238-9187-642f489c244c)
 
-#### How to play
+#### 📍 How to play
 ![rules_page](https://github.com/Ramzi-Abidi/Pong/assets/69228547/ed74adc6-3633-4a93-ad28-ab64cf205193)
 
-## Contribution
+## 🤝 Contribution
 
 1. Fork the repo
 2. Raise an issue or comment under it and I will assign it to you.
@@ -64,7 +64,7 @@ git rebase main
 ```
 5. Submit your PR. <br />
 
-## Feedback
+## 📢 Feedback
 
 If you like the project, don't forget to **star** the repo ✨. 
 
