@@ -290,3 +290,38 @@ section {
     margin-right: 10px;
     object-fit: contain;
 }
+
+
+.popup {
+    position: absolute;
+    background-color: #CCCCCC;
+    width: 300px;
+    height: 280px;
+    z-index: 1001;
+}
+
+.game-logo {
+    display: flex;
+}
+
+.popup button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: #333333;
+    color: #fff;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.5s;
+}
+
+.computer-icon {
+    margin-top: 15px;
+    width: 60px;
+}
+
+.popup p {
+    margin-top: 10px;
+}

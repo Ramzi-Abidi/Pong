@@ -7,9 +7,10 @@ import singlePlayerIcon from "../assets/single-player.png";
 import multiPlayerIcon from "../assets/multi-player.png";
 import settingsIcon from "../assets/settings-icon.png";
 import GitHubIcon from "@mui/icons-material/GitHub";
+import laptopIcon from "../assets/laptop-icon.png";
 import buttonClickSound from "../assets/button-click-sound.mp3";
 import { HomeProps } from "../utils/types";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const Home: React.FC<HomeProps> = ({ isSoundOn, onSoundChange }) => {
     useEffect(() => {
@@ -20,6 +21,22 @@ const Home: React.FC<HomeProps> = ({ isSoundOn, onSoundChange }) => {
         if (swalEl) {
             swalEl.remove();
         }
+    }, []);
+
+    const [isSmallScreen, setIsSmallScreen] = useState<boolean>(false);
+
+    useEffect(() => {
+        const checkScreenSize = () => {
+        setIsSmallScreen(window.innerWidth < 768);
+        };
+
+        checkScreenSize();
+
+        window.addEventListener('resize', checkScreenSize);
+
+        return () => {
+        window.removeEventListener('resize', checkScreenSize);
+        };
     }, []);
 
     const navigate = useNavigate();
@@ -60,11 +77,33 @@ const Home: React.FC<HomeProps> = ({ isSoundOn, onSoundChange }) => {
         audio.play();
     }
 
+    const closePopup = () => {
+        setIsSmallScreen(false);    
+    }
 
     return (
         <div className="slowed-blurry-background">
             <div className="overlay"></div>
             <div className="pong-background"></div>
+            {isSmallScreen && (
+                <section className="stepper disable-blur popup">
+                <button onClick={closePopup}>Close</button>
+                <div className="title home-title-section">
+
+                <h3>pong game</h3>
+                <div className="img-container">
+                    <img
+                        src={pongImage}
+                        alt="Pong"
+                        className="pong-header"
+                    />
+                </div>
+                </div>
+                     <br/>
+                    <img src={laptopIcon} alt="" className="computer-icon"/>
+                    <p>For optimal experience, try to access the game with a larger screen.</p>
+                </section>
+            )}
 
             <section className="stepper disable-blur">
                 <div className="title home-title-section">
