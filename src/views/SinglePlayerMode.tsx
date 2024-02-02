@@ -65,21 +65,20 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ isSoundOn }) => {
     const [playHit, setPlayHit] = useState<boolean>(false);
     const [playGoal, setPlayGoal] = useState<boolean>(false);
     const [isPaused, setIsPaused] = useState<boolean>(false);
-    const [isBackgroundMusicPlaying, setBackgroundMusicPlaying] = useState<boolean>(false);
+    const [isBackgroundMusicPlaying, setBackgroundMusicPlaying] =
+        useState<boolean>(false);
 
-    const backgroundMusicRef = useRef<HTMLAudioElement | null>(null);
+    // useEffect(() => {
+    //     backgroundMusicRef.current = new Audio(backgroundMusic);
+    //     backgroundMusicRef.current.loop = true; // Enable loop for continuous playback
 
-    useEffect(() => {
-        backgroundMusicRef.current = new Audio(backgroundMusic);
-        backgroundMusicRef.current.loop = true; // Enable loop for continuous playback
-
-        return () => {
-            if (backgroundMusicRef.current) {
-              backgroundMusicRef.current.pause();
-              backgroundMusicRef.current = null;
-            }
-        };
-    }, []);
+    //     return () => {
+    //         if (backgroundMusicRef.current) {
+    //           backgroundMusicRef.current.pause();
+    //           backgroundMusicRef.current = null;
+    //         }
+    //     };
+    // }, []);
 
     const [timer, setTimer] = useState<number>(0);
 
@@ -119,24 +118,6 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ isSoundOn }) => {
         ); //a's bottom left corner passes b's top left corner
     };
 
-    const [backgroundAudio] = useState(new Audio(backgroundMusic));
-
-    useEffect(() => {
-        backgroundAudio.volume = isSoundOn ? 0.18 : 0;
-
-        if (isSoundOn && isPlaying1) {
-            backgroundAudio.play();
-        } else {
-            backgroundAudio.pause();
-            backgroundAudio.currentTime = 0;
-        }
-
-        return () => {
-            backgroundAudio.pause();
-            backgroundAudio.currentTime = 0;
-        };
-    }, [isSoundOn, isPlaying1]);
-
     const outOfBound = (y: number) => {
         return y < 0 || y + player1.height > boardHeight;
     };
@@ -145,11 +126,6 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ isSoundOn }) => {
         setIsPlaying(false);
         setBlurry(true);
         resetScores();
-
-        if (backgroundMusicRef.current) {
-            backgroundMusicRef.current.pause();
-            setBackgroundMusicPlaying(false);
-        }
 
         alert(`${playerName} wins !`);
         swal({
@@ -183,6 +159,8 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ isSoundOn }) => {
         requestAnimationFrame(animate); // The requestAnimationFrame() method used to repeat something pretty fast :) => alternative to setInterval()
         // if (!ok) return;
         if (isPlaying1 === true) {
+            setBackgroundMusicPlaying(true);
+
             // clearing the canvas
             context.clearRect(0, 0, boardWidth, boardHeight);
 
@@ -365,35 +343,6 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ isSoundOn }) => {
             setFirstNamePlayer(name.trim());
             console.log(firstPlayerName1, name.trim());
         }
-        // obj = {
-        //     title: "Player 2, your name ?",
-        //     text: "If you're feeling mysterious, hit [ESC] or [Enter] to skip.",
-        //     content: "input" as any,
-        //     buttons: {
-        //         return: "Return to menu",
-        //         ok: {
-        //             button: {
-        //                 text: "Ok!",
-        //                 closeModal: true,
-        //             },
-        //         },
-        //     },
-        //     className: "btn",
-        //     closeOnEsc: true,
-        // };
-
-        // const name1 = await swal(obj);
-        // document.querySelector(".btn")?.remove();
-
-        // if (name1 === "return") {
-        //     navigate("/");
-        //     return;
-        // }
-
-        // if (name1 !== null && name1.trim() !== "") {
-        //     secondPlayerName1 = name1.trim();
-        //     setSecondNamePlayer(name1.trim());
-        // }
 
         const title: string =
             firstPlayerName1 !== "" && firstPlayerName1 !== null
@@ -425,14 +374,6 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ isSoundOn }) => {
         alert(`Once you click 'OK' your game will launch instantly! :))`);
 
         isPlaying1 = true;
-        
-        // Start background music
-        if (!isBackgroundMusicPlaying) {
-            if (backgroundMusicRef.current) {
-              backgroundMusicRef.current.play();
-              setBackgroundMusicPlaying(true);
-            }
-        }
 
         startTimer();
         // reset the players' scores
@@ -561,6 +502,13 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ isSoundOn }) => {
                     onAudioEnd={() => setPlayGoal(false)}
                     path={goalSound}
                     volume={0.18}
+                />
+            )}
+            {isSoundOn && isBackgroundMusicPlaying && (
+                <AudioComponent
+                    onAudioEnd={() => setBackgroundMusicPlaying(false)}
+                    path={backgroundMusic}
+                    volume={0.05}
                 />
             )}
         </section>
