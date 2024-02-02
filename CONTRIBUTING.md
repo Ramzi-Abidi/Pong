@@ -38,6 +38,8 @@ Thank you for considering contributing to the Pong Game! We appreciate your time
 
 7. Create a pull request against the `main` branch of the main repository.
 
+8. Add **description** and **screenshots** to your pull request.
+
 ## Code Style
 
 - Use "prettier" extension to style your code.
