@@ -220,8 +220,8 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ isSoundOn }) => {
             // Scoring goal
             if (isPlaying1) {
                 if (ball.x < 0) {
-                     // Play the audio
-                    setPlayGoal(true);                   
+                    // Play the audio
+                    setPlayGoal(true);
                     score.current[2] += 1;
                     resetGame(1.6);
                 } else if (ball.x + ballWidth > boardWidth) {
@@ -285,7 +285,7 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ isSoundOn }) => {
                     setBlurry(true);
                 }
                 isPlaying1 = !isPlaying1;
-                setIsPaused(prevState => !prevState);
+                setIsPaused((prevState) => !prevState);
             }
         }
     };
@@ -326,39 +326,39 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ isSoundOn }) => {
             setFirstNamePlayer(name.trim());
             console.log(firstPlayerName1, name.trim());
         }
-        obj = {
-            title: "Player 2, your name ?",
-            text: "If you're feeling mysterious, hit [ESC] or [Enter] to skip.",
-            content: "input" as any,
-            buttons: {
-                return: "Return to menu",
-                ok: {
-                    button: {
-                        text: "Ok!",
-                        closeModal: true,
-                    },
-                },
-            },
-            className: "btn",
-            closeOnEsc: true,
-        };
+        // obj = {
+        //     title: "Player 2, your name ?",
+        //     text: "If you're feeling mysterious, hit [ESC] or [Enter] to skip.",
+        //     content: "input" as any,
+        //     buttons: {
+        //         return: "Return to menu",
+        //         ok: {
+        //             button: {
+        //                 text: "Ok!",
+        //                 closeModal: true,
+        //             },
+        //         },
+        //     },
+        //     className: "btn",
+        //     closeOnEsc: true,
+        // };
 
-        const name1 = await swal(obj);
-        document.querySelector(".btn")?.remove();
+        // const name1 = await swal(obj);
+        // document.querySelector(".btn")?.remove();
 
-        if (name1 === "return") {
-            navigate("/");
-            return;
-        }
+        // if (name1 === "return") {
+        //     navigate("/");
+        //     return;
+        // }
 
-        if (name1 !== null && name1.trim() !== "") {
-            secondPlayerName1 = name1.trim();
-            setSecondNamePlayer(name1.trim());
-        }
+        // if (name1 !== null && name1.trim() !== "") {
+        //     secondPlayerName1 = name1.trim();
+        //     setSecondNamePlayer(name1.trim());
+        // }
 
         const title: string =
             firstPlayerName1 !== "" && firstPlayerName1 !== null
-                ? `${firstPlayerName1} and ${secondPlayerName1}`
+                ? `${firstPlayerName1}`
                 : "";
 
         obj = {
@@ -437,36 +437,33 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ isSoundOn }) => {
     // };
 
     const handleReturnToMenu = () => {
-
         isPlaying1 = false;
 
         swal({
-          title: 'Want to exit the gameplay?',
-          buttons: {
-            cancel: true,
-            confirm: 'Yes',
-          } as any,
-          dangerMode: true,
+            title: "Want to exit the gameplay?",
+            buttons: {
+                cancel: true,
+                confirm: "Yes",
+            } as any,
+            dangerMode: true,
         }).then((isConfirmed) => {
-          if (isConfirmed) {
-            // Stop the game first;
-            isPlaying1 = false;
-            navigate('/');
-          }
-          else {
-            isPlaying1 = true;
-          }
-          
+            if (isConfirmed) {
+                // Stop the game first;
+                isPlaying1 = false;
+                navigate("/");
+            } else {
+                isPlaying1 = true;
+            }
         });
-      };
+    };
 
-      const playSound = () => {
+    const playSound = () => {
         const audio = new Audio(buttonClickSound);
 
-        if(isSoundOn){
+        if (isSoundOn) {
             audio.play();
         }
-      };
+    };
 
     return (
         <section className={isBlurry === true ? "blurry" : ""}>
@@ -482,13 +479,21 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ isSoundOn }) => {
                     &#123; &#40; &#41;&#61;&gt; Press p to pause game &#125;
                 </span> */}
                 <span className="playing-state"> Press p to pause game</span>
-                <button onClick={() => { handleReturnToMenu(); playSound(); }} className="return-btn">
+                <button
+                    onClick={() => {
+                        handleReturnToMenu();
+                        playSound();
+                    }}
+                    className="return-btn"
+                >
                     Return to menu
                 </button>
             </div>
 
             {isPaused && (
-                <h2 className="game-paused-info">Game is paused, press p to resume!</h2>
+                <h2 className="game-paused-info">
+                    Game is paused, press p to resume!
+                </h2>
             )}
 
             <div className="names">
@@ -497,8 +502,20 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ isSoundOn }) => {
                 <span>{secondPlayerName}</span>
             </div>
             <canvas id="board"></canvas>
-            {isSoundOn && playHit && <AudioComponent onAudioEnd={() => setPlayHit(false)} path={hitSound} volume={0.18}/>}
-            {isSoundOn && playGoal && <AudioComponent onAudioEnd={() => setPlayGoal(false)} path={goalSound} volume={0.18}/>}
+            {isSoundOn && playHit && (
+                <AudioComponent
+                    onAudioEnd={() => setPlayHit(false)}
+                    path={hitSound}
+                    volume={0.18}
+                />
+            )}
+            {isSoundOn && playGoal && (
+                <AudioComponent
+                    onAudioEnd={() => setPlayGoal(false)}
+                    path={goalSound}
+                    volume={0.18}
+                />
+            )}
         </section>
     );
 };
