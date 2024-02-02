@@ -35,10 +35,11 @@ Thank you for considering contributing to the Pong Game! We appreciate your time
     ```bash
     git push origin feature/your-feature
     ```
+7. Before creating a pull request, rebase with main branch to avoid conflicts. 
 
-7. Create a pull request against the `main` branch of the main repository.
+8. Create a pull request against the `main` branch of the main repository.
 
-8. Add **description** and **screenshots** to your pull request.
+9. Add **description** and **screenshots** to your pull request.
 
 ## Code Style
 
