@@ -50,10 +50,10 @@ const Home: React.FC<HomeProps> = ({ isSoundOn, onSoundChange }) => {
     const playSound = () => {
         const audio = new Audio(buttonClickSound);
 
-        if(isSoundOn){
+        if (isSoundOn) {
             audio.play();
         }
-      };
+    };
 
     const playMutedSound = () => {
         const audio = new Audio(buttonClickSound);
@@ -75,7 +75,7 @@ const Home: React.FC<HomeProps> = ({ isSoundOn, onSoundChange }) => {
                     >
                         <div className="star-github-button" onClick={playSound}>
                             <GitHubIcon className="github-star-icon" />
-                            <p>Star GitHub</p>
+                            <p>Give Repo Star</p>
                         </div>
                     </a>
                     <h3>pong game</h3>
