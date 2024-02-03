@@ -73,21 +73,22 @@ const MultiplePlayerMode: React.FC<MultiplePlayerModeProps> = ({
     const [playHit, setPlayHit] = useState<boolean>(false);
     const [playGoal, setPlayGoal] = useState<boolean>(false);
     const [isPaused, setIsPaused] = useState<boolean>(false);
-    const [isBackgroundMusicPlaying, setBackgroundMusicPlaying] = useState<boolean>(false);
+    const [isBackgroundMusicPlaying, setBackgroundMusicPlaying] =
+        useState<boolean>(false);
 
     const backgroundMusicRef = useRef<HTMLAudioElement | null>(null);
 
-    useEffect(() => {
-        backgroundMusicRef.current = new Audio(backgroundMusic);
-        backgroundMusicRef.current.loop = true; // Enable loop for continuous playback
+    // useEffect(() => {
+    //     backgroundMusicRef.current = new Audio(backgroundMusic);
+    //     backgroundMusicRef.current.loop = true; // Enable loop for continuous playback
 
-        return () => {
-            if (backgroundMusicRef.current) {
-              backgroundMusicRef.current.pause();
-              backgroundMusicRef.current = null;
-            }
-        };
-    }, []);
+    //     return () => {
+    //         if (backgroundMusicRef.current) {
+    //           backgroundMusicRef.current.pause();
+    //           backgroundMusicRef.current = null;
+    //         }
+    //     };
+    // }, []);
 
     const [timer, setTimer] = useState(0);
 
@@ -183,16 +184,16 @@ const MultiplePlayerMode: React.FC<MultiplePlayerModeProps> = ({
                 // navigate("/https://github.com/Ramzi-Abidi/Pong");
                 // window.location.href = '';
                 window.open("https://github.com/Ramzi-Abidi/Pong", "_blank");
+                navigate("/");
             }
         });
     };
 
     const animate = (): void => {
         requestAnimationFrame(animate); // The requestAnimationFrame() method used to repeat something pretty fast :) => alternative to setInterval()
-        // if (!ok) return;
-        // console.log(isPlaying1);
 
         if (isPlaying1 === true) {
+            setBackgroundMusicPlaying(true);
             // clearing the canvas
             context.clearRect(0, 0, boardWidth, boardHeight);
 
@@ -236,13 +237,13 @@ const MultiplePlayerMode: React.FC<MultiplePlayerModeProps> = ({
             }
             // detecting collision with player1 or with player2
             if (detectCollision(ball, player1)) {
-                setPlayHit(true)
+                setPlayHit(true);
                 // left side of ball touches right side of player1
                 if (ball.x <= player1.x + player1.width) {
                     ball.velocityX *= -1;
                 }
             } else if (detectCollision(ball, player2)) {
-                setPlayHit(true)
+                setPlayHit(true);
                 // right side of ball touches left side player2
                 if (ball.x + ballWidth >= player2.x) {
                     ball.velocityX *= -1;
@@ -258,7 +259,7 @@ const MultiplePlayerMode: React.FC<MultiplePlayerModeProps> = ({
                     velocityY: ball.velocityY,
                 };
             };
-            
+
             // scoring goal
             if (isPlaying1) {
                 if (ball.x < 0) {
@@ -338,7 +339,7 @@ const MultiplePlayerMode: React.FC<MultiplePlayerModeProps> = ({
                     setBlurry(true);
                 }
                 isPlaying1 = !isPlaying1;
-                setIsPaused(prevState => !prevState);
+                setIsPaused((prevState) => !prevState);
             }
         }
     };
@@ -442,12 +443,12 @@ const MultiplePlayerMode: React.FC<MultiplePlayerModeProps> = ({
         isPlaying1 = true;
 
         // Start background music
-        if (!isBackgroundMusicPlaying) {
-            if (backgroundMusicRef.current) {
-              backgroundMusicRef.current.play();
-              setBackgroundMusicPlaying(true);
-            }
-        }
+        // if (!isBackgroundMusicPlaying) {
+        //     if (backgroundMusicRef.current) {
+        //         backgroundMusicRef.current.play();
+        //         setBackgroundMusicPlaying(true);
+        //     }
+        // }
 
         startTimer();
         // reset the players' scores
@@ -499,36 +500,33 @@ const MultiplePlayerMode: React.FC<MultiplePlayerModeProps> = ({
     // };
 
     const handleReturnToMenu = () => {
-
         isPlaying1 = false;
 
         swal({
-          title: 'Want to exit the gameplay?',
-          buttons: {
-            cancel: true,
-            confirm: 'Yes',
-          } as any,
-          dangerMode: true,
+            title: "Want to exit the gameplay?",
+            buttons: {
+                cancel: true,
+                confirm: "Yes",
+            } as any,
+            dangerMode: true,
         }).then((isConfirmed) => {
-          if (isConfirmed) {
-            // Stop the game first;
-            isPlaying1 = false;
-            navigate('/');
-          }
-          else {
-            isPlaying1 = true;
-          }
-          
+            if (isConfirmed) {
+                // Stop the game first;
+                isPlaying1 = false;
+                navigate("/");
+            } else {
+                isPlaying1 = true;
+            }
         });
-      };
+    };
 
-      const playSound = () => {
+    const playSound = () => {
         const audio = new Audio(buttonClickSound);
 
-        if(isSoundOn){
+        if (isSoundOn) {
             audio.play();
         }
-      };
+    };
 
     return (
         <section className={isBlurry === true ? "blurry" : ""}>
@@ -541,13 +539,21 @@ const MultiplePlayerMode: React.FC<MultiplePlayerModeProps> = ({
             </div>
             <div className="options-container">
                 <span className="playing-state"> Press p to pause game</span>
-                <button onClick={() => { handleReturnToMenu(); playSound(); }} className="return-btn">
+                <button
+                    onClick={() => {
+                        handleReturnToMenu();
+                        playSound();
+                    }}
+                    className="return-btn"
+                >
                     Return to menu
                 </button>
             </div>
 
             {isPaused && (
-                <h2 className="game-paused-info">Game is paused, press p to resume!</h2>
+                <h2 className="game-paused-info">
+                    Game is paused, press p to resume!
+                </h2>
             )}
 
             <div className="names">
@@ -556,8 +562,27 @@ const MultiplePlayerMode: React.FC<MultiplePlayerModeProps> = ({
                 <span>{secondPlayerName}</span>
             </div>
             <canvas id="board"></canvas>
-            {isSoundOn && playHit && <AudioComponent onAudioEnd={() => setPlayHit(false)} path={hitSound} volume={0.18}/>}
-            {isSoundOn && playGoal && <AudioComponent onAudioEnd={() => setPlayGoal(false)} path={goalSound} volume={0.18}/>}
+            {isSoundOn && playHit && (
+                <AudioComponent
+                    onAudioEnd={() => setPlayHit(false)}
+                    path={hitSound}
+                    volume={0.18}
+                />
+            )}
+            {isSoundOn && playGoal && (
+                <AudioComponent
+                    onAudioEnd={() => setPlayGoal(false)}
+                    path={goalSound}
+                    volume={0.18}
+                />
+            )}
+            {isSoundOn && isBackgroundMusicPlaying && (
+                <AudioComponent
+                    onAudioEnd={() => setBackgroundMusicPlaying(false)}
+                    path={backgroundMusic}
+                    volume={0.02}
+                />
+            )}
         </section>
     );
 };

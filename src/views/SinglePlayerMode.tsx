@@ -151,13 +151,13 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ isSoundOn }) => {
                 startTimer();
             } else {
                 window.open("https://github.com/Ramzi-Abidi/Pong", "_blank");
+                navigate("/");
             }
         });
     };
 
     const animate = (): void => {
         requestAnimationFrame(animate); // The requestAnimationFrame() method used to repeat something pretty fast :) => alternative to setInterval()
-        // if (!ok) return;
         if (isPlaying1 === true) {
             setBackgroundMusicPlaying(true);
 
@@ -354,9 +354,9 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ isSoundOn }) => {
             text: `How to play ?
 
             ${firstPlayerName1}, use 'z' and 's' keys.
-
-            ${secondPlayerName1}, use 'top' and 'bottom' arrow keys.
-
+            
+            You'll be playing against a BOT.
+            
             Let the game begin by pressing [ESC] or [Enter]!
             `,
             button: {
@@ -485,9 +485,9 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ isSoundOn }) => {
             )}
 
             <div className="names">
-                <span>{firstPlayerName}</span>
-                <span className="label">VS</span>
                 <span>{secondPlayerName}</span>
+                <span className="label">VS</span>
+                <span>{firstPlayerName}</span>
             </div>
             <canvas id="board"></canvas>
             {isSoundOn && playHit && (
@@ -508,7 +508,7 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ isSoundOn }) => {
                 <AudioComponent
                     onAudioEnd={() => setBackgroundMusicPlaying(false)}
                     path={backgroundMusic}
-                    volume={0.05}
+                    volume={0.02}
                 />
             )}
         </section>
