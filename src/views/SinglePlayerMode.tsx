@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import swal from "sweetalert";
-import { ball, player, score } from "../utils/types";
+import { SinglePlayerModeProps, ball, player, score } from "../utils/types";
 import pongImage from "../assets/pong-header.png";
 import hitSound from "../assets/Paddle Ball Hit Sound Effect HD.mp3";
 import goalSound from "../assets/goal.mp3";
@@ -9,10 +9,6 @@ import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import AudioComponent from "../components/Audio";
 import backgroundMusic from "../assets/background-music.mp3";
-
-interface SinglePlayerModeProps {
-    isSoundOn: boolean;
-}
 
 const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ isSoundOn }) => {
     let boardWidth: number = 600;
@@ -24,7 +20,7 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ isSoundOn }) => {
     let playerVelocityY = 0;
 
     let player1: player = {
-        x: 10,
+        x: 2,
         y: boardHeight / 2,
         width: playerWidth,
         height: playerHeight,
@@ -33,7 +29,7 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ isSoundOn }) => {
     };
 
     let player2: player = {
-        x: boardWidth - playerWidth - 10,
+        x: boardWidth - playerWidth - 2,
         y: boardHeight / 2,
         width: playerWidth,
         height: playerHeight,
@@ -53,12 +49,12 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ isSoundOn }) => {
         y: boardHeight / 2,
         width: ballWidth,
         height: ballHeight,
-        velocityX: 1.6, // shhifting by 1px
-        velocityY: 0.9, // shhifting by 2px
+        velocityX: 1, // shhifting by 1px
+        velocityY: 2, // shhifting by 2px
     };
 
     const [firstPlayerName, setFirstNamePlayer] = useState<string>("Player 1");
-    const [winningNumber, setWinningNumber] = useState<number>(11);
+    const [winningNumber, setWinningNumber] = useState<number>(10);
     const [secondPlayerName, setSecondNamePlayer] = useState("Player 2");
     const [isBlurry, setBlurry] = useState<boolean>(true);
     const [isPlaying, setIsPlaying] = useState<boolean>(true);
@@ -67,18 +63,6 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ isSoundOn }) => {
     const [isPaused, setIsPaused] = useState<boolean>(false);
     const [isBackgroundMusicPlaying, setBackgroundMusicPlaying] =
         useState<boolean>(false);
-
-    // useEffect(() => {
-    //     backgroundMusicRef.current = new Audio(backgroundMusic);
-    //     backgroundMusicRef.current.loop = true; // Enable loop for continuous playback
-
-    //     return () => {
-    //         if (backgroundMusicRef.current) {
-    //           backgroundMusicRef.current.pause();
-    //           backgroundMusicRef.current = null;
-    //         }
-    //     };
-    // }, []);
 
     const [timer, setTimer] = useState<number>(0);
 
@@ -127,7 +111,7 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ isSoundOn }) => {
         setBlurry(true);
         resetScores();
 
-        alert(`${playerName} wins !`);
+        alert(`Game over!`);
         swal({
             title: `Feedback!`,
             text: `Ready for another round? Click 'Play again' to dive back into the excitement! :))`,
@@ -240,12 +224,12 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ isSoundOn }) => {
                     // Play the audio
                     setPlayGoal(true);
                     score.current[2] += 1;
-                    resetGame(1.6);
+                    resetGame(1);
                 } else if (ball.x + ballWidth > boardWidth) {
                     // Play the audio
                     setPlayGoal(true);
                     score.current[1] += 1;
-                    resetGame(-1.6);
+                    resetGame(-1);
                 }
             }
 
