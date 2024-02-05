@@ -27,3 +27,8 @@ export interface AudioComponentProps {
   path: string;
   volume: number;
 }
+
+
+export interface SinglePlayerModeProps {
+    isSoundOn: boolean;
+}

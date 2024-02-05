@@ -25,7 +25,7 @@ const MultiplePlayerMode: React.FC<MultiplePlayerModeProps> = ({
     let playerVelocityY = 0;
 
     let player1: player = {
-        x: 10,
+        x: 2,
         y: boardHeight / 2,
         width: playerWidth,
         height: playerHeight,
@@ -34,7 +34,7 @@ const MultiplePlayerMode: React.FC<MultiplePlayerModeProps> = ({
     };
 
     let player2: player = {
-        x: boardWidth - playerWidth - 10,
+        x: boardWidth - playerWidth - 2,
         y: boardHeight / 2,
         width: playerWidth,
         height: playerHeight,
@@ -54,19 +54,12 @@ const MultiplePlayerMode: React.FC<MultiplePlayerModeProps> = ({
         y: boardHeight / 2,
         width: ballWidth,
         height: ballHeight,
-        velocityX: 1.6, // shhifting by 1px
-        velocityY: 0.9, // shhifting by 2px
+        velocityX: 1, // shhifting by 1px
+        velocityY: 2, // shhifting by 2px
     };
-    // const [audio] = useState(new Audio(sound));
-
-    // useEffect(() => {
-    //     audio.volume = isSoundOn ? 0.18 : 0;
-    // }, [isSoundOn]);
-
-    // audio.volume = 0.18;
 
     const [firstPlayerName, setFirstNamePlayer] = useState<string>("Player 1");
-    const [winningNumber, setWinningNumber] = useState<number>(6);
+    const [winningNumber, setWinningNumber] = useState<number>(10);
     const [secondPlayerName, setSecondNamePlayer] = useState("Player 2");
     const [isBlurry, setBlurry] = useState<boolean>(true);
     const [isPlaying, setIsPlaying] = useState<boolean>(true);
@@ -266,12 +259,12 @@ const MultiplePlayerMode: React.FC<MultiplePlayerModeProps> = ({
                     // Play the audio
                     setPlayGoal(true);
                     score.current[2] += 1;
-                    resetGame(1.6);
+                    resetGame(1);
                 } else if (ball.x + ballWidth > boardWidth) {
                     // Play the audio
                     setPlayGoal(true);
                     score.current[1] += 1;
-                    resetGame(-1.6);
+                    resetGame(1);
                 }
             }
 
