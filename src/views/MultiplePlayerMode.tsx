@@ -414,9 +414,9 @@ const MultiplePlayerMode: React.FC<MultiplePlayerModeProps> = ({
             title: `Let the fun flow, ${title}!`,
             text: `How to play ?
 
-            ${firstPlayerName1}, use 'z' and 's' keys.
+            ${firstPlayerName1}, use 'z' and 's' keys (Left paddle).
 
-            ${secondPlayerName1}, use 'top' and 'bottom' arrow keys.
+            ${secondPlayerName1}, use 'top' and 'bottom' arrow keys (Right paddle).
 
             Let the game begin by pressing [ESC] or [Enter]!
             `,
