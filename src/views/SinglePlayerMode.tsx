@@ -337,7 +337,7 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ isSoundOn }) => {
             title: `Let the fun flow, ${title}!`,
             text: `How to play ?
 
-            ${firstPlayerName1}, use 'z' and 's' keys.
+            ${firstPlayerName1}, use 'z' and 's' keys (Right paddle).
             
             You'll be playing against a BOT.
             
