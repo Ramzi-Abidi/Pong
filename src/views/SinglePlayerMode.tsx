@@ -342,6 +342,10 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ isSoundOn }) => {
             You'll be playing against a BOT.
             
             Let the game begin by pressing [ESC] or [Enter]!
+
+            Game is over when the score reaches 10.
+
+            Prepare to face a tough BOT! Let's see how long you can stand against it.
             `,
             button: {
                 Text: "ok!",
