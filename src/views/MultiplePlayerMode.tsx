@@ -156,6 +156,7 @@ const MultiplePlayerMode: React.FC<MultiplePlayerModeProps> = ({
             title: `Feedback!`,
             text: `Ready for another round? Click 'Play again' to dive back into the excitement! :))`,
             buttons: {
+                home: "Go to Home",
                 star: "Star GitHub⭐",
                 // menu: "Return to menu",
                 play: "Play again",
@@ -168,6 +169,8 @@ const MultiplePlayerMode: React.FC<MultiplePlayerModeProps> = ({
                 resetScores();
                 // later we will change this to creat a menu
                 enterPlayerNames();
+            } else if(value === "home"){
+                navigate("/");
             } else if (value === "play") {
                 // play again
                 resetTimer();

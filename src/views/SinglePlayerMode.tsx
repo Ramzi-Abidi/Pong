@@ -116,6 +116,7 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ isSoundOn }) => {
             title: `Feedback!`,
             text: `Ready for another round? Click 'Play again' to dive back into the excitement! :))`,
             buttons: {
+                home: "Go to Home",
                 star: "Star GitHub⭐",
                 // menu: "Return to menu",
                 play: "Play again",
@@ -128,6 +129,8 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ isSoundOn }) => {
                 resetScores();
                 // later we will change this to creat a menu
                 enterPlayerNames();
+            } else if(value === "home"){
+                navigate("/");
             } else if (value === "play") {
                 // play again
                 resetTimer();
