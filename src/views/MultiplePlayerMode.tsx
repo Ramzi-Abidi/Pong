@@ -422,6 +422,8 @@ const MultiplePlayerMode: React.FC<MultiplePlayerModeProps> = ({
             ${secondPlayerName1}, use 'top' and 'bottom' arrow keys (Right paddle).
 
             Let the game begin by pressing [ESC] or [Enter]!
+
+            The winner is the player who reaches a score of 10.
             `,
             button: {
                 Text: "ok!",
