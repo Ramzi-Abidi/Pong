@@ -68,3 +68,10 @@ git rebase main
 
 If you like the project, don't forget to **star** the repo ✨. 
 
+## 🍉 Contributors
+
+**Thanks goes to these wonderful people 🍉**
+
+<a href="https://github.com/ramzi-abidi/pong/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=ramzi-abidi/pong" />
+</a>
