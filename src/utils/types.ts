@@ -28,7 +28,17 @@ export interface AudioComponentProps {
   volume: number;
 }
 
+export interface MultiplePlayerModeProps {
+    settings: SettingProps;
+    isSoundOn: boolean;
+}
+
 
 export interface SinglePlayerModeProps {
+    settings: SettingProps;
     isSoundOn: boolean;
+}
+
+export interface SettingProps{
+    speedOption: string;
 }
