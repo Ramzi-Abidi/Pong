@@ -9,8 +9,9 @@ import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import AudioComponent from "../components/Audio";
 import backgroundMusic from "../assets/background-music.mp3";
+import speedOptions from "../utils/speedOptions";
 
-const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ isSoundOn }) => {
+const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ settings, isSoundOn }) => {    
     let boardWidth: number = 600;
     let boardHeight: number = 400;
     let context: CanvasRenderingContext2D;
@@ -52,6 +53,11 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ isSoundOn }) => {
         velocityX: 1, // shhifting by 1px
         velocityY: 2, // shhifting by 2px
     };
+
+  // Update ball object's velocity properties
+  ball.velocityX =  speedOptions[settings.speedOption].velocityX;
+  ball.velocityY = speedOptions[settings.speedOption].velocityY;
+
 
     const [firstPlayerName, setFirstNamePlayer] = useState<string>("Player 1");
     const [winningNumber, setWinningNumber] = useState<number>(10);

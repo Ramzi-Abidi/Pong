@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import swal from "sweetalert";
-import { ball, player, score } from "../utils/types";
+import { MultiplePlayerModeProps, ball, player, score } from "../utils/types";
 import pongImage from "../assets/pong-header.png";
 import hitSound from "../assets/Paddle Ball Hit Sound Effect HD.mp3";
 import goalSound from "../assets/goal.mp3";
@@ -8,13 +8,10 @@ import buttonClickSound from "../assets/button-click-sound.mp3";
 import { useNavigate } from "react-router-dom";
 import AudioComponent from "../components/Audio";
 import backgroundMusic from "../assets/background-music.mp3";
-
-interface MultiplePlayerModeProps {
-    isSoundOn: boolean;
-}
+import speedOptions from "../utils/speedOptions";
 
 const MultiplePlayerMode: React.FC<MultiplePlayerModeProps> = ({
-    isSoundOn,
+    settings, isSoundOn
 }) => {
     let boardWidth: number = 600;
     let boardHeight: number = 400;
@@ -57,6 +54,10 @@ const MultiplePlayerMode: React.FC<MultiplePlayerModeProps> = ({
         velocityX: 1, // shhifting by 1px
         velocityY: 2, // shhifting by 2px
     };
+
+  // Update ball object's velocity properties
+  ball.velocityX =  speedOptions[settings.speedOption].velocityX;
+  ball.velocityY = speedOptions[settings.speedOption].velocityY;
 
     const [firstPlayerName, setFirstNamePlayer] = useState<string>("Player 1");
     const [winningNumber, setWinningNumber] = useState<number>(10);
