@@ -41,4 +41,5 @@ export interface SinglePlayerModeProps {
 
 export interface SettingProps{
     speedOption: string;
+    pointOption: number;
 }
