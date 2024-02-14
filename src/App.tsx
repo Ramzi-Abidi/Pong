@@ -14,14 +14,19 @@ const App = () => {
     }
 
     const [settings, setSettings] = useState({
-        speedOption : 'medium' 
+        speedOption: 'medium',
+        pointOption: 10
     });
     const updateSpeed = (option: string) => {
         setSettings({ ...settings, speedOption: option})
     }
+    const updatePoints = (option: number) => {
+        setSettings({ ...settings, pointOption: option})
+    }
 
     const handleCallBack = (data: any, showSettings: boolean) => {
         updateSpeed(data.speedOption);
+        updatePoints(data.pointOption);
     }
 
     return (

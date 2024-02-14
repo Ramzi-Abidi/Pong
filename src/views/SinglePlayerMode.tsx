@@ -9,7 +9,7 @@ import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import AudioComponent from "../components/Audio";
 import backgroundMusic from "../assets/background-music.mp3";
-import speedOptions from "../utils/speedOptions";
+import {speedOptions, pointsOptions} from "../utils/options";
 
 const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ settings, isSoundOn }) => {    
     let boardWidth: number = 600;
@@ -60,7 +60,7 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ settings, isSoundOn
 
 
     const [firstPlayerName, setFirstNamePlayer] = useState<string>("Player 1");
-    const [winningNumber, setWinningNumber] = useState<number>(10);
+    const [winningNumber, setWinningNumber] = useState<number>(pointsOptions[settings.pointOption].points);
     const [secondPlayerName, setSecondNamePlayer] = useState("Player 2");
     const [isBlurry, setBlurry] = useState<boolean>(true);
     const [isPlaying, setIsPlaying] = useState<boolean>(true);
