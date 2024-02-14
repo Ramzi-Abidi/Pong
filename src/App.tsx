@@ -4,6 +4,7 @@ import SinglePlayerMode from "./views/SinglePlayerMode";
 import MultiplePlayerMode from "./views/MultiplePlayerMode";
 import Home from "./views/Home";
 import Settings from "./views/Settings";
+import { SettingProps } from "./utils/types";
 
 const App = () => {
 
@@ -17,16 +18,19 @@ const App = () => {
         speedOption: 'medium',
         pointOption: 10
     });
-    const updateSpeed = (option: string) => {
-        setSettings({ ...settings, speedOption: option})
-    }
-    const updatePoints = (option: number) => {
-        setSettings({ ...settings, pointOption: option})
+    
+    const updateSettings = (updatedSettings: SettingProps) => {
+        setSettings(prevSettings => {
+            return { ...prevSettings, ...updatedSettings };
+        });
     }
 
-    const handleCallBack = (data: any, showSettings: boolean) => {
-        updateSpeed(data.speedOption);
-        updatePoints(data.pointOption);
+    const handleCallBack = (data: SettingProps, showSettings: boolean) => {
+        const updatedSettings = {
+            speedOption: data.speedOption,
+            pointOption: data.pointOption
+        };
+        updateSettings(updatedSettings);
     }
 
     return (
