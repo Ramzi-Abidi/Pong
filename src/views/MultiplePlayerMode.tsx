@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import swal from "sweetalert";
-import { MultiplePlayerModeProps, ball, player, score } from "../utils/types";
+import { MultiplePlayerModeProps, SettingProps, ball, player, score } from "../utils/types";
 import pongImage from "../assets/pong-header.png";
 import hitSound from "../assets/Paddle Ball Hit Sound Effect HD.mp3";
 import goalSound from "../assets/goal.mp3";
@@ -8,7 +8,8 @@ import buttonClickSound from "../assets/button-click-sound.mp3";
 import { useNavigate } from "react-router-dom";
 import AudioComponent from "../components/Audio";
 import backgroundMusic from "../assets/background-music.mp3";
-import {speedOptions, pointsOptions} from "../utils/options";
+import { speedOptions, pointsOptions } from "../utils/options";
+
 
 const MultiplePlayerMode: React.FC<MultiplePlayerModeProps> = ({
     settings, isSoundOn
@@ -471,7 +472,8 @@ const MultiplePlayerMode: React.FC<MultiplePlayerModeProps> = ({
     useEffect(() => {
     const handleVisibilityChange = () => {
         if (document.hidden) {
-            if (isPlaying === true && document.querySelector(".btn") === null) {
+            const btn = document.querySelector(".btn");
+            if (btn === null && isPlaying === true) {
                 // set blurry background
                 if (!isBlurry) {
                     setBlurry(true);
@@ -481,13 +483,11 @@ const MultiplePlayerMode: React.FC<MultiplePlayerModeProps> = ({
             }
         }
         };
-
         document.addEventListener('visibilitychange', handleVisibilityChange);
-
         return () => {
         document.removeEventListener('visibilitychange', handleVisibilityChange);
         };
-    }, []);
+    }, [isPlaying, isBlurry, isPlaying1]);
 
     useEffect(() => {
         board = document.getElementById("board") as HTMLCanvasElement;

@@ -410,7 +410,7 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ settings, isSoundOn
         return () => {
         document.removeEventListener('visibilitychange', handleVisibilityChange);
         };
-    }, []);
+    }, [isPlaying, isBlurry, isPlaying1]);
 
     useEffect(() => {
         board = document.getElementById("board") as HTMLCanvasElement;
