@@ -5,13 +5,15 @@ import pongImage from "../assets/pong-header.png";
 import hitSound from "../assets/Paddle Ball Hit Sound Effect HD.mp3";
 import goalSound from "../assets/goal.mp3";
 import buttonClickSound from "../assets/button-click-sound.mp3";
-import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import AudioComponent from "../components/Audio";
 import backgroundMusic from "../assets/background-music.mp3";
-import {speedOptions, pointsOptions} from "../utils/options";
+import { speedOptions, pointsOptions } from "../utils/options";
 
-const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ settings, isSoundOn }) => {    
+const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({
+    settings,
+    isSoundOn,
+}) => {
     let boardWidth: number = 600;
     let boardHeight: number = 400;
     let context: CanvasRenderingContext2D;
@@ -40,11 +42,6 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ settings, isSoundOn
     const ballWidth = 10;
     const ballHeight = 10;
 
-    // const [ballVelocity, setBallVelocity] = useState({
-    //     velocityX: 1,
-    //     velocityY: 2,
-    // });
-
     let ball: ball = {
         x: boardWidth / 2,
         y: boardHeight / 2,
@@ -54,16 +51,17 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ settings, isSoundOn
         velocityY: 2, // shhifting by 2px
     };
 
-  // Update ball object's velocity properties
-  ball.velocityX =  speedOptions[settings.speedOption].velocityX;
-  ball.velocityY = speedOptions[settings.speedOption].velocityY;
-
+    // Update ball object's velocity properties
+    ball.velocityX = speedOptions[settings.speedOption].velocityX;
+    ball.velocityY = speedOptions[settings.speedOption].velocityY;
 
     const [firstPlayerName, setFirstNamePlayer] = useState<string>("Player 1");
-    const [winningNumber, setWinningNumber] = useState<number>(pointsOptions[settings.pointOption].points);
+    const [winningNumber, setWinningNumber] = useState<number>(
+        pointsOptions[settings.pointOption].points,
+    );
     const [secondPlayerName, setSecondNamePlayer] = useState("Player 2");
     const [isBlurry, setBlurry] = useState<boolean>(true);
-    const [isPlaying, setIsPlaying] = useState<boolean>(true);
+    // const [isPlaying, setIsPlaying] = useState<boolean>(true);
     const [playHit, setPlayHit] = useState<boolean>(false);
     const [playGoal, setPlayGoal] = useState<boolean>(false);
     const [isPaused, setIsPaused] = useState<boolean>(false);
@@ -113,7 +111,7 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ settings, isSoundOn
     };
 
     const win = (playerName: string) => {
-        setIsPlaying(false);
+        isPlaying1 = false;
         setBlurry(true);
         resetScores();
 
@@ -135,7 +133,7 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ settings, isSoundOn
                 resetScores();
                 // later we will change this to creat a menu
                 enterPlayerNames();
-            } else if(value === "home"){
+            } else if (value === "home") {
                 navigate("/");
             } else if (value === "play") {
                 // play again
@@ -258,7 +256,7 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ settings, isSoundOn
             // Winning
             if (
                 score.current[1] >= winningNumber &&
-                isPlaying === true &&
+                isPlaying1 === true &&
                 document.querySelector(".btn") === null &&
                 document.querySelector(".driver-popover-title") === null
             ) {
@@ -266,7 +264,7 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ settings, isSoundOn
                 win(firstPlayerName1);
             } else if (
                 score.current[2] >= winningNumber &&
-                isPlaying === true &&
+                isPlaying1 === true &&
                 document.querySelector(".btn") === null &&
                 document.querySelector(".driver-popover-title") === null
             ) {
@@ -289,13 +287,11 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ settings, isSoundOn
 
         // to pause
         if (e.key === "p" || e.key === "Escape") {
-            if (isPlaying === true && document.querySelector(".btn") === null) {
-                // set blurry background
-                if (!isBlurry) {
-                    setBlurry(true);
-                }
+            // check if there's a popup
+            const popup = document.querySelector(".btn");
+            if (popup === null) {
                 isPlaying1 = !isPlaying1;
-                setIsPaused((prevState) => !prevState);
+                setIsPaused((isPaused) => !isPaused);
             }
         }
     };
@@ -378,7 +374,7 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ settings, isSoundOn
         // set blurry backerground
         setBlurry(false);
         // start the game
-        setIsPlaying(true);
+        isPlaying1 = true;
     };
 
     const stopMovingPlayer = (e: any): void => {
@@ -392,25 +388,33 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ settings, isSoundOn
     };
 
     useEffect(() => {
-    const handleVisibilityChange = () => {
-        if (document.hidden) {
-            if (isPlaying === true && document.querySelector(".btn") === null) {
-                // set blurry background
-                if (!isBlurry) {
-                    setBlurry(true);
+        const handleVisibilityChange = () => {
+            if (document.hidden) {
+                if (
+                    isPlaying1 === true &&
+                    document.querySelector(".btn") === null
+                ) {
+                    // set blurry background
+                    if (!isBlurry) {
+                        setBlurry(true);
+                    }
+                    if (isPlaying1) {
+                        isPlaying1 = false;
+                    }
+                    setIsPaused((isPaused) => !isPaused);
                 }
-                isPlaying1 = !isPlaying1;
-                setIsPaused((prevState) => !prevState);
             }
-        }
         };
 
-        document.addEventListener('visibilitychange', handleVisibilityChange);
+        document.addEventListener("visibilitychange", handleVisibilityChange);
 
         return () => {
-        document.removeEventListener('visibilitychange', handleVisibilityChange);
+            document.removeEventListener(
+                "visibilitychange",
+                handleVisibilityChange,
+            );
         };
-    }, [isPlaying, isBlurry, isPlaying1]);
+    }, [isBlurry, isPlaying1]);
 
     useEffect(() => {
         board = document.getElementById("board") as HTMLCanvasElement;
@@ -435,12 +439,7 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ settings, isSoundOn
             window.removeEventListener("keydown", movePlayer);
             window.removeEventListener("keyup", stopMovingPlayer);
         };
-        // return () => {};
     }, []);
-
-    // const handleClick = () => {
-    //     navigate("/");
-    // };
 
     const handleReturnToMenu = () => {
         isPlaying1 = false;

@@ -19,7 +19,6 @@ const Settings = (props: any) => {
         setSettings({ ...settings, pointOption: option});
     }
 
-
     const onTrigger = () => {
         props.parentCallBack(settings, false);
         navigate("/");

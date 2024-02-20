@@ -1,6 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import swal from "sweetalert";
-import { MultiplePlayerModeProps, SettingProps, ball, player, score } from "../utils/types";
+import {
+    MultiplePlayerModeProps,
+    SettingProps,
+    ball,
+    player,
+    score,
+} from "../utils/types";
 import pongImage from "../assets/pong-header.png";
 import hitSound from "../assets/Paddle Ball Hit Sound Effect HD.mp3";
 import goalSound from "../assets/goal.mp3";
@@ -10,9 +16,9 @@ import AudioComponent from "../components/Audio";
 import backgroundMusic from "../assets/background-music.mp3";
 import { speedOptions, pointsOptions } from "../utils/options";
 
-
 const MultiplePlayerMode: React.FC<MultiplePlayerModeProps> = ({
-    settings, isSoundOn
+    settings,
+    isSoundOn,
 }) => {
     let boardWidth: number = 600;
     let boardHeight: number = 400;
@@ -42,29 +48,25 @@ const MultiplePlayerMode: React.FC<MultiplePlayerModeProps> = ({
     const ballWidth = 10;
     const ballHeight = 10;
 
-    // const [ballVelocity, setBallVelocity] = useState({
-    //     velocityX: 1,
-    //     velocityY: 2,
-    // });
-
     let ball: ball = {
         x: boardWidth / 2,
         y: boardHeight / 2,
         width: ballWidth,
         height: ballHeight,
-        velocityX: 1, // shhifting by 1px
-        velocityY: 2, // shhifting by 2px
+        velocityX: 1, // shifting by 1px
+        velocityY: 2, // shifting by 2px
     };
 
-  // Update ball object's velocity properties
-  ball.velocityX =  speedOptions[settings.speedOption].velocityX;
-  ball.velocityY = speedOptions[settings.speedOption].velocityY;
+    // Update ball object's velocity properties
+    ball.velocityX = speedOptions[settings.speedOption].velocityX;
+    ball.velocityY = speedOptions[settings.speedOption].velocityY;
 
     const [firstPlayerName, setFirstNamePlayer] = useState<string>("Player 1");
-    const [winningNumber, setWinningNumber] = useState<number>(pointsOptions[settings.pointOption].points);
+    const [winningNumber, setWinningNumber] = useState<number>(
+        pointsOptions[settings.pointOption].points,
+    );
     const [secondPlayerName, setSecondNamePlayer] = useState("Player 2");
     const [isBlurry, setBlurry] = useState<boolean>(true);
-    const [isPlaying, setIsPlaying] = useState<boolean>(true);
     const [playHit, setPlayHit] = useState<boolean>(false);
     const [playGoal, setPlayGoal] = useState<boolean>(false);
     const [isPaused, setIsPaused] = useState<boolean>(false);
@@ -72,18 +74,6 @@ const MultiplePlayerMode: React.FC<MultiplePlayerModeProps> = ({
         useState<boolean>(false);
 
     const backgroundMusicRef = useRef<HTMLAudioElement | null>(null);
-
-    // useEffect(() => {
-    //     backgroundMusicRef.current = new Audio(backgroundMusic);
-    //     backgroundMusicRef.current.loop = true; // Enable loop for continuous playback
-
-    //     return () => {
-    //         if (backgroundMusicRef.current) {
-    //           backgroundMusicRef.current.pause();
-    //           backgroundMusicRef.current = null;
-    //         }
-    //     };
-    // }, []);
 
     const [timer, setTimer] = useState(0);
 
@@ -144,8 +134,9 @@ const MultiplePlayerMode: React.FC<MultiplePlayerModeProps> = ({
     };
 
     const win = (playerName: string) => {
-        setIsPlaying(false);
-        setBlurry(true);
+        isPlaying1 = false;
+
+        setBlurry((screen) => !screen);
         resetScores();
 
         if (backgroundMusicRef.current) {
@@ -171,7 +162,7 @@ const MultiplePlayerMode: React.FC<MultiplePlayerModeProps> = ({
                 resetScores();
                 // later we will change this to creat a menu
                 enterPlayerNames();
-            } else if(value === "home"){
+            } else if (value === "home") {
                 navigate("/");
             } else if (value === "play") {
                 // play again
@@ -289,7 +280,7 @@ const MultiplePlayerMode: React.FC<MultiplePlayerModeProps> = ({
             // console.log(document.querySelector(".btn") === null);
             if (
                 score.current[1] >= winningNumber &&
-                isPlaying === true &&
+                isPlaying1 === true &&
                 document.querySelector(".btn") === null &&
                 document.querySelector(".driver-popover-title") === null
             ) {
@@ -297,7 +288,7 @@ const MultiplePlayerMode: React.FC<MultiplePlayerModeProps> = ({
                 win(firstPlayerName1);
             } else if (
                 score.current[2] >= winningNumber &&
-                isPlaying === true &&
+                isPlaying1 === true &&
                 document.querySelector(".btn") === null &&
                 document.querySelector(".driver-popover-title") === null
             ) {
@@ -329,15 +320,11 @@ const MultiplePlayerMode: React.FC<MultiplePlayerModeProps> = ({
 
         // to pause
         if (e.key === "p" || e.key === "Escape") {
-            // console.log(document.querySelector(".btn") === null);
-            if (isPlaying === true && document.querySelector(".btn") === null) {
-                console.log("a");
-                // set blurry background
-                if (!isBlurry) {
-                    setBlurry(true);
-                }
+            const popup = document.querySelector(".btn");
+            console.log(isBlurry);
+            if (popup === null) {
                 isPlaying1 = !isPlaying1;
-                setIsPaused((prevState) => !prevState);
+                setIsPaused((isPaused) => !isPaused);
             }
         }
     };
@@ -442,21 +429,13 @@ const MultiplePlayerMode: React.FC<MultiplePlayerModeProps> = ({
 
         isPlaying1 = true;
 
-        // Start background music
-        // if (!isBackgroundMusicPlaying) {
-        //     if (backgroundMusicRef.current) {
-        //         backgroundMusicRef.current.play();
-        //         setBackgroundMusicPlaying(true);
-        //     }
-        // }
-
         startTimer();
         // reset the players' scores
         resetScores();
-        // set blurry backerground
-        setBlurry(false);
+        // set blurry background
+        setBlurry(() => false);
         // start the game
-        setIsPlaying(true);
+        isPlaying1 = true;
     };
 
     const stopMovingPlayer = (e: any): void => {
@@ -470,24 +449,27 @@ const MultiplePlayerMode: React.FC<MultiplePlayerModeProps> = ({
     };
 
     useEffect(() => {
-    const handleVisibilityChange = () => {
-        if (document.hidden) {
-            const btn = document.querySelector(".btn");
-            if (btn === null && isPlaying === true) {
-                // set blurry background
-                if (!isBlurry) {
-                    setBlurry(true);
+        const handleVisibilityChange = () => {
+            if (document.hidden) {
+                const btn = document.querySelector(".btn");
+                if (btn === null && isPlaying1 === true) {
+                    // set blurry background
+                    if (!isBlurry) {
+                        setBlurry(true);
+                    }
+                    isPlaying1 = !isPlaying1;
+                    setIsPaused((prevState) => !prevState);
                 }
-                isPlaying1 = !isPlaying1;
-                setIsPaused((prevState) => !prevState);
             }
-        }
         };
-        document.addEventListener('visibilitychange', handleVisibilityChange);
+        document.addEventListener("visibilitychange", handleVisibilityChange);
         return () => {
-        document.removeEventListener('visibilitychange', handleVisibilityChange);
+            document.removeEventListener(
+                "visibilitychange",
+                handleVisibilityChange,
+            );
         };
-    }, [isPlaying, isBlurry, isPlaying1]);
+    }, [isBlurry, isPlaying1]);
 
     useEffect(() => {
         board = document.getElementById("board") as HTMLCanvasElement;
@@ -512,12 +494,6 @@ const MultiplePlayerMode: React.FC<MultiplePlayerModeProps> = ({
             window.removeEventListener("keyup", stopMovingPlayer);
         };
     }, []);
-
-    // const handleClick = () => {
-    //     // Stop the game first;
-    //     isPlaying1 = false;
-    //     navigate("/");
-    // };
 
     const handleReturnToMenu = () => {
         isPlaying1 = false;
