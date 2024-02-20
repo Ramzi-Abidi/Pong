@@ -392,6 +392,27 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ settings, isSoundOn
     };
 
     useEffect(() => {
+    const handleVisibilityChange = () => {
+        if (document.hidden) {
+            if (isPlaying === true && document.querySelector(".btn") === null) {
+                // set blurry background
+                if (!isBlurry) {
+                    setBlurry(true);
+                }
+                isPlaying1 = !isPlaying1;
+                setIsPaused((prevState) => !prevState);
+            }
+        }
+        };
+
+        document.addEventListener('visibilitychange', handleVisibilityChange);
+
+        return () => {
+        document.removeEventListener('visibilitychange', handleVisibilityChange);
+        };
+    }, [isPlaying, isBlurry, isPlaying1]);
+
+    useEffect(() => {
         board = document.getElementById("board") as HTMLCanvasElement;
         board.height = boardHeight;
         board.width = boardWidth;
