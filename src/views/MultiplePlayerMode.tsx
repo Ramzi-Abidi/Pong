@@ -8,7 +8,7 @@ import buttonClickSound from "../assets/button-click-sound.mp3";
 import { useNavigate } from "react-router-dom";
 import AudioComponent from "../components/Audio";
 import backgroundMusic from "../assets/background-music.mp3";
-import {speedOptions, pointsOptions} from "../utils/options";
+import {speedOptions, pointsOptions, themeOptions} from "../utils/options";
 
 const MultiplePlayerMode: React.FC<MultiplePlayerModeProps> = ({
     settings, isSoundOn
@@ -20,6 +20,7 @@ const MultiplePlayerMode: React.FC<MultiplePlayerModeProps> = ({
     let playerWidth: number = 10;
     let playerHeight: number = 50;
     let playerVelocityY = 0;
+    let theme = themeOptions[settings.themeOption];
 
     let player1: player = {
         x: 2,
@@ -195,7 +196,7 @@ const MultiplePlayerMode: React.FC<MultiplePlayerModeProps> = ({
             context.clearRect(0, 0, boardWidth, boardHeight);
 
             // moving the player 1 up and down
-            context.fillStyle = "skyBlue";
+            context.fillStyle = theme.paddles;
             if (!outOfBound(player1.y + player1.velocityY)) {
                 if (player1.stopPlayer === false) {
                     player1.y += player1.velocityY;
@@ -221,7 +222,7 @@ const MultiplePlayerMode: React.FC<MultiplePlayerModeProps> = ({
                 player2.height,
             ); // fillRect(x,y,width,height)
             // changing the color of the ball
-            context.fillStyle = "#fff";
+            context.fillStyle = theme.ball;
 
             // changing the pos of the ball
             ball.x += ball.velocityX;
@@ -282,7 +283,7 @@ const MultiplePlayerMode: React.FC<MultiplePlayerModeProps> = ({
             );
 
             // drawing line
-            context.fillStyle = "#15b7cd";
+            context.fillStyle = theme.paddles;
             context.fillRect(board.width / 2, 0, 5, board.height);
             // console.log(document.querySelector(".btn"));
             // console.log(document.querySelector(".btn") === null);
@@ -495,7 +496,7 @@ const MultiplePlayerMode: React.FC<MultiplePlayerModeProps> = ({
         board.width = boardWidth;
         context = board.getContext("2d") as CanvasRenderingContext2D;
         // drawing the first player
-        context.fillStyle = "skyBlue";
+        context.fillStyle = theme.paddles;
         // drawing a rectangle
         context.fillRect(player1.x, player1.y, player1.width, player1.height); // fillRect(x,y,width,height)
 
@@ -581,7 +582,7 @@ const MultiplePlayerMode: React.FC<MultiplePlayerModeProps> = ({
                 <span className="label">VS</span>
                 <span>{secondPlayerName}</span>
             </div>
-            <canvas id="board"></canvas>
+            <canvas id="board" style={{ backgroundColor: theme.background, borderColor: theme.background }}></canvas>
             {isSoundOn && playHit && (
                 <AudioComponent
                     onAudioEnd={() => setPlayHit(false)}

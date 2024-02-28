@@ -22,4 +22,32 @@ const pointsOptions : PointsProp = {
   15: { points: 15}
 };
 
-export {pointsOptions};
+export { pointsOptions };
+
+interface ThemeProp {
+  [key: string]: {
+    background: string,
+    paddles: string,
+    ball: string
+  }
+}
+
+const themeOptions : ThemeProp = {
+  'classic' : {
+    background: '#008000',
+    paddles: '#FFFFFF',
+    ball: '#FFA500'
+  },
+  'neon' : {
+    background: '#000000',
+    paddles: '#00FFFF',
+    ball: '#FF69B4'
+  },
+  'retro' : {
+    background: '#FFFF00',
+    paddles: '#FF0000',
+    ball: '#0000FF'
+  }
+}
+
+export {themeOptions}

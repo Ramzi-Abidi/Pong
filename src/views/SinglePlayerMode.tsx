@@ -9,7 +9,7 @@ import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import AudioComponent from "../components/Audio";
 import backgroundMusic from "../assets/background-music.mp3";
-import {speedOptions, pointsOptions} from "../utils/options";
+import {speedOptions, pointsOptions, themeOptions} from "../utils/options";
 
 const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ settings, isSoundOn }) => {    
     let boardWidth: number = 600;
@@ -19,6 +19,7 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ settings, isSoundOn
     let playerWidth: number = 10;
     let playerHeight: number = 50;
     let playerVelocityY = 0;
+    let theme = themeOptions[settings.themeOption];
 
     let player1: player = {
         x: 2,
@@ -170,7 +171,7 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ settings, isSoundOn
                 player2.height,
             );
 
-            context.fillStyle = "#fff";
+            context.fillStyle = theme.ball;
 
             // changing the pos of the ball
             ball.x += ball.velocityX;
@@ -187,7 +188,7 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ settings, isSoundOn
                 player1.y += player1.velocityY;
             }
 
-            context.fillStyle = "skyBlue";
+            context.fillStyle = theme.paddles;
             context.fillRect(
                 player1.x,
                 player1.y,
@@ -195,7 +196,7 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ settings, isSoundOn
                 player1.height,
             );
 
-            context.fillStyle = "#fff";
+            context.fillStyle = theme.ball;
             // recreating the ball
             context.fillRect(ball.x, ball.y, ball.width, ball.height);
             // changing the velocity/direction of the ball when it hits the top/bottom of boundries.
@@ -252,7 +253,7 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ settings, isSoundOn
             );
 
             // drawing line
-            context.fillStyle = "skyBlue";
+            context.fillStyle = theme.paddles;
             context.fillRect(board.width / 2, 0, 5, board.height);
 
             // Winning
@@ -418,7 +419,7 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ settings, isSoundOn
         board.width = boardWidth;
         context = board.getContext("2d") as CanvasRenderingContext2D;
         // drawing the first player
-        context.fillStyle = "skyBlue";
+        context.fillStyle = theme.paddles;
         // drawing a rectangle
         context.fillRect(player1.x, player1.y, player1.width, player1.height); // fillRect(x,y,width,height)
 
@@ -507,7 +508,7 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({ settings, isSoundOn
                 <span className="label">VS</span>
                 <span>{firstPlayerName}</span>
             </div>
-            <canvas id="board"></canvas>
+            <canvas id="board" style = {{backgroundColor: theme.background, borderColor: theme.background}}></canvas>
             {isSoundOn && playHit && (
                 <AudioComponent
                     onAudioEnd={() => setPlayHit(false)}

@@ -16,7 +16,8 @@ const App = () => {
 
     const [settings, setSettings] = useState({
         speedOption: 'medium',
-        pointOption: 10
+        pointOption: 10,
+        themeOption: 'classic'
     });
     
     const updateSettings = (updatedSettings: SettingProps) => {
@@ -28,7 +29,8 @@ const App = () => {
     const handleCallBack = (data: SettingProps, showSettings: boolean) => {
         const updatedSettings = {
             speedOption: data.speedOption,
-            pointOption: data.pointOption
+            pointOption: data.pointOption,
+            themeOption: data.themeOption
         };
         updateSettings(updatedSettings);
     }

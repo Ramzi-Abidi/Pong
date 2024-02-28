@@ -19,6 +19,11 @@ const Settings = (props: any) => {
         setSettings({ ...settings, pointOption: option});
     }
 
+    const handleThemeChange = (event: any) => {
+        const option = event.target.value;
+        setSettings({...settings, themeOption: option})
+    }
+
 
     const onTrigger = () => {
         props.parentCallBack(settings, false);
@@ -73,6 +78,28 @@ const Settings = (props: any) => {
                     </RadioGroup>
 
                     {/* More settings be added here and wrapped to a data object to be sent back to parentCallBack */}
+
+                </FormControl>
+                <Divider />
+                
+                <FormControl>
+                    <FormLabel id="demo-radio-buttons-group-label">
+                        <div className="title home-title-section">
+                            <h3>Set Theme</h3>
+                        </div>
+                    </FormLabel>
+                    
+                    <RadioGroup
+                    row
+                    aria-labelledby='demo-radio-buttons-group-label'
+                    defaultValue='Medium'
+                    name='radio-buttons-group'
+                    value = {settings.themeOption} onChange={handleThemeChange}>  
+                        <FormControlLabel value= 'classic' control={<Radio />} label='Classic' />
+                        <FormControlLabel value= 'retro' control={<Radio />} label='Retro' />
+                        <FormControlLabel value= 'neon' control={<Radio />} label='Neon' />
+                    </RadioGroup>
+
 
                 </FormControl>
                 <Divider/>
