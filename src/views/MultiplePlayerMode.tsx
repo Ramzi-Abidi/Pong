@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import swal from "sweetalert";
 import {
     MultiplePlayerModeProps,
-    SettingProps,
     ball,
     player,
     score,

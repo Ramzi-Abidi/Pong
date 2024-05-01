@@ -47,13 +47,13 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({
         y: boardHeight / 2,
         width: ballWidth,
         height: ballHeight,
-        velocityX: 1, // shhifting by 1px
-        velocityY: 2, // shhifting by 2px
+        velocityX: speedOptions[settings.speedOption].velocityX, // shhifting by 1px
+        velocityY: speedOptions[settings.speedOption].velocityY, // shhifting by 2px
     };
 
     // Update ball object's velocity properties
-    ball.velocityX = speedOptions[settings.speedOption].velocityX;
-    ball.velocityY = speedOptions[settings.speedOption].velocityY;
+    // ball.velocityX = ;
+    // ball.velocityY = ;
 
     const [firstPlayerName, setFirstNamePlayer] = useState<string>("Player 1");
     const [winningNumber, setWinningNumber] = useState<number>(
@@ -161,6 +161,7 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({
                     player2.y += player2.velocityY;
                 }
             }
+
             context.fillRect(
                 player2.x,
                 player2.y,
