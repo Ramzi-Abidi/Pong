@@ -283,9 +283,9 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({
             player2.stopPlayer = false;
 
         if (e.key === "ArrowUp") {
-            player2.velocityY = -3;
+            player2.velocityY = -2;
         } else if (e.key === "ArrowDown") {
-            player2.velocityY = 3;
+            player2.velocityY = 2;
         }
 
         // to pause

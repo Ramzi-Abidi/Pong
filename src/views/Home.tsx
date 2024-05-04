@@ -35,8 +35,9 @@ const Home: React.FC<HomeProps> = ({ isSoundOn, onSoundChange }) => {
 
         // if user clicks on settings button
         if (clickedEl.indexOf("settings") !== -1) {
+            alert("still working on settings!");
             //alert("Still working on the settings!");
-            navigate('/settings');
+            // navigate('/settings');
         }
         // if user clicks on single-player button
         else if (clickedEl.indexOf("single") !== -1) {
