@@ -243,8 +243,8 @@ const MultiplePlayerMode: React.FC<MultiplePlayerModeProps> = ({
                     y: boardHeight / 2,
                     width: ballWidth,
                     height: ballHeight,
-                    velocityX: direction,
-                    velocityY: ball.velocityY,
+                    velocityX: direction, // shhifting by 2px
+                    velocityY: speedOptions[settings.speedOption].velocityY, // shhifting by 2px
                 };
             };
 
@@ -254,12 +254,12 @@ const MultiplePlayerMode: React.FC<MultiplePlayerModeProps> = ({
                     // Play the audio
                     setPlayGoal(true);
                     score.current[2] += 1;
-                    resetGame(1);
+                    resetGame(speedOptions[settings.speedOption].velocityX * -1);
                 } else if (ball.x + ballWidth > boardWidth) {
                     // Play the audio
                     setPlayGoal(true);
                     score.current[1] += 1;
-                    resetGame(1);
+                    resetGame(speedOptions[settings.speedOption].velocityX);
                 }
             }
 

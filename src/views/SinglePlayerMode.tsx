@@ -221,8 +221,10 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({
                     y: boardHeight / 2,
                     width: ballWidth,
                     height: ballHeight,
-                    velocityX: direction,
-                    velocityY: ball.velocityY,
+                    // velocityX: direction,
+                    // velocityY: ball.velocityY,
+                    velocityX: direction, // shhifting by 1px
+                    velocityY: ball.velocityY, // shhifting by 2px
                 };
             };
 
@@ -232,12 +234,12 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({
                     // Play the audio
                     setPlayGoal(true);
                     score.current[2] += 1;
-                    resetGame(1);
+                    resetGame(speedOptions[settings.speedOption].velocityX);
                 } else if (ball.x + ballWidth > boardWidth) {
                     // Play the audio
                     setPlayGoal(true);
                     score.current[1] += 1;
-                    resetGame(-1);
+                    resetGame(speedOptions[settings.speedOption].velocityX);
                 }
             }
 
