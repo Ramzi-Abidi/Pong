@@ -6,7 +6,7 @@ interface SpeedProp {
 
 const speedOptions: SpeedProp = {
     slow: { velocityX: 3.5, velocityY: 2 },
-    medium: { velocityX: 3.75, velocityY: 2.5 },
+    medium: { velocityX: 3.75, velocityY: 2.25 },
     fast: { velocityX: 4, velocityY: 3.25 },
 };
 
