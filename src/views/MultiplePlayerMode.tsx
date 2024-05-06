@@ -306,15 +306,15 @@ const MultiplePlayerMode: React.FC<MultiplePlayerModeProps> = ({
             player2.stopPlayer = false;
 
         if (e.key === "z") {
-            player1.velocityY = -2;
+            player1.velocityY = -3;
         } else if (e.key === "s") {
-            player1.velocityY = 2;
+            player1.velocityY = 3;
         }
 
         if (e.key === "ArrowUp") {
-            player2.velocityY = -2;
+            player2.velocityY = -3;
         } else if (e.key === "ArrowDown") {
-            player2.velocityY = 2;
+            player2.velocityY = 3;
         }
 
         // to pause
