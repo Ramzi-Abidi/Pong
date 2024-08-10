@@ -114,7 +114,7 @@ section {
     left: 1.5rem;
     display: flex;
     flex-direction: column;
-    align-items: baseline;
+    align-items: stretch;
 }
 
 .playing-state {
@@ -243,16 +243,17 @@ section {
 }
 
 .return-btn {
-    background-color: transparent;
+    background-color: #1399aa;
     color: #fff;
     padding: 10px 20px;
-    border: none;
+    border: 1px solid white;
     border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
     text-align: center;
     text-decoration: none;
     transition: 0.5s;
+    font-family: inherit;
 }
 
 .return-btn:hover {
