@@ -38,8 +38,12 @@ export interface SinglePlayerModeProps {
     settings: SettingProps;
     isSoundOn: boolean;
 }
-
-export interface SettingProps{
-    speedOption: string;
+export enum SpeedOption {
+    SLOW = 'slow',
+    MEDIUM = 'medium',
+    FAST = 'fast',
+}
+export interface SettingProps {
+    speedOption: SpeedOption;
     pointOption: number;
 }

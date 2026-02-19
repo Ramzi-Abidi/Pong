@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import swal from "sweetalert";
-import { SinglePlayerModeProps, ball, player, score } from "../utils/types";
+import { ball, player, score } from "../utils/types";
 import pongImage from "../assets/pong-header.png";
 import hitSound from "../assets/Paddle Ball Hit Sound Effect HD.mp3";
 import goalSound from "../assets/goal.mp3";
@@ -10,11 +10,11 @@ import AudioComponent from "../components/Audio";
 import backgroundMusic from "../assets/background-music.mp3";
 import { speedOptions, pointsOptions } from "../utils/options";
 import { GAME_CONFIG, COLORS, AUDIO_VOLUMES } from "../utils/constants";
+import { useAppStore } from "../store/useAppStore";
 
-const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({
-    settings,
-    isSoundOn,
-}) => {
+const SinglePlayerMode: React.FC = () => {
+    const settings = useAppStore((state) => state.settings);
+    const isSoundOn = useAppStore((state) => state.isSoundOn);
     const navigate = useNavigate();
     
     // Canvas ref for proper React DOM access
