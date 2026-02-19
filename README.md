@@ -22,7 +22,7 @@ Welcome to the Pong Game! Immerse yourself in this classic Pong experience, reim
 To get the game running on your local machine, follow these simple steps:
 
 ```bash
-git clone https://github.com/your-username/react-pong-game.git
+git clone https://github.com/Ramzi-Abidi/Pong.git
 cd pong
 npm install
 ```
