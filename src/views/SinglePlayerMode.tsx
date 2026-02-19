@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import swal from "sweetalert";
 import { SinglePlayerModeProps, ball, player, score } from "../utils/types";
 import pongImage from "../assets/pong-header.png";
@@ -9,111 +9,119 @@ import { useNavigate } from "react-router-dom";
 import AudioComponent from "../components/Audio";
 import backgroundMusic from "../assets/background-music.mp3";
 import { speedOptions, pointsOptions } from "../utils/options";
+import { GAME_CONFIG, COLORS, AUDIO_VOLUMES } from "../utils/constants";
 
 const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({
     settings,
     isSoundOn,
 }) => {
-    let boardWidth: number = 600;
-    let boardHeight: number = 400;
-    let context: CanvasRenderingContext2D;
-    let board: HTMLCanvasElement;
-    let playerWidth: number = 10;
-    let playerHeight: number = 50;
-    let playerVelocityY = 0;
-
-    let player1: player = {
-        x: 2,
-        y: boardHeight / 2,
-        width: playerWidth,
-        height: playerHeight,
-        velocityY: playerVelocityY, // change in the position over time
+    const navigate = useNavigate();
+    
+    // Canvas ref for proper React DOM access
+    const canvasRef = useRef<HTMLCanvasElement>(null);
+    const contextRef = useRef<CanvasRenderingContext2D | null>(null);
+    
+    // Animation frame ref for proper cleanup
+    const animationFrameRef = useRef<number | null>(null);
+    
+    // Game state refs (mutable values that persist across renders)
+    const isPlayingRef = useRef<boolean>(false);
+    const player1Ref = useRef<player>({
+        x: GAME_CONFIG.PLAYER_OFFSET,
+        y: GAME_CONFIG.BOARD_HEIGHT / 2,
+        width: GAME_CONFIG.PLAYER_WIDTH,
+        height: GAME_CONFIG.PLAYER_HEIGHT,
+        velocityY: 0,
         stopPlayer: false,
-    };
-
-    let player2: player = {
-        x: boardWidth - playerWidth - 2,
-        y: boardHeight / 2,
-        width: playerWidth,
-        height: playerHeight,
-        velocityY: playerVelocityY, // change in teh position over time
+    });
+    const player2Ref = useRef<player>({
+        x: GAME_CONFIG.BOARD_WIDTH - GAME_CONFIG.PLAYER_WIDTH - GAME_CONFIG.PLAYER_OFFSET,
+        y: GAME_CONFIG.BOARD_HEIGHT / 2,
+        width: GAME_CONFIG.PLAYER_WIDTH,
+        height: GAME_CONFIG.PLAYER_HEIGHT,
+        velocityY: 0,
         stopPlayer: false,
-    };
-    const ballWidth = 10;
-    const ballHeight = 10;
-
-    let ball: ball = {
-        x: boardWidth / 2,
-        y: boardHeight / 2,
-        width: ballWidth,
-        height: ballHeight,
-        velocityX: speedOptions[settings.speedOption].velocityX, // shhifting by 1px
-        velocityY: speedOptions[settings.speedOption].velocityY, // shhifting by 2px
-    };
-
-    // Update ball object's velocity properties
-    // ball.velocityX = ;
-    // ball.velocityY = ;
-
+    });
+    const ballRef = useRef<ball>({
+        x: GAME_CONFIG.BOARD_WIDTH / 2,
+        y: GAME_CONFIG.BOARD_HEIGHT / 2,
+        width: GAME_CONFIG.BALL_SIZE,
+        height: GAME_CONFIG.BALL_SIZE,
+        velocityX: speedOptions[settings.speedOption].velocityX,
+        velocityY: speedOptions[settings.speedOption].velocityY,
+    });
+    const scoreRef = useRef<score>({ 1: 0, 2: 0 });
+    const firstPlayerNameRef = useRef<string>("Player 1");
+    const secondPlayerNameRef = useRef<string>("Player 2");
+    
+    // Ref to track if modal is open (replaces DOM queries)
+    const isModalOpenRef = useRef<boolean>(false);
+    
+    // React state for UI updates
     const [firstPlayerName, setFirstNamePlayer] = useState<string>("Player 1");
-    const [winningNumber, setWinningNumber] = useState<number>(
+    const [winningNumber] = useState<number>(
         pointsOptions[settings.pointOption].points,
     );
-    const [secondPlayerName, setSecondNamePlayer] = useState("Player 2");
+    const [secondPlayerName] = useState<string>("Player 2");
     const [isBlurry, setBlurry] = useState<boolean>(true);
-    // const [isPlaying, setIsPlaying] = useState<boolean>(true);
     const [playHit, setPlayHit] = useState<boolean>(false);
     const [playGoal, setPlayGoal] = useState<boolean>(false);
     const [isPaused, setIsPaused] = useState<boolean>(false);
     const [isBackgroundMusicPlaying, setBackgroundMusicPlaying] =
         useState<boolean>(false);
-
     const [timer, setTimer] = useState<number>(0);
-
+    
     const timerRef = useRef<number | null>(null);
 
-    const startTimer = (): void => {
+    const startTimer = useCallback((): void => {
         timerRef.current = window.setInterval(() => {
-            if (isPlaying1) {
+            if (isPlayingRef.current) {
                 setTimer((prevTimer) => prevTimer + 1);
             }
         }, 1000);
-    };
+    }, []);
 
-    const resetTimer = () => {
+    const resetTimer = useCallback((): void => {
         setTimer(0);
         if (timerRef.current !== null) {
             clearInterval(timerRef.current);
         }
-    };
+    }, []);
 
-    let isPlaying1 = false;
-    const score = useRef<score>({
-        1: 0,
-        2: 0,
-    });
-    const navigate = useNavigate();
-
-    let firstPlayerName1: string = firstPlayerName;
-    let secondPlayerName1: string = secondPlayerName;
-
-    const detectCollision = (a: any, b: any) => {
+    const detectCollision = (a: player | ball, b: player | ball): boolean => {
         return (
-            a.x < b.x + b.width && //a's top left corner doesn't reach b's top right corner
-            a.x + a.width > b.x && //a's top right corner passes b's top left corner
-            a.y < b.y + b.height && //a's top left corner doesn't reach b's bottom left corner
+            a.x < b.x + b.width &&
+            a.x + a.width > b.x &&
+            a.y < b.y + b.height &&
             a.y + a.height > b.y
-        ); //a's bottom left corner passes b's top left corner
+        );
     };
 
-    const outOfBound = (y: number) => {
-        return y < 0 || y + player1.height > boardHeight;
+    const outOfBound = (y: number): boolean => {
+        return y < 0 || y + GAME_CONFIG.PLAYER_HEIGHT > GAME_CONFIG.BOARD_HEIGHT;
     };
 
-    const win = (playerName: string) => {
-        isPlaying1 = false;
+    const resetScores = useCallback((): void => {
+        scoreRef.current[1] = 0;
+        scoreRef.current[2] = 0;
+    }, []);
+
+    const resetBall = useCallback((direction: number): void => {
+        ballRef.current = {
+            x: GAME_CONFIG.BOARD_WIDTH / 2,
+            y: GAME_CONFIG.BOARD_HEIGHT / 2,
+            width: GAME_CONFIG.BALL_SIZE,
+            height: GAME_CONFIG.BALL_SIZE,
+            velocityX: direction,
+            velocityY: ballRef.current.velocityY,
+        };
+    }, []);
+
+    const win = useCallback((playerName: string): void => {
+        isPlayingRef.current = false;
         setBlurry(true);
         resetScores();
+        isModalOpenRef.current = true;
 
         alert(`Game over!`);
         swal({
@@ -122,21 +130,19 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({
             buttons: {
                 home: "Go to Home",
                 star: "Star GitHub⭐",
-                // menu: "Return to menu",
                 play: "Play again",
             } as any,
             className: "btn",
         }).then((value) => {
+            isModalOpenRef.current = false;
             console.log(value);
             if (value === "menu") {
-                isPlaying1 = false;
+                isPlayingRef.current = false;
                 resetScores();
-                // later we will change this to creat a menu
                 enterPlayerNames();
             } else if (value === "home") {
                 navigate("/");
             } else if (value === "play") {
-                // play again
                 resetTimer();
                 enterPlayerNames();
                 startTimer();
@@ -145,170 +151,169 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({
                 navigate("/");
             }
         });
-    };
+    }, [navigate, resetScores, resetTimer, startTimer]);
 
-    const animate = (): void => {
-        requestAnimationFrame(animate); // The requestAnimationFrame() method used to repeat something pretty fast :) => alternative to setInterval()
-        if (isPlaying1 === true) {
-            setBackgroundMusicPlaying(true);
+    const animate = useCallback((): void => {
+        animationFrameRef.current = requestAnimationFrame(animate);
+        
+        if (!isPlayingRef.current || !contextRef.current || !canvasRef.current) {
+            return;
+        }
+        
+        setBackgroundMusicPlaying(true);
+        const context = contextRef.current;
+        const board = canvasRef.current;
+        const player1 = player1Ref.current;
+        const player2 = player2Ref.current;
+        const currentBall = ballRef.current;
 
-            // clearing the canvas
-            context.clearRect(0, 0, boardWidth, boardHeight);
+        // clearing the canvas
+        context.clearRect(0, 0, GAME_CONFIG.BOARD_WIDTH, GAME_CONFIG.BOARD_HEIGHT);
 
-            // moving the player 2 up and down
-            if (!outOfBound(player2.y + player2.velocityY)) {
-                if (player2.stopPlayer === false) {
-                    player2.y += player2.velocityY;
-                }
-            }
-
-            context.fillRect(
-                player2.x,
-                player2.y,
-                player2.width,
-                player2.height,
-            );
-
-            context.fillStyle = "#fff";
-
-            // changing the pos of the ball
-            ball.x += ball.velocityX;
-            ball.y += ball.velocityY;
-
-            // moving the player 1 up and down following the ball position
-            if (ball.y > player1.y) {
-                player1.velocityY = 2;
-            } else if (ball.y < player1.y) {
-                player1.velocityY = -2;
-            }
-
-            if (!outOfBound(player1.y + player1.velocityY)) {
-                player1.y += player1.velocityY;
-            }
-
-            context.fillStyle = "skyBlue";
-            context.fillRect(
-                player1.x,
-                player1.y,
-                player1.width,
-                player1.height,
-            );
-
-            context.fillStyle = "#fff";
-            // recreating the ball
-            context.fillRect(ball.x, ball.y, ball.width, ball.height);
-            // changing the velocity/direction of the ball when it hits the top/bottom of boundries.
-            if (ball.y <= 0 || ball.y + ball.height >= boardHeight) {
-                ball.velocityY *= -1;
-            }
-            // detecting collision with player1 or with player2
-            if (detectCollision(ball, player1)) {
-                setPlayHit(true);
-                // left side of ball touches right side of player1
-                if (ball.x <= player1.x + player1.width) {
-                    ball.velocityX *= -1;
-                }
-            } else if (detectCollision(ball, player2)) {
-                setPlayHit(true);
-                // right side of ball touches left side player2
-                if (ball.x + ballWidth >= player2.x) {
-                    ball.velocityX *= -1;
-                }
-            }
-            const resetGame = (direction: number) => {
-                ball = {
-                    x: boardWidth / 2,
-                    y: boardHeight / 2,
-                    width: ballWidth,
-                    height: ballHeight,
-                    // velocityX: direction,
-                    // velocityY: ball.velocityY,
-                    velocityX: direction, // shhifting by 1px
-                    velocityY: ball.velocityY, // shhifting by 2px
-                };
-            };
-
-            // Scoring goal
-            if (isPlaying1) {
-                if (ball.x < 0) {
-                    // Play the audio
-                    setPlayGoal(true);
-                    score.current[2] += 1;
-                    resetGame(speedOptions[settings.speedOption].velocityX);
-                } else if (ball.x + ballWidth > boardWidth) {
-                    // Play the audio
-                    setPlayGoal(true);
-                    score.current[1] += 1;
-                    resetGame(speedOptions[settings.speedOption].velocityX);
-                }
-            }
-
-            // score
-            context.font = "45px sans-serif";
-            context.fillText(score.current[1].toString(), boardWidth / 5, 45);
-            context.fillText(
-                score.current[2].toString(),
-                (boardWidth * 4) / 5 - 45,
-                45,
-            );
-
-            // drawing line
-            context.fillStyle = "skyBlue";
-            context.fillRect(board.width / 2, 0, 5, board.height);
-
-            // Winning
-            if (
-                score.current[1] >= winningNumber &&
-                isPlaying1 === true &&
-                document.querySelector(".btn") === null &&
-                document.querySelector(".driver-popover-title") === null
-            ) {
-                isPlaying1 = false;
-                win(firstPlayerName1);
-            } else if (
-                score.current[2] >= winningNumber &&
-                isPlaying1 === true &&
-                document.querySelector(".btn") === null &&
-                document.querySelector(".driver-popover-title") === null
-            ) {
-                isPlaying1 = false;
-                win(secondPlayerName1);
+        // moving the player 2 up and down
+        if (!outOfBound(player2.y + player2.velocityY)) {
+            if (player2.stopPlayer === false) {
+                player2.y += player2.velocityY;
             }
         }
-    };
 
-    const movePlayer = (e: any): void => {
-        // if (e.key === "z" || e.key === "s") player1.stopPlayer = false;
-        if (e.key === "ArrowUp" || e.key === "ArrowDown")
+        context.fillRect(
+            player2.x,
+            player2.y,
+            player2.width,
+            player2.height,
+        );
+
+        context.fillStyle = COLORS.BALL;
+
+        // changing the pos of the ball
+        currentBall.x += currentBall.velocityX;
+        currentBall.y += currentBall.velocityY;
+
+        // moving the player 1 up and down following the ball position (AI)
+        if (currentBall.y > player1.y) {
+            player1.velocityY = GAME_CONFIG.AI_VELOCITY;
+        } else if (currentBall.y < player1.y) {
+            player1.velocityY = -GAME_CONFIG.AI_VELOCITY;
+        }
+
+        if (!outOfBound(player1.y + player1.velocityY)) {
+            player1.y += player1.velocityY;
+        }
+
+        context.fillStyle = COLORS.PLAYER;
+        context.fillRect(
+            player1.x,
+            player1.y,
+            player1.width,
+            player1.height,
+        );
+
+        context.fillStyle = COLORS.BALL;
+        // recreating the ball
+        context.fillRect(currentBall.x, currentBall.y, currentBall.width, currentBall.height);
+        
+        // changing the velocity/direction of the ball when it hits the top/bottom of boundaries
+        if (currentBall.y <= 0 || currentBall.y + currentBall.height >= GAME_CONFIG.BOARD_HEIGHT) {
+            currentBall.velocityY *= -1;
+        }
+        
+        // detecting collision with player1 or with player2
+        if (detectCollision(currentBall, player1)) {
+            setPlayHit(true);
+            if (currentBall.x <= player1.x + player1.width) {
+                currentBall.velocityX *= -1;
+            }
+        } else if (detectCollision(currentBall, player2)) {
+            setPlayHit(true);
+            if (currentBall.x + GAME_CONFIG.BALL_SIZE >= player2.x) {
+                currentBall.velocityX *= -1;
+            }
+        }
+
+        // Scoring goal
+        if (isPlayingRef.current) {
+            if (currentBall.x < 0) {
+                setPlayGoal(true);
+                scoreRef.current[2] += 1;
+                resetBall(speedOptions[settings.speedOption].velocityX);
+            } else if (currentBall.x + GAME_CONFIG.BALL_SIZE > GAME_CONFIG.BOARD_WIDTH) {
+                setPlayGoal(true);
+                scoreRef.current[1] += 1;
+                resetBall(speedOptions[settings.speedOption].velocityX);
+            }
+        }
+
+        // score
+        context.font = "45px sans-serif";
+        context.fillText(scoreRef.current[1].toString(), GAME_CONFIG.BOARD_WIDTH / 5, 45);
+        context.fillText(
+            scoreRef.current[2].toString(),
+            (GAME_CONFIG.BOARD_WIDTH * 4) / 5 - 45,
+            45,
+        );
+
+        // drawing line
+        context.fillStyle = COLORS.CENTER_LINE;
+        context.fillRect(board.width / 2, 0, 5, board.height);
+
+        // Winning
+        if (
+            scoreRef.current[1] >= winningNumber &&
+            isPlayingRef.current === true &&
+            !isModalOpenRef.current
+        ) {
+            isPlayingRef.current = false;
+            win(firstPlayerNameRef.current);
+        } else if (
+            scoreRef.current[2] >= winningNumber &&
+            isPlayingRef.current === true &&
+            !isModalOpenRef.current
+        ) {
+            isPlayingRef.current = false;
+            win(secondPlayerNameRef.current);
+        }
+    }, [resetBall, settings.speedOption, win, winningNumber]);
+
+    const movePlayer = useCallback((e: KeyboardEvent): void => {
+        const player2 = player2Ref.current;
+        
+        if (e.key === "ArrowUp" || e.key === "ArrowDown") {
             player2.stopPlayer = false;
+        }
 
         if (e.key === "ArrowUp") {
-            player2.velocityY = -3;
+            player2.velocityY = -GAME_CONFIG.PLAYER_VELOCITY;
         } else if (e.key === "ArrowDown") {
-            player2.velocityY = 3;
+            player2.velocityY = GAME_CONFIG.PLAYER_VELOCITY;
         }
 
         // to pause
         if (e.key === "p" || e.key === "Escape") {
-            // check if there's a popup
-            const popup = document.querySelector(".btn");
-            if (popup === null) {
-                isPlaying1 = !isPlaying1;
+            if (!isModalOpenRef.current) {
+                isPlayingRef.current = !isPlayingRef.current;
                 setIsPaused((isPaused) => !isPaused);
             }
         }
-    };
+    }, []);
 
-    const resetScores = (): void => {
-        score.current[1] = 0;
-        score.current[2] = 0;
-    };
+    const stopMovingPlayer = useCallback((e: KeyboardEvent): void => {
+        if (e.key === "z" || e.key === "s") {
+            player1Ref.current.stopPlayer = true;
+        }
 
-    const enterPlayerNames = async (): Promise<void> => {
-        let obj: any = {
+        if (e.key === "ArrowUp" || e.key === "ArrowDown") {
+            player2Ref.current.stopPlayer = true;
+        }
+    }, []);
+
+    const enterPlayerNames = useCallback(async (): Promise<void> => {
+        isModalOpenRef.current = true;
+        
+        let obj: Record<string, unknown> = {
             title: "Player 1, your name ?",
             text: "If you're feeling mysterious, hit [ESC] or [Enter] to skip.",
-            content: "input" as any,
+            content: "input",
             buttons: {
                 return: "Return to menu",
                 ok: {
@@ -322,30 +327,31 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({
             closeOnEsc: true,
         };
 
-        const name = await swal(obj);
+        const name = await swal(obj as Parameters<typeof swal>[0]);
         document.querySelector(".btn")?.remove();
 
         if (name === "return") {
+            isModalOpenRef.current = false;
             navigate("/");
             return;
         }
 
-        if (name !== null && name.trim() !== "") {
-            firstPlayerName1 = name.trim();
+        if (name !== null && typeof name === "string" && name.trim() !== "") {
+            firstPlayerNameRef.current = name.trim();
             setFirstNamePlayer(name.trim());
-            console.log(firstPlayerName1, name.trim());
+            console.log(firstPlayerNameRef.current, name.trim());
         }
 
         const title: string =
-            firstPlayerName1 !== "" && firstPlayerName1 !== null
-                ? `${firstPlayerName1}`
+            firstPlayerNameRef.current !== "" && firstPlayerNameRef.current !== null
+                ? `${firstPlayerNameRef.current}`
                 : "";
 
         obj = {
             title: `Let the fun flow, ${title}!`,
             text: `How to play ?
 
-            ${firstPlayerName1}, use 'z' and 's' keys (Right paddle).
+            ${firstPlayerNameRef.current}, use 'z' and 's' keys (Right paddle).
             
             You'll be playing against a BOT.
             
@@ -363,47 +369,26 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({
             closeOnEsc: true,
         };
 
-        await swal(obj);
-
+        await swal(obj as Parameters<typeof swal>[0]);
         document.querySelector(".btn")?.remove();
 
         alert(`Once you click 'OK' your game will launch instantly! :))`);
 
-        isPlaying1 = true;
+        isModalOpenRef.current = false;
+        isPlayingRef.current = true;
 
         startTimer();
-        // reset the players' scores
         resetScores();
-        // set blurry backerground
         setBlurry(false);
-        // start the game
-        isPlaying1 = true;
-    };
-
-    const stopMovingPlayer = (e: any): void => {
-        if (e.key === "z" || e.key === "s") {
-            player1.stopPlayer = true;
-        }
-
-        if (e.key === "ArrowUp" || e.key === "ArrowDown") {
-            player2.stopPlayer = true;
-        }
-    };
+        isPlayingRef.current = true;
+    }, [navigate, resetScores, startTimer]);
 
     useEffect(() => {
-        const handleVisibilityChange = () => {
+        const handleVisibilityChange = (): void => {
             if (document.hidden) {
-                if (
-                    isPlaying1 === true &&
-                    document.querySelector(".btn") === null
-                ) {
-                    // set blurry background
-                    if (!isBlurry) {
-                        setBlurry(true);
-                    }
-                    if (isPlaying1) {
-                        isPlaying1 = false;
-                    }
+                if (isPlayingRef.current === true && !isModalOpenRef.current) {
+                    setBlurry(true);
+                    isPlayingRef.current = false;
                     setIsPaused((isPaused) => !isPaused);
                 }
             }
@@ -412,40 +397,50 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({
         document.addEventListener("visibilitychange", handleVisibilityChange);
 
         return () => {
-            document.removeEventListener(
-                "visibilitychange",
-                handleVisibilityChange,
-            );
+            document.removeEventListener("visibilitychange", handleVisibilityChange);
         };
-    }, [isBlurry, isPlaying1]);
+    }, []);
 
     useEffect(() => {
-        board = document.getElementById("board") as HTMLCanvasElement;
-        board.height = boardHeight;
-        board.width = boardWidth;
-        context = board.getContext("2d") as CanvasRenderingContext2D;
+        const canvas = canvasRef.current;
+        if (!canvas) return;
+        
+        canvas.height = GAME_CONFIG.BOARD_HEIGHT;
+        canvas.width = GAME_CONFIG.BOARD_WIDTH;
+        contextRef.current = canvas.getContext("2d");
+        
+        if (!contextRef.current) return;
+        
         // drawing the first player
-        context.fillStyle = "skyBlue";
-        // drawing a rectangle
-        context.fillRect(player1.x, player1.y, player1.width, player1.height); // fillRect(x,y,width,height)
+        contextRef.current.fillStyle = COLORS.PLAYER;
+        contextRef.current.fillRect(
+            player1Ref.current.x,
+            player1Ref.current.y,
+            player1Ref.current.width,
+            player1Ref.current.height
+        );
 
         // entering names
         enterPlayerNames();
 
         // loop of game
-        requestAnimationFrame(animate);
+        animationFrameRef.current = requestAnimationFrame(animate);
         window.addEventListener("keydown", movePlayer);
         window.addEventListener("keyup", stopMovingPlayer);
 
         return () => {
             resetTimer();
+            if (animationFrameRef.current !== null) {
+                cancelAnimationFrame(animationFrameRef.current);
+            }
             window.removeEventListener("keydown", movePlayer);
             window.removeEventListener("keyup", stopMovingPlayer);
         };
-    }, []);
+    }, [animate, enterPlayerNames, movePlayer, resetTimer, stopMovingPlayer]);
 
-    const handleReturnToMenu = () => {
-        isPlaying1 = false;
+    const handleReturnToMenu = (): void => {
+        isPlayingRef.current = false;
+        isModalOpenRef.current = true;
 
         swal({
             title: "Want to exit the gameplay?",
@@ -455,17 +450,17 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({
             } as any,
             dangerMode: true,
         }).then((isConfirmed) => {
+            isModalOpenRef.current = false;
             if (isConfirmed) {
-                // Stop the game first;
-                isPlaying1 = false;
+                isPlayingRef.current = false;
                 navigate("/");
             } else {
-                isPlaying1 = true;
+                isPlayingRef.current = true;
             }
         });
     };
 
-    const playSound = () => {
+    const playSound = (): void => {
         const audio = new Audio(buttonClickSound);
 
         if (isSoundOn) {
@@ -483,9 +478,6 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({
                 </div>
             </div>
             <div className="options-container">
-                {/* <span className="playing-state">
-                    &#123; &#40; &#41;&#61;&gt; Press p to pause game &#125;
-                </span> */}
                 <span className="playing-state"> Press p to pause game</span>
                 <button
                     onClick={() => {
@@ -509,26 +501,26 @@ const SinglePlayerMode: React.FC<SinglePlayerModeProps> = ({
                 <span className="label">VS</span>
                 <span>{firstPlayerName}</span>
             </div>
-            <canvas id="board"></canvas>
+            <canvas id="board" ref={canvasRef}></canvas>
             {isSoundOn && playHit && (
                 <AudioComponent
                     onAudioEnd={() => setPlayHit(false)}
                     path={hitSound}
-                    volume={0.18}
+                    volume={AUDIO_VOLUMES.HIT}
                 />
             )}
             {isSoundOn && playGoal && (
                 <AudioComponent
                     onAudioEnd={() => setPlayGoal(false)}
                     path={goalSound}
-                    volume={0.18}
+                    volume={AUDIO_VOLUMES.GOAL}
                 />
             )}
             {isSoundOn && isBackgroundMusicPlaying && (
                 <AudioComponent
                     onAudioEnd={() => setBackgroundMusicPlaying(false)}
                     path={backgroundMusic}
-                    volume={0.02}
+                    volume={AUDIO_VOLUMES.BACKGROUND}
                 />
             )}
         </section>
