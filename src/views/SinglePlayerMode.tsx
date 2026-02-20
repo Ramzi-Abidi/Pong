@@ -25,7 +25,7 @@ const SinglePlayerMode: React.FC = () => {
     const animationFrameRef = useRef<number | null>(null);
     
     // Game state refs (mutable values that persist across renders)
-    const isPlayingRef = useRef<boolean>(false);
+    const isPlayingRef = useRef(false);
     const player1Ref = useRef<player>({
         x: GAME_CONFIG.PLAYER_OFFSET,
         y: GAME_CONFIG.BOARD_HEIGHT / 2,
@@ -55,7 +55,7 @@ const SinglePlayerMode: React.FC = () => {
     const secondPlayerNameRef = useRef<string>("Player 2");
     
     // Ref to track if modal is open (replaces DOM queries)
-    const isModalOpenRef = useRef<boolean>(false);
+    const isModalOpenRef = useRef(false);
     
     // React state for UI updates
     const [firstPlayerName, setFirstNamePlayer] = useState<string>("Player 1");
@@ -63,13 +63,13 @@ const SinglePlayerMode: React.FC = () => {
         pointsOptions[settings.pointOption].points,
     );
     const [secondPlayerName] = useState<string>("Player 2");
-    const [isBlurry, setBlurry] = useState<boolean>(true);
-    const [playHit, setPlayHit] = useState<boolean>(false);
-    const [playGoal, setPlayGoal] = useState<boolean>(false);
-    const [isPaused, setIsPaused] = useState<boolean>(false);
+    const [isBlurry, setBlurry] = useState(true);
+    const [playHit, setPlayHit] = useState(false);
+    const [playGoal, setPlayGoal] = useState(false);
+    const [isPaused, setIsPaused] = useState(false);
     const [isBackgroundMusicPlaying, setBackgroundMusicPlaying] =
-        useState<boolean>(false);
-    const [timer, setTimer] = useState<number>(0);
+        useState(false);
+    const [timer, setTimer] = useState(0);
     
     const timerRef = useRef<number | null>(null);
 
