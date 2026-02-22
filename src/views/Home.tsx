@@ -5,6 +5,7 @@ import soundOnImage from "../assets/sound-on.png";
 import soundOffImage from "../assets/sound-off.png";
 import singlePlayerIcon from "../assets/single-player.png";
 import multiPlayerIcon from "../assets/multi-player.png";
+import onlinePlayerIcon from "../assets/multi-player.png"; // We can reuse the same icon for now
 import settingsIcon from "../assets/settings-icon.png";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import buttonClickSound from "../assets/button-click-sound.mp3";
@@ -36,6 +37,8 @@ const Home = () => {
             navigate('/settings');
         } else if (clickedEl.indexOf("single") !== -1) {
             navigate("/single-player");
+        } else if (clickedEl.indexOf("online") !== -1) {
+            navigate("/online-player");
         } else {
             navigate("/multiple-player");
         }
@@ -121,6 +124,16 @@ const Home = () => {
                             >
                                 <img src={multiPlayerIcon} alt="" />
                                 Two players
+                            </Button>
+                        </div>
+
+                        <div className="home-page-option">
+                            <Button
+                                onClick={(e) => { handleClick(e); playSound(); }}
+                                className="online-player"
+                            >
+                                <img src={onlinePlayerIcon} alt="" />
+                                Online Match
                             </Button>
                         </div>
 
