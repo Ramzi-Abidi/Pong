@@ -1,8 +1,9 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { SpeedOption } from '../utils/types';
 
 export interface GameSettings {
-    speedOption: 'slow' | 'medium' | 'fast';
+    speedOption: SpeedOption;
     pointOption: number;
 }
 
@@ -23,7 +24,7 @@ export const useAppStore = create<AppState>()(
             // Initial state
             isSoundOn: true,
             settings: {
-                speedOption: 'medium',
+                speedOption: SpeedOption.MEDIUM,
                 pointOption: 10,
             },
 
