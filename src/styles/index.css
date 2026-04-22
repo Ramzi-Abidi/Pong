@@ -155,9 +155,7 @@ section {
 
 .star-github-button {
     display: flex;
-    width: auto;
-    height: auto;
-    padding: 0 5px;
+    padding: .1rem .5rem;
     position: absolute;
     background-color: #f1f1f1;
     top: 1rem;
@@ -187,7 +185,6 @@ section {
     text-align: center;
     background-color: #fff;
     width: 600px;
-    /* height: 500px; */
     border-radius: 6px;
     padding: 1rem;
     margin-top: 5rem;
@@ -214,6 +211,10 @@ section {
     bottom: 0;
     display: flex;
     color: #333;
+}
+
+.menu .checkbox h4 {
+    margin-left: 0.5rem;
 }
 
 .menu .checkbox img {
@@ -260,11 +261,6 @@ section {
     background: #15b8cd0a;
     color: #15b7cd;
 }
-
-/* .return-btn:focus {
-    outline: none;
-    box-shadow: 0 0 5px #15b7cd;
-} */
 
 .game-paused-info {
     position: absolute;
