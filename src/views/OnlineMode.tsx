@@ -233,8 +233,8 @@ const OnlineMode: React.FC = () => {
                 join: { text: "Join Room", value: "join" },
                 cancel: { text: "Back", value: "cancel" }
             } as any,
-            closeOnClickOutside: false,
-            closeOnEsc: false,
+            closeOnClickOutside: true,
+            closeOnEsc: true,
         });
 
         if (choice === "cancel") {
@@ -246,10 +246,18 @@ const OnlineMode: React.FC = () => {
         const name = await swal({
             title: "Enter your name",
             content: "input" as any,
-            buttons: { confirm: { text: "Next", value: true } },
-            closeOnClickOutside: false,
-            closeOnEsc: false,
+            buttons: {
+                cancel: { text: "Back", value: "cancel" },
+                confirm: { text: "Next", value: true }
+            } as any,
+            closeOnClickOutside: true,
+            closeOnEsc: true,
         });
+
+        if (name === "cancel") {
+            showJoinCreateMenu();
+            return;
+        }
 
         if (!name) {
             showJoinCreateMenu();
@@ -264,10 +272,18 @@ const OnlineMode: React.FC = () => {
             const code = await swal({
                 title: "Enter Room Code",
                 content: "input" as any,
-                buttons: { confirm: { text: "Join", value: true } },
-                closeOnClickOutside: false,
-                closeOnEsc: false,
+                buttons: {
+                    cancel: { text: "Back", value: "cancel" },
+                    confirm: { text: "Join", value: true }
+                } as any,
+                closeOnClickOutside: true,
+                closeOnEsc: true,
             });
+
+            if (code === "cancel") {
+                showJoinCreateMenu();
+                return;
+            }
 
             if (!code) {
                 showJoinCreateMenu();
@@ -381,12 +397,13 @@ const OnlineMode: React.FC = () => {
     }, [isBlurry]);
 
     const playSound = () => {
-        const audio = new Audio(buttonClickSound);
-        if (isSoundOn) audio.play();
+        if (isSoundOn) {
+            const audio = new Audio(buttonClickSound);
+            audio.play().catch(e => console.log('Audio play failed:', e));
+        }
     };
 
     const handleReturnToMenu = () => {
-        playSound();
         swal({
             title: "Leave Match?",
             text: "This will disconnect you from the online game.",
@@ -417,7 +434,13 @@ const OnlineMode: React.FC = () => {
                 <span className="playing-state">
                     Status: <span style={{ color: connectionStatus === "Connected" ? "#4CAF50" : "#F44336" }}>{connectionStatus}</span>
                 </span>
-                <button onClick={handleReturnToMenu} className="return-btn">
+                <button
+                    onClick={() => {
+                        handleReturnToMenu();
+                        playSound();
+                    }}
+                    className="return-btn"
+                >
                     Return to menu
                 </button>
             </div>

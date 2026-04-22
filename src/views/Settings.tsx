@@ -10,12 +10,14 @@ import {
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import HomeIcon from "@mui/icons-material/Home";
+import buttonClickSound from "../assets/button-click-sound.mp3";
 import { useAppStore, GameSettings } from "../store/useAppStore";
 
 const Settings = () => {
     const navigate = useNavigate();
     const storeSettings = useAppStore((state) => state.settings);
     const updateSettings = useAppStore((state) => state.updateSettings);
+    const isSoundOn = useAppStore((state) => state.isSoundOn);
 
     const [localSettings, setLocalSettings] = useState<GameSettings>(storeSettings);
 
@@ -29,7 +31,15 @@ const Settings = () => {
         setLocalSettings({ ...localSettings, pointOption: option });
     };
 
+    const playSound = () => {
+        if (isSoundOn) {
+            const audio = new Audio(buttonClickSound);
+            audio.play();
+        }
+    };
+
     const onSave = () => {
+        playSound();
         updateSettings(localSettings);
         navigate("/");
     };
