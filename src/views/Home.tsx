@@ -37,8 +37,6 @@ const Home = () => {
             navigate('/settings');
         } else if (clickedEl.indexOf("single") !== -1) {
             navigate("/single-player");
-        } else if (clickedEl.indexOf("online") !== -1) {
-            navigate("/online-player");
         } else {
             navigate("/multiple-player");
         }
@@ -129,11 +127,12 @@ const Home = () => {
 
                         <div className="home-page-option">
                             <Button
-                                onClick={(e) => { handleClick(e); playSound(); }}
+                                disabled
                                 className="online-player"
+                                title="Coming soon"
                             >
                                 <img src={onlinePlayerIcon} alt="" />
-                                Online Match
+                                Online Match (Coming soon)
                             </Button>
                         </div>
 
