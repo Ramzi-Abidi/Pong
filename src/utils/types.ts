@@ -18,6 +18,24 @@ export type score = {
     2: number;
 };
 
+export type TableTennisPaddle = {
+    x: number;
+    y: number;
+    radius: number;
+    vx: number;
+    vy: number;
+};
+
+export type TableTennisBall = {
+    x: number;
+    y: number;
+    radius: number;
+    vx: number;
+    vy: number;
+};
+
+export type TableTennisHitter = "player" | "ai" | null;
+
 export interface HomeProps {
     isSoundOn: boolean;
     onSoundChange: () => void;

@@ -128,13 +128,16 @@ const MultiplePlayerMode: React.FC = () => {
     }, []);
 
     const resetBall = useCallback((direction: number): void => {
+        const speed = speedOptions[settings.speedOption];
+        const slightY = (Math.random() < 0.5 ? -1 : 1) * speed.velocityY * 0.3;
+
         ballRef.current = {
             x: GAME_CONFIG.BOARD_WIDTH / 2,
             y: GAME_CONFIG.BOARD_HEIGHT / 2,
             width: GAME_CONFIG.BALL_SIZE,
             height: GAME_CONFIG.BALL_SIZE,
             velocityX: direction,
-            velocityY: speedOptions[settings.speedOption].velocityY,
+            velocityY: slightY,
         };
     }, [settings.speedOption]);
 

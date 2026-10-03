@@ -7,6 +7,7 @@ import singlePlayerIcon from "../assets/single-player.png";
 import multiPlayerIcon from "../assets/multi-player.png";
 import onlinePlayerIcon from "../assets/multi-player.png"; // We can reuse the same icon for now
 import settingsIcon from "../assets/settings-icon.png";
+import tableTennisIcon from "../assets/table-tennis.png";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import buttonClickSound from "../assets/button-click-sound.mp3";
 import { useEffect } from "react";
@@ -35,6 +36,8 @@ const Home = () => {
 
         if (clickedEl.indexOf("settings") !== -1) {
             navigate('/settings');
+        } else if (clickedEl.indexOf("table-tennis") !== -1) {
+            navigate("/table-tennis");
         } else if (clickedEl.indexOf("single") !== -1) {
             navigate("/single-player");
         } else {
@@ -112,6 +115,16 @@ const Home = () => {
                             >
                                 <img src={singlePlayerIcon} alt="" />
                                 Single player
+                            </Button>
+                        </div>
+
+                        <div className="home-page-option">
+                            <Button
+                                onClick={(e) => { handleClick(e); playSound(); }}
+                                className="table-tennis"
+                            >
+                                <img src={tableTennisIcon} alt="" />
+                                Table Tennis
                             </Button>
                         </div>
 

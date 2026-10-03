@@ -282,3 +282,30 @@ section {
     margin-right: 10px;
     object-fit: contain;
 }
+
+.table-tennis-page {
+    min-height: 100vh;
+    background: #ffe56b;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    user-select: none;
+}
+
+.table-tennis-board {
+    background: #ff8a70;
+    border: 6px solid #111;
+    display: block;
+    touch-action: none;
+    cursor: none;
+}
+
+.table-tennis-page .options-container {
+    color: #333;
+}
+
+.table-tennis-page .game-paused-info {
+    color: #333;
+}
