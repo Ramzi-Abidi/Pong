@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="40" height="62" viewBox="0 0 40 62">
+  <defs>
+    <linearGradient id="wood" x1="0" x2="1">
+      <stop stop-color="#80502d"/>
+      <stop offset=".3" stop-color="#e5ba7d"/>
+      <stop offset=".65" stop-color="#c58a4a"/>
+      <stop offset="1" stop-color="#704126"/>
+    </linearGradient>
+    <radialGradient id="rubber" cx=".3" cy=".25" r=".85">
+      <stop stop-color="#f55357"/>
+      <stop offset=".55" stop-color="#d62436"/>
+      <stop offset="1" stop-color="#8f1428"/>
+    </radialGradient>
+    <pattern id="texture" width="3" height="3" patternUnits="userSpaceOnUse">
+      <circle cx="1.5" cy="1.5" r=".35" fill="#5d1020" opacity=".3"/>
+    </pattern>
+  </defs>
+  <path d="M15 32 Q20 30 25 32 L24 43 L25 58 Q25 61 22 61 L18 61 Q15 61 15 58 L16 43 Z" fill="url(#wood)" stroke="#513525" stroke-width="1.5"/>
+  <path d="M18 40 L18 58 M22 40 L22 58" stroke="#f5d49c" stroke-width=".7" opacity=".65"/>
+  <path d="M16 47 L24 47 L24.5 53 L15.5 53 Z" fill="#263240"/>
+  <path d="M17 49 L23 49" stroke="#e8be82" stroke-width=".8"/>
+  <circle cx="20" cy="20" r="19.25" fill="#e4bd86" stroke="#513525" stroke-width="1.5"/>
+  <circle cx="20" cy="19.5" r="17.75" fill="url(#rubber)" stroke="#671523" stroke-width="1"/>
+  <circle cx="20" cy="19.5" r="17.25" fill="url(#texture)"/>
+  <path d="M6 17 A14.5 14.5 0 0 1 19 5" fill="none" stroke="#ff9c94" stroke-width="1.2" stroke-linecap="round" opacity=".65"/>
+  <path d="M10 32 A16 16 0 0 0 31 30" fill="none" stroke="#681423" stroke-width="1" opacity=".5"/>
+</svg>
